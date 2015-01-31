@@ -45,6 +45,7 @@ public class Canvas extends javax.swing.JPanel implements MouseListener, MouseMo
     private Node pressedNode = null;
     private boolean grid = true;
     private final Color defaultColor = Color.BLACK;
+    private Tool tool = Tool.POINTER;
     
     public Canvas() {
         addMouseListener(this);
@@ -103,12 +104,16 @@ public class Canvas extends javax.swing.JPanel implements MouseListener, MouseMo
         this.grid = enable;
         repaint();
     }
+    
+    public void setTool(Tool tool) {
+        this.tool = tool;
+    }
 
     @Override
     public void mouseClicked(MouseEvent me) {
         System.out.println("clicked");
         point = me.getPoint();
-        goban.addNode(point);
+        if (tool == Tool.NODE) goban.addNode(point);
         repaint();
     }
 
@@ -117,7 +122,7 @@ public class Canvas extends javax.swing.JPanel implements MouseListener, MouseMo
         System.out.println("pressed");
         point = me.getPoint();
         pressedNode = goban.nodeAt(point);
-        if (!selectedNodes.contains(goban.nodeAt(point))) {
+        if (tool == Tool.POINTER && !selectedNodes.contains(goban.nodeAt(point))) {
             selectedNodes.clear();
             Node node = goban.nodeAt(point);
             if (node != null) selectedNodes.add(node);
@@ -154,17 +159,18 @@ public class Canvas extends javax.swing.JPanel implements MouseListener, MouseMo
 
     @Override
     public void mouseDragged(MouseEvent me) {
-        //System.out.println("dragged " + selectedNodes.size());
-        if (selectedNodes.isEmpty()) {
-            drag = me.getPoint();
-        } else {
-            int dx = me.getPoint().x - pressedNode.x;
-            int dy = me.getPoint().y - pressedNode.y;
-            for (Node node : selectedNodes) {
-                node.translate(dx, dy);
+        if (tool == Tool.POINTER) {
+            if (selectedNodes.isEmpty()) {
+                drag = me.getPoint();
+            } else {
+                int dx = me.getPoint().x - pressedNode.x;
+                int dy = me.getPoint().y - pressedNode.y;
+                for (Node node : selectedNodes) {
+                    node.translate(dx, dy);
+                }
             }
+            repaint();
         }
-        repaint();
     }
 
     @Override

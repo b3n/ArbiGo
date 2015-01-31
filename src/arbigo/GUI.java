@@ -45,6 +45,7 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroupTool = new javax.swing.ButtonGroup();
         jPanelCanvas = new Canvas();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
@@ -55,6 +56,10 @@ public class GUI extends javax.swing.JFrame {
         jMenuItemDelete = new javax.swing.JMenuItem();
         jMenuView = new javax.swing.JMenu();
         jCheckBoxMenuItemGrid = new javax.swing.JCheckBoxMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jRadioButtonMenuItemPointer = new javax.swing.JRadioButtonMenuItem();
+        jRadioButtonMenuItemNode = new javax.swing.JRadioButtonMenuItem();
+        jRadioButtonMenuItemEdge = new javax.swing.JRadioButtonMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ArbiGo");
@@ -117,6 +122,33 @@ public class GUI extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenuView);
 
+        jMenu1.setText("Tools");
+
+        buttonGroupTool.add(jRadioButtonMenuItemPointer);
+        jRadioButtonMenuItemPointer.setSelected(true);
+        jRadioButtonMenuItemPointer.setText("Pointer");
+        jRadioButtonMenuItemPointer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonMenuItemPointerActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jRadioButtonMenuItemPointer);
+
+        buttonGroupTool.add(jRadioButtonMenuItemNode);
+        jRadioButtonMenuItemNode.setText("Node");
+        jRadioButtonMenuItemNode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonMenuItemNodeActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jRadioButtonMenuItemNode);
+
+        buttonGroupTool.add(jRadioButtonMenuItemEdge);
+        jRadioButtonMenuItemEdge.setText("Edge");
+        jMenu1.add(jRadioButtonMenuItemEdge);
+
+        jMenuBar1.add(jMenu1);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -145,9 +177,19 @@ public class GUI extends javax.swing.JFrame {
         ((Canvas)jPanelCanvas).grid(jCheckBoxMenuItemGrid.getState());
     }//GEN-LAST:event_jCheckBoxMenuItemGridActionPerformed
 
+    private void jRadioButtonMenuItemPointerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemPointerActionPerformed
+        ((Canvas)jPanelCanvas).setTool(Tool.POINTER);
+    }//GEN-LAST:event_jRadioButtonMenuItemPointerActionPerformed
+
+    private void jRadioButtonMenuItemNodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemNodeActionPerformed
+        ((Canvas)jPanelCanvas).setTool(Tool.NODE);
+    }//GEN-LAST:event_jRadioButtonMenuItemNodeActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroupTool;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemGrid;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuEdit;
     private javax.swing.JMenu jMenuFile;
@@ -156,6 +198,9 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemSave;
     private javax.swing.JMenu jMenuView;
     private javax.swing.JPanel jPanelCanvas;
+    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemEdge;
+    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemNode;
+    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemPointer;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     // End of variables declaration//GEN-END:variables
 }
