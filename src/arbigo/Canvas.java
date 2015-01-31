@@ -36,16 +36,17 @@ import static java.lang.Math.*;
  * @author Ben Lloyd
  */
 public class Canvas extends javax.swing.JPanel implements MouseListener, MouseMotionListener {
-    private Graphics2D g2d = null;
-    private Point point = null;
-    private Point drag = null;
+    private Graphics2D g2d;
+    private Point point;
+    private Point drag;
     private final int diameter = 10;
     private Goban goban = new Goban();
     private List<Node> selectedNodes = new ArrayList<>();
-    private Node pressedNode = null;
+    private Node pressedNode;
     private boolean grid = true;
     private final Color defaultColor = Color.BLACK;
     private Tool tool = Tool.POINTER;
+    private Point pointer;
     
     public Canvas() {
         addMouseListener(this);
@@ -91,6 +92,11 @@ public class Canvas extends javax.swing.JPanel implements MouseListener, MouseMo
         if (grid) paintGrid();
         paintNodes();
         if (drag != null) paintSelection();
+        if (tool == Tool.NODE && pointer != null) {
+            g2d.setColor(new Color(0f, 0f, 0f, 0.2f));
+            g2d.fill(new Ellipse2D.Float(pointer.x - diameter/2, pointer.y - diameter/2, diameter, diameter));
+            g2d.setColor(defaultColor);
+        }
     }
     
     public void delete() {
@@ -175,7 +181,10 @@ public class Canvas extends javax.swing.JPanel implements MouseListener, MouseMo
 
     @Override
     public void mouseMoved(MouseEvent me) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (tool == Tool.NODE) {
+            pointer = me.getPoint();
+            repaint();
+        }
     }
     
 }
