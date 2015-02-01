@@ -37,22 +37,24 @@ import java.util.ArrayList;
  *
  * @author Ben Lloyd
  */
-public class Canvas extends javax.swing.JPanel implements MouseListener, MouseMotionListener {
+public class Canvas extends javax.swing.JPanel {
     private Graphics2D g2d;
     private Point point;
     private Point drag;
-    private final int diameter = 10;
+    private final int diameter = 10;    // TODO: Use for zooming?
     private Goban goban = new Goban();
     private List<Node> selectedNodes = new ArrayList<>();
-    private Node pressedNode;
+    private Node currentNode;
+    private Node previousNode;
     private boolean grid = true;
     private final Color defaultColor = Color.BLACK;
     private Tool tool = Tool.SELECT;
-    private Point pointer;
+    private Point pointer = new Point();
     
     public Canvas() {
-        addMouseListener(this);
-        addMouseMotionListener(this);
+        Listener listener = new Listener();
+        addMouseListener(listener);
+        addMouseMotionListener(listener);
     }
 
     private void paintGrid() {
@@ -85,6 +87,30 @@ public class Canvas extends javax.swing.JPanel implements MouseListener, MouseMo
         g2d.setColor(defaultColor);
     }
     
+    private void paintNodeInProgress() {
+        g2d.setColor(new Color(0f, 0f, 0f, 0.2f));
+        g2d.fill(new Ellipse2D.Float(pointer.x - diameter/2, pointer.y - diameter/2, diameter, diameter));
+        g2d.setColor(defaultColor);
+    }
+    
+    private void paintEdgeInProgress() {
+        g2d.setColor(new Color(0f, 0f, 0f, 0.2f));
+        g2d.setStroke(new BasicStroke(2));
+        g2d.draw(new Line2D.Float(currentNode.x, currentNode.y, pointer.x, pointer.y));
+        g2d.setStroke(new BasicStroke());
+        g2d.setColor(defaultColor);
+    }
+    
+    private void paintEdges() {
+        g2d.setStroke(new BasicStroke(2));
+        for (Node node : goban.getNodes()) {
+            for (Node adjacentNode : node.getAdjacentNodes()) {
+                g2d.draw(new Line2D.Float(node.x, node.y, adjacentNode.x, adjacentNode.y)); 
+            }
+        }
+        g2d.setStroke(new BasicStroke());
+    }
+    
     private Point closestOnGrid(Point point) {
         int x = point.x;
         int y = point.y;
@@ -105,12 +131,10 @@ public class Canvas extends javax.swing.JPanel implements MouseListener, MouseMo
                 RenderingHints.VALUE_ANTIALIAS_ON);
         if (grid) paintGrid();
         paintNodes();
+        paintEdges();
         if (drag != null) paintSelection();
-        if (tool == Tool.NODE && pointer != null) {
-            g2d.setColor(new Color(0f, 0f, 0f, 0.2f));
-            g2d.fill(new Ellipse2D.Float(pointer.x - diameter/2, pointer.y - diameter/2, diameter, diameter));
-            g2d.setColor(defaultColor);
-        }
+        if (tool == Tool.NODE) paintNodeInProgress();
+        if (tool == Tool.EDGE && currentNode != null) paintEdgeInProgress();
     }
     
     public void delete() {
@@ -129,73 +153,84 @@ public class Canvas extends javax.swing.JPanel implements MouseListener, MouseMo
         this.tool = tool;
     }
 
-    @Override
-    public void mouseClicked(MouseEvent me) {
-        if (tool == Tool.NODE) {
-            point = grid ? closestOnGrid(me.getPoint()) : me.getPoint();
-            goban.addNode(point);
-            repaint();
-        }
-    }
-
-    @Override
-    public void mousePressed(MouseEvent me) {
-        point = me.getPoint();
-        pressedNode = goban.nodeAt(point);
-        if (tool == Tool.SELECT && !selectedNodes.contains(goban.nodeAt(point))) {
-            selectedNodes.clear();
-            Node node = goban.nodeAt(point);
-            if (node != null) selectedNodes.add(node);
-        }
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent me) {
-        if (drag != null) {
-            selectedNodes.clear();
-            for (Node node : goban.getNodes()) {
-                int x = node.x;
-                int y = node.y;
-                if (x > min(point.x, drag.x) && y > min(point.y, drag.y) && x < max(point.x, drag.x) && y < max(point.y, drag.y)) {
-                    selectedNodes.add(node);
+    private class Listener implements MouseListener, MouseMotionListener {
+        @Override
+        public void mouseClicked(MouseEvent me) {
+            if (tool == Tool.NODE) {
+                point = grid ? closestOnGrid(me.getPoint()) : me.getPoint();
+                goban.addNode(point);
+                repaint();
+            } else if (tool == Tool.EDGE) {
+                if (previousNode != null && currentNode != null && previousNode != currentNode) {
+                    //clickedNode.addAdjacentNode(currentNode);
+                    previousNode.addAdjacentNode(currentNode);
+                    previousNode = null;
+                    repaint();  // TODO: Is this needed? Tool.EDGE repaints on mouse move anyway.
+                } else {
+                    currentNode = goban.nodeAt(point);
                 }
             }
-            drag = null;
         }
-        repaint();
-    }
 
-    @Override
-    public void mouseEntered(MouseEvent me) {
-    }
+        @Override
+        public void mousePressed(MouseEvent me) {
+            point = me.getPoint();
+            previousNode = currentNode;
+            currentNode = goban.nodeAt(point);
+            if (tool == Tool.SELECT && !selectedNodes.contains(goban.nodeAt(point))) {
+                selectedNodes.clear();
+                Node node = goban.nodeAt(point);
+                if (node != null) selectedNodes.add(node);
+            }
+        }
 
-    @Override
-    public void mouseExited(MouseEvent me) {
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent me) {
-        if (tool == Tool.SELECT) {
-            if (selectedNodes.isEmpty()) {
-                drag = me.getPoint();
-            } else {
-                int dx = me.getPoint().x - pressedNode.x;
-                int dy = me.getPoint().y - pressedNode.y;
-                for (Node node : selectedNodes) {
-                    node.translate(dx, dy);
-                    if (grid) node.setLocation(closestOnGrid(node));
+        @Override
+        public void mouseReleased(MouseEvent me) {
+            if (drag != null) {
+                selectedNodes.clear();
+                for (Node node : goban.getNodes()) {
+                    int x = node.x;
+                    int y = node.y;
+                    if (x > min(point.x, drag.x) && y > min(point.y, drag.y) && x < max(point.x, drag.x) && y < max(point.y, drag.y)) {
+                        selectedNodes.add(node);
+                    }
                 }
+                drag = null;
             }
             repaint();
         }
-    }
 
-    @Override
-    public void mouseMoved(MouseEvent me) {
-        if (tool == Tool.NODE) {
-            pointer = grid ? closestOnGrid(me.getPoint()) : me.getPoint();
-            repaint();
+        @Override
+        public void mouseEntered(MouseEvent me) {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent me) {
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent me) {
+            if (tool == Tool.SELECT) {
+                if (selectedNodes.isEmpty()) {
+                    drag = me.getPoint();
+                } else {
+                    int dx = me.getPoint().x - currentNode.x;
+                    int dy = me.getPoint().y - currentNode.y;
+                    for (Node node : selectedNodes) {
+                        node.translate(dx, dy);
+                        if (grid) node.setLocation(closestOnGrid(node));
+                    }
+                }
+                repaint();
+            }
+        }
+
+        @Override
+        public void mouseMoved(MouseEvent me) {
+            if (tool == Tool.NODE || tool == Tool.EDGE) {
+                pointer = grid ? closestOnGrid(me.getPoint()) : me.getPoint();
+                repaint();
+            }
         }
     }
-    
 }

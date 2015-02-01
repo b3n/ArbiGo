@@ -124,6 +124,7 @@ public class GUI extends javax.swing.JFrame {
 
         jMenu1.setText("Tools");
 
+        jRadioButtonMenuItemSelect.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, 0));
         buttonGroupTool.add(jRadioButtonMenuItemSelect);
         jRadioButtonMenuItemSelect.setSelected(true);
         jRadioButtonMenuItemSelect.setText("Select");
@@ -134,6 +135,7 @@ public class GUI extends javax.swing.JFrame {
         });
         jMenu1.add(jRadioButtonMenuItemSelect);
 
+        jRadioButtonMenuItemNode.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, 0));
         buttonGroupTool.add(jRadioButtonMenuItemNode);
         jRadioButtonMenuItemNode.setText("Node");
         jRadioButtonMenuItemNode.addActionListener(new java.awt.event.ActionListener() {
@@ -143,8 +145,14 @@ public class GUI extends javax.swing.JFrame {
         });
         jMenu1.add(jRadioButtonMenuItemNode);
 
+        jRadioButtonMenuItemEdge.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, 0));
         buttonGroupTool.add(jRadioButtonMenuItemEdge);
         jRadioButtonMenuItemEdge.setText("Edge");
+        jRadioButtonMenuItemEdge.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButtonMenuItemEdgeActionPerformed(evt);
+            }
+        });
         jMenu1.add(jRadioButtonMenuItemEdge);
 
         jMenuBar1.add(jMenu1);
@@ -184,6 +192,10 @@ public class GUI extends javax.swing.JFrame {
     private void jRadioButtonMenuItemNodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemNodeActionPerformed
         ((Canvas)jPanelCanvas).setTool(Tool.NODE);
     }//GEN-LAST:event_jRadioButtonMenuItemNodeActionPerformed
+
+    private void jRadioButtonMenuItemEdgeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemEdgeActionPerformed
+        ((Canvas)jPanelCanvas).setTool(Tool.EDGE);
+    }//GEN-LAST:event_jRadioButtonMenuItemEdgeActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
