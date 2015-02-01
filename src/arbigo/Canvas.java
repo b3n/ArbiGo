@@ -138,8 +138,8 @@ public class Canvas extends javax.swing.JPanel {
     }
     
     public void delete() {
-        for (Node node : selectedNodes) {
-            goban.removeNode(node);
+        for (Node selectedNode : selectedNodes) {
+            goban.removeNode(selectedNode);
         }
         repaint();
     }

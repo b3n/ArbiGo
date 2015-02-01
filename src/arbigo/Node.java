@@ -24,7 +24,9 @@
 package arbigo;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -33,7 +35,7 @@ import java.util.Set;
  */
 public class Node extends Point {
     
-    private Set<Node> adjacentNodes = new HashSet<>();
+    private List<Node> adjacentNodes = new ArrayList<>();
     
     /**
      *
@@ -47,7 +49,7 @@ public class Node extends Point {
      *
      * @return
      */
-    public Set<Node> getAdjacentNodes() {
+    public List<Node> getAdjacentNodes() {
         return adjacentNodes;
     }
     

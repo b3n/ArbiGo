@@ -61,8 +61,11 @@ public class Goban {
         return false;
     }
     
-    public Boolean removeNode(Node node) {
-        return nodes.remove(node);
+    public Boolean removeNode(Node nodeToRemove) {
+        for (Node node : nodes) {   // TODO: Is there a better data structure to make this faster?
+            node.removeAdjacentNode(nodeToRemove);
+        }
+        return nodes.remove(nodeToRemove);
     }
     
     /**
