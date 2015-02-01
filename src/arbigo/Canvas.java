@@ -26,9 +26,11 @@ package arbigo;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import static java.lang.Math.abs;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 import java.util.List;
 import java.util.ArrayList;
-import static java.lang.Math.*;
 
 
 /**
@@ -129,7 +131,6 @@ public class Canvas extends javax.swing.JPanel implements MouseListener, MouseMo
 
     @Override
     public void mouseClicked(MouseEvent me) {
-        //System.out.println("clicked");
         if (tool == Tool.NODE) {
             point = grid ? closestOnGrid(me.getPoint()) : me.getPoint();
             goban.addNode(point);
@@ -139,7 +140,6 @@ public class Canvas extends javax.swing.JPanel implements MouseListener, MouseMo
 
     @Override
     public void mousePressed(MouseEvent me) {
-        //System.out.println("pressed");
         point = me.getPoint();
         pressedNode = goban.nodeAt(point);
         if (tool == Tool.POINTER && !selectedNodes.contains(goban.nodeAt(point))) {
@@ -151,7 +151,6 @@ public class Canvas extends javax.swing.JPanel implements MouseListener, MouseMo
 
     @Override
     public void mouseReleased(MouseEvent me) {
-        //System.out.println("released");
         if (drag != null) {
             selectedNodes.clear();
             for (Node node : goban.getNodes()) {
@@ -161,7 +160,6 @@ public class Canvas extends javax.swing.JPanel implements MouseListener, MouseMo
                     selectedNodes.add(node);
                 }
             }
-            //System.out.println(point.x + " " + point.y + " " + drag.x + " " + drag.y);
             drag = null;
         }
         repaint();
