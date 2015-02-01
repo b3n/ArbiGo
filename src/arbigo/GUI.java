@@ -57,7 +57,7 @@ public class GUI extends javax.swing.JFrame {
         jMenuView = new javax.swing.JMenu();
         jCheckBoxMenuItemGrid = new javax.swing.JCheckBoxMenuItem();
         jMenu1 = new javax.swing.JMenu();
-        jRadioButtonMenuItemPointer = new javax.swing.JRadioButtonMenuItem();
+        jRadioButtonMenuItemSelect = new javax.swing.JRadioButtonMenuItem();
         jRadioButtonMenuItemNode = new javax.swing.JRadioButtonMenuItem();
         jRadioButtonMenuItemEdge = new javax.swing.JRadioButtonMenuItem();
 
@@ -124,15 +124,15 @@ public class GUI extends javax.swing.JFrame {
 
         jMenu1.setText("Tools");
 
-        buttonGroupTool.add(jRadioButtonMenuItemPointer);
-        jRadioButtonMenuItemPointer.setSelected(true);
-        jRadioButtonMenuItemPointer.setText("Pointer");
-        jRadioButtonMenuItemPointer.addActionListener(new java.awt.event.ActionListener() {
+        buttonGroupTool.add(jRadioButtonMenuItemSelect);
+        jRadioButtonMenuItemSelect.setSelected(true);
+        jRadioButtonMenuItemSelect.setText("Select");
+        jRadioButtonMenuItemSelect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButtonMenuItemPointerActionPerformed(evt);
+                jRadioButtonMenuItemSelectActionPerformed(evt);
             }
         });
-        jMenu1.add(jRadioButtonMenuItemPointer);
+        jMenu1.add(jRadioButtonMenuItemSelect);
 
         buttonGroupTool.add(jRadioButtonMenuItemNode);
         jRadioButtonMenuItemNode.setText("Node");
@@ -177,9 +177,9 @@ public class GUI extends javax.swing.JFrame {
         ((Canvas)jPanelCanvas).grid(jCheckBoxMenuItemGrid.getState());
     }//GEN-LAST:event_jCheckBoxMenuItemGridActionPerformed
 
-    private void jRadioButtonMenuItemPointerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemPointerActionPerformed
-        ((Canvas)jPanelCanvas).setTool(Tool.POINTER);
-    }//GEN-LAST:event_jRadioButtonMenuItemPointerActionPerformed
+    private void jRadioButtonMenuItemSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemSelectActionPerformed
+        ((Canvas)jPanelCanvas).setTool(Tool.SELECT);
+    }//GEN-LAST:event_jRadioButtonMenuItemSelectActionPerformed
 
     private void jRadioButtonMenuItemNodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemNodeActionPerformed
         ((Canvas)jPanelCanvas).setTool(Tool.NODE);
@@ -200,7 +200,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelCanvas;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemEdge;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemNode;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemPointer;
+    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemSelect;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     // End of variables declaration//GEN-END:variables
 }

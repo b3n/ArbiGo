@@ -47,7 +47,7 @@ public class Canvas extends javax.swing.JPanel implements MouseListener, MouseMo
     private Node pressedNode;
     private boolean grid = true;
     private final Color defaultColor = Color.BLACK;
-    private Tool tool = Tool.POINTER;
+    private Tool tool = Tool.SELECT;
     private Point pointer;
     
     public Canvas() {
@@ -142,7 +142,7 @@ public class Canvas extends javax.swing.JPanel implements MouseListener, MouseMo
     public void mousePressed(MouseEvent me) {
         point = me.getPoint();
         pressedNode = goban.nodeAt(point);
-        if (tool == Tool.POINTER && !selectedNodes.contains(goban.nodeAt(point))) {
+        if (tool == Tool.SELECT && !selectedNodes.contains(goban.nodeAt(point))) {
             selectedNodes.clear();
             Node node = goban.nodeAt(point);
             if (node != null) selectedNodes.add(node);
@@ -175,7 +175,7 @@ public class Canvas extends javax.swing.JPanel implements MouseListener, MouseMo
 
     @Override
     public void mouseDragged(MouseEvent me) {
-        if (tool == Tool.POINTER) {
+        if (tool == Tool.SELECT) {
             if (selectedNodes.isEmpty()) {
                 drag = me.getPoint();
             } else {

@@ -28,5 +28,5 @@ package arbigo;
  * @author Ben Lloyd
  */
 public enum Tool {
-    POINTER, NODE, EDGE
+    SELECT, NODE, EDGE
 }
