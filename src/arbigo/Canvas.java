@@ -83,6 +83,18 @@ public class Canvas extends javax.swing.JPanel implements MouseListener, MouseMo
         g2d.setColor(defaultColor);
     }
     
+    private Point closestOnGrid(Point point) {
+        int x = point.x;
+        int y = point.y;
+        int xmod = x % (diameter * 2);
+        int ymod = y % (diameter * 2);
+        x -= xmod;
+        y -= ymod;
+        if (xmod > diameter) x += diameter * 2;
+        if (ymod > diameter) y += diameter * 2;
+        return new Point(x, y);
+    }
+    
     @Override
     public void paint(Graphics g) {
         super.paint(g); // clears the graphic
@@ -117,15 +129,17 @@ public class Canvas extends javax.swing.JPanel implements MouseListener, MouseMo
 
     @Override
     public void mouseClicked(MouseEvent me) {
-        System.out.println("clicked");
-        point = me.getPoint();
-        if (tool == Tool.NODE) goban.addNode(point);
-        repaint();
+        //System.out.println("clicked");
+        if (tool == Tool.NODE) {
+            point = grid ? closestOnGrid(me.getPoint()) : me.getPoint();
+            goban.addNode(point);
+            repaint();
+        }
     }
 
     @Override
     public void mousePressed(MouseEvent me) {
-        System.out.println("pressed");
+        //System.out.println("pressed");
         point = me.getPoint();
         pressedNode = goban.nodeAt(point);
         if (tool == Tool.POINTER && !selectedNodes.contains(goban.nodeAt(point))) {
@@ -137,7 +151,7 @@ public class Canvas extends javax.swing.JPanel implements MouseListener, MouseMo
 
     @Override
     public void mouseReleased(MouseEvent me) {
-        System.out.println("released");
+        //System.out.println("released");
         if (drag != null) {
             selectedNodes.clear();
             for (Node node : goban.getNodes()) {
@@ -147,7 +161,7 @@ public class Canvas extends javax.swing.JPanel implements MouseListener, MouseMo
                     selectedNodes.add(node);
                 }
             }
-            System.out.println(point.x + " " + point.y + " " + drag.x + " " + drag.y);
+            //System.out.println(point.x + " " + point.y + " " + drag.x + " " + drag.y);
             drag = null;
         }
         repaint();
@@ -155,12 +169,10 @@ public class Canvas extends javax.swing.JPanel implements MouseListener, MouseMo
 
     @Override
     public void mouseEntered(MouseEvent me) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void mouseExited(MouseEvent me) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -173,6 +185,7 @@ public class Canvas extends javax.swing.JPanel implements MouseListener, MouseMo
                 int dy = me.getPoint().y - pressedNode.y;
                 for (Node node : selectedNodes) {
                     node.translate(dx, dy);
+                    if (grid) node.setLocation(closestOnGrid(node));
                 }
             }
             repaint();
@@ -182,7 +195,7 @@ public class Canvas extends javax.swing.JPanel implements MouseListener, MouseMo
     @Override
     public void mouseMoved(MouseEvent me) {
         if (tool == Tool.NODE) {
-            pointer = me.getPoint();
+            pointer = grid ? closestOnGrid(me.getPoint()) : me.getPoint();
             repaint();
         }
     }
