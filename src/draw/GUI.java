@@ -59,7 +59,7 @@ public class GUI extends javax.swing.JFrame {
 
         buttonGroupTool = new javax.swing.ButtonGroup();
         jFileChooser = new javax.swing.JFileChooser();
-        jPanelCanvas = new Canvas();
+        jPanelCanvas = new draw.Canvas();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuItemOpen = new javax.swing.JMenuItem();
@@ -201,11 +201,11 @@ public class GUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelCanvas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanelCanvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelCanvas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanelCanvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -216,48 +216,39 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemQuitActionPerformed
 
     private void jMenuItemDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDeleteActionPerformed
-        ((Canvas)jPanelCanvas).delete();
+        jPanelCanvas.delete();
     }//GEN-LAST:event_jMenuItemDeleteActionPerformed
 
     private void jCheckBoxMenuItemGridActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItemGridActionPerformed
-        ((Canvas)jPanelCanvas).grid(jCheckBoxMenuItemGrid.getState());
+        jPanelCanvas.grid(jCheckBoxMenuItemGrid.getState());
     }//GEN-LAST:event_jCheckBoxMenuItemGridActionPerformed
 
     private void jRadioButtonMenuItemSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemSelectActionPerformed
-        ((Canvas)jPanelCanvas).setTool(Tool.SELECT);
+        jPanelCanvas.setTool(Tool.SELECT);
     }//GEN-LAST:event_jRadioButtonMenuItemSelectActionPerformed
 
     private void jRadioButtonMenuItemNodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemNodeActionPerformed
-        ((Canvas)jPanelCanvas).setTool(Tool.NODE);
+        jPanelCanvas.setTool(Tool.NODE);
     }//GEN-LAST:event_jRadioButtonMenuItemNodeActionPerformed
 
     private void jRadioButtonMenuItemEdgeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemEdgeActionPerformed
-        ((Canvas)jPanelCanvas).setTool(Tool.EDGE);
+        jPanelCanvas.setTool(Tool.EDGE);
     }//GEN-LAST:event_jRadioButtonMenuItemEdgeActionPerformed
 
     private void jMenuItemSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveAsActionPerformed
         if (jFileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-            //System.out.println(jFileChooser.getSelectedFile().getAbsoluteFile());
             file = jFileChooser.getSelectedFile().getAbsoluteFile().toString();
-            try {
-                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
-                out.writeObject(((Canvas)jPanelCanvas).getGoban());
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            jMenuItemSaveActionPerformed(evt);
         }
     }//GEN-LAST:event_jMenuItemSaveAsActionPerformed
 
     private void jMenuItemOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemOpenActionPerformed
         if (jFileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            //System.out.println(jFileChooser.getSelectedFile().getAbsoluteFile());
             file = jFileChooser.getSelectedFile().getAbsoluteFile().toString();
             try {
                 ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
                 Goban goban = (Goban)in.readObject();
-                ((Canvas)jPanelCanvas).setGoban(goban);
+                jPanelCanvas.setGoban(goban);
             } catch (IOException ex) {
                 Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException ex) {
@@ -271,7 +262,7 @@ public class GUI extends javax.swing.JFrame {
         else {
             try {
                 ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
-                out.writeObject(((Canvas)jPanelCanvas).getGoban());
+                out.writeObject(jPanelCanvas.getGoban());
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
@@ -295,7 +286,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemSave;
     private javax.swing.JMenuItem jMenuItemSaveAs;
     private javax.swing.JMenu jMenuView;
-    private javax.swing.JPanel jPanelCanvas;
+    private draw.Canvas jPanelCanvas;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemEdge;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemNode;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemSelect;
