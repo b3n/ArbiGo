@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package arbigo;
+package draw;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -52,9 +52,7 @@ public class Canvas extends javax.swing.JPanel {
     private Point pointer = new Point();
     
     public Canvas() {
-        Listener listener = new Listener();
-        addMouseListener(listener);
-        addMouseMotionListener(listener);
+        setTool(tool);
     }
 
     private void paintGrid() {
@@ -149,39 +147,108 @@ public class Canvas extends javax.swing.JPanel {
         repaint();
     }
     
-    public void setTool(Tool tool) {
+    public final void setTool(Tool tool) {  // TODO: Make it so you pass in listnener object?
         this.tool = tool;
+        
+        // Remove old listeners
+        for (MouseListener l : getMouseListeners()) removeMouseListener(l);
+        for (MouseMotionListener l : getMouseMotionListeners()) removeMouseMotionListener(l);
+        for (MouseWheelListener l : getMouseWheelListeners()) removeMouseWheelListener(l);
+        
+        // Add new listeners
+        Listener listener = new Listener();
+        if (tool == Tool.SELECT) {
+            listener = new SelectListener();
+        } else if (tool == Tool.EDGE) {
+            listener = new EdgeListener();
+        } else if (tool == Tool.NODE) {
+            listener = new NodeListener();
+        }
+        addMouseListener(listener);
+        addMouseMotionListener(listener);
     }
-
-    private class Listener implements MouseListener, MouseMotionListener {
+    
+    
+    private class NodeListener extends Listener {
+        
         @Override
         public void mouseClicked(MouseEvent me) {
-            if (tool == Tool.NODE) {
-                point = grid ? closestOnGrid(me.getPoint()) : me.getPoint();
-                goban.addNode(point);
-                repaint();
-            } else if (tool == Tool.EDGE) {
-                if (previousNode != null && currentNode != null && previousNode != currentNode) {
-                    //clickedNode.addAdjacentNode(currentNode);
-                    previousNode.addAdjacentNode(currentNode);
-                    previousNode = null;
-                    repaint();  // TODO: Is this needed? Tool.EDGE repaints on mouse move anyway.
-                } else {
-                    currentNode = goban.nodeAt(point);
-                }
+            point = grid ? closestOnGrid(me.getPoint()) : me.getPoint();
+            goban.addNode(point);
+            repaint();
+        }
+        
+        @Override
+        public void mouseMoved(MouseEvent me) {
+            pointer = grid ? closestOnGrid(me.getPoint()) : me.getPoint();
+            repaint();
+        }
+        
+    }
+    
+    
+    private class EdgeListener extends Listener {
+        
+        @Override
+        public void mouseClicked(MouseEvent me) {
+            if (previousNode != null && currentNode != null && previousNode != currentNode) {
+                //clickedNode.addAdjacentNode(currentNode);
+                previousNode.addAdjacentNode(currentNode);
+                previousNode = null;
+                repaint();  // TODO: Is this needed? Tool.EDGE repaints on mouse move anyway.
+            } else {
+                currentNode = goban.nodeAt(point);
             }
         }
+        
+        @Override
+        public void mouseMoved(MouseEvent me) {
+            pointer = grid ? closestOnGrid(me.getPoint()) : me.getPoint();
+            repaint();
+        }
+        
+    }
+    
+    
+    private class SelectListener extends Listener {
+        
+        @Override
+        public void mouseDragged(MouseEvent me) {
+            if (selectedNodes.isEmpty()) {
+                drag = me.getPoint();
+            } else {
+                int dx = me.getPoint().x - currentNode.x;
+                int dy = me.getPoint().y - currentNode.y;
+                for (Node node : selectedNodes) {
+                    node.translate(dx, dy);
+                    if (grid) node.setLocation(closestOnGrid(node));
+                }
+            }
+            repaint();
+        }
+        
+        @Override
+        public void mousePressed(MouseEvent me) {
+            point = me.getPoint();
+            previousNode = currentNode;
+            currentNode = goban.nodeAt(point);
+            if (!selectedNodes.contains(goban.nodeAt(point))) {
+                selectedNodes.clear();
+                Node node = goban.nodeAt(point);
+                if (node != null) selectedNodes.add(node);
+            }
+        }
+        
+    }
+
+    
+    private class Listener extends MouseAdapter {
 
         @Override
         public void mousePressed(MouseEvent me) {
             point = me.getPoint();
             previousNode = currentNode;
             currentNode = goban.nodeAt(point);
-            if (tool == Tool.SELECT && !selectedNodes.contains(goban.nodeAt(point))) {
-                selectedNodes.clear();
-                Node node = goban.nodeAt(point);
-                if (node != null) selectedNodes.add(node);
-            }
         }
 
         @Override
@@ -200,37 +267,5 @@ public class Canvas extends javax.swing.JPanel {
             repaint();
         }
 
-        @Override
-        public void mouseEntered(MouseEvent me) {
-        }
-
-        @Override
-        public void mouseExited(MouseEvent me) {
-        }
-
-        @Override
-        public void mouseDragged(MouseEvent me) {
-            if (tool == Tool.SELECT) {
-                if (selectedNodes.isEmpty()) {
-                    drag = me.getPoint();
-                } else {
-                    int dx = me.getPoint().x - currentNode.x;
-                    int dy = me.getPoint().y - currentNode.y;
-                    for (Node node : selectedNodes) {
-                        node.translate(dx, dy);
-                        if (grid) node.setLocation(closestOnGrid(node));
-                    }
-                }
-                repaint();
-            }
-        }
-
-        @Override
-        public void mouseMoved(MouseEvent me) {
-            if (tool == Tool.NODE || tool == Tool.EDGE) {
-                pointer = grid ? closestOnGrid(me.getPoint()) : me.getPoint();
-                repaint();
-            }
-        }
     }
 }

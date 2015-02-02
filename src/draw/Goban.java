@@ -21,12 +21,59 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package arbigo;
+package draw;
+
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Ben Lloyd
  */
-public enum Tool {
-    SELECT, NODE, EDGE
+public class Goban {
+    
+    private final List<Node> nodes = new ArrayList<>();
+    private final int nodeDiameter = 10;
+    
+    /**
+     *
+     * @param point
+     * @return
+     */
+    public Node nodeAt(Point point) {
+        for (Node node : nodes) {
+            if (node.distance(point) < nodeDiameter) return node;
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @param point
+     * @return
+     */
+    public Boolean addNode(Point point) {
+        if (this.nodeAt(point) == null) {
+            nodes.add(new Node(point));
+            return true;
+        }
+        return false;
+    }
+    
+    public Boolean removeNode(Node nodeToRemove) {
+        for (Node node : nodes) {   // TODO: Is there a better data structure to make this faster?
+            node.removeAdjacentNode(nodeToRemove);
+        }
+        return nodes.remove(nodeToRemove);
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public List<Node> getNodes() {
+        return nodes;
+    }
+    
 }

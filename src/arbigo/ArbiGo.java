@@ -23,6 +23,8 @@
  */
 package arbigo;
 
+import draw.GUI;
+
 /**
  *
  * @author Ben Lloyd (12238199)
