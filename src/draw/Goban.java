@@ -24,6 +24,7 @@
 package draw;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +32,7 @@ import java.util.List;
  *
  * @author Ben Lloyd
  */
-public class Goban {
+public class Goban implements Serializable {
     
     private final List<Node> nodes = new ArrayList<>();
     private final int nodeDiameter = 10;

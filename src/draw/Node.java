@@ -24,6 +24,7 @@
 package draw;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +32,7 @@ import java.util.List;
  *
  * @author Ben Lloyd
  */
-public class Node extends Point {
+public class Node extends Point implements Serializable {
     
     private List<Node> adjacentNodes = new ArrayList<>();
     

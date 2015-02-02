@@ -142,6 +142,15 @@ public class Canvas extends javax.swing.JPanel {
         repaint();
     }
     
+    public Goban getGoban() {
+        return this.goban;
+    }
+    
+    public void setGoban(Goban goban) {
+        this.goban = goban;
+        repaint();
+    }
+    
     public void grid(boolean enable) {
         this.grid = enable;
         repaint();

@@ -23,11 +23,23 @@
  */
 package draw;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+
 /**
  *
  * @author Ben Lloyd (12238199)
  */
 public class GUI extends javax.swing.JFrame {
+    
+    private String file = null;
 
     /**
      * Creates new form ArbiGo
@@ -46,10 +58,13 @@ public class GUI extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroupTool = new javax.swing.ButtonGroup();
+        jFileChooser = new javax.swing.JFileChooser();
         jPanelCanvas = new Canvas();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
+        jMenuItemOpen = new javax.swing.JMenuItem();
         jMenuItemSave = new javax.swing.JMenuItem();
+        jMenuItemSaveAs = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItemQuit = new javax.swing.JMenuItem();
         jMenuEdit = new javax.swing.JMenu();
@@ -70,7 +85,7 @@ public class GUI extends javax.swing.JFrame {
         jPanelCanvas.setLayout(jPanelCanvasLayout);
         jPanelCanvasLayout.setHorizontalGroup(
             jPanelCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 531, Short.MAX_VALUE)
+            .addGap(0, 541, Short.MAX_VALUE)
         );
         jPanelCanvasLayout.setVerticalGroup(
             jPanelCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -79,9 +94,32 @@ public class GUI extends javax.swing.JFrame {
 
         jMenuFile.setText("File");
 
+        jMenuItemOpen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemOpen.setText("Open...");
+        jMenuItemOpen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemOpenActionPerformed(evt);
+            }
+        });
+        jMenuFile.add(jMenuItemOpen);
+
         jMenuItemSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemSave.setText("Save");
+        jMenuItemSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemSaveActionPerformed(evt);
+            }
+        });
         jMenuFile.add(jMenuItemSave);
+
+        jMenuItemSaveAs.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemSaveAs.setText("Save as...");
+        jMenuItemSaveAs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemSaveAsActionPerformed(evt);
+            }
+        });
+        jMenuFile.add(jMenuItemSaveAs);
         jMenuFile.add(jSeparator1);
 
         jMenuItemQuit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
@@ -98,7 +136,7 @@ public class GUI extends javax.swing.JFrame {
         jMenuEdit.setText("Edit");
 
         jMenuItemDelete.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, 0));
-        jMenuItemDelete.setText("delete");
+        jMenuItemDelete.setText("Delete");
         jMenuItemDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemDeleteActionPerformed(evt);
@@ -112,7 +150,7 @@ public class GUI extends javax.swing.JFrame {
 
         jCheckBoxMenuItemGrid.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, 0));
         jCheckBoxMenuItemGrid.setSelected(true);
-        jCheckBoxMenuItemGrid.setText("grid");
+        jCheckBoxMenuItemGrid.setText("Grid");
         jCheckBoxMenuItemGrid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCheckBoxMenuItemGridActionPerformed(evt);
@@ -197,17 +235,65 @@ public class GUI extends javax.swing.JFrame {
         ((Canvas)jPanelCanvas).setTool(Tool.EDGE);
     }//GEN-LAST:event_jRadioButtonMenuItemEdgeActionPerformed
 
+    private void jMenuItemSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveAsActionPerformed
+        if (jFileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            //System.out.println(jFileChooser.getSelectedFile().getAbsoluteFile());
+            file = jFileChooser.getSelectedFile().getAbsoluteFile().toString();
+            try {
+                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
+                out.writeObject(((Canvas)jPanelCanvas).getGoban());
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jMenuItemSaveAsActionPerformed
+
+    private void jMenuItemOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemOpenActionPerformed
+        if (jFileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            //System.out.println(jFileChooser.getSelectedFile().getAbsoluteFile());
+            file = jFileChooser.getSelectedFile().getAbsoluteFile().toString();
+            try {
+                ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
+                Goban goban = (Goban)in.readObject();
+                ((Canvas)jPanelCanvas).setGoban(goban);
+            } catch (IOException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jMenuItemOpenActionPerformed
+
+    private void jMenuItemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveActionPerformed
+        if (file == null) jMenuItemSaveAsActionPerformed(evt);
+        else {
+            try {
+                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
+                out.writeObject(((Canvas)jPanelCanvas).getGoban());
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jMenuItemSaveActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupTool;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemGrid;
+    private javax.swing.JFileChooser jFileChooser;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuEdit;
     private javax.swing.JMenu jMenuFile;
     private javax.swing.JMenuItem jMenuItemDelete;
+    private javax.swing.JMenuItem jMenuItemOpen;
     private javax.swing.JMenuItem jMenuItemQuit;
     private javax.swing.JMenuItem jMenuItemSave;
+    private javax.swing.JMenuItem jMenuItemSaveAs;
     private javax.swing.JMenu jMenuView;
     private javax.swing.JPanel jPanelCanvas;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemEdge;
@@ -215,4 +301,5 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemSelect;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     // End of variables declaration//GEN-END:variables
+
 }
