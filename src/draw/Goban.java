@@ -25,8 +25,8 @@ package draw;
 
 import java.awt.Point;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -34,7 +34,7 @@ import java.util.List;
  */
 public class Goban implements Serializable {
     
-    private final List<Node> nodes = new ArrayList<>();
+    private final Set<Node> nodes = new HashSet<>();
     private final int nodeDiameter = 10;
     
     /**
@@ -73,7 +73,7 @@ public class Goban implements Serializable {
      *
      * @return
      */
-    public List<Node> getNodes() {
+    public Set<Node> getNodes() {
         return nodes;
     }
     

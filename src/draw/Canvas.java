@@ -29,8 +29,8 @@ import java.awt.geom.*;
 import static java.lang.Math.abs;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -43,7 +43,7 @@ public class Canvas extends javax.swing.JPanel {
     private Point drag;
     private final int diameter = 10;    // TODO: Use for zooming?
     private Goban goban = new Goban();
-    private List<Node> selectedNodes = new ArrayList<>();
+    private final Set<Node> selectedNodes = new HashSet<>();
     private Node currentNode;
     private Node previousNode;
     private boolean grid = true;

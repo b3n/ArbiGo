@@ -25,8 +25,8 @@ package draw;
 
 import java.awt.Point;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -34,7 +34,9 @@ import java.util.List;
  */
 public class Node extends Point implements Serializable {
     
-    private List<Node> adjacentNodes = new ArrayList<>();
+    private final Set<Node> adjacentNodes = new HashSet<>();
+    private static int hash = 0;
+    private final int hashCode;
     
     /**
      *
@@ -42,13 +44,14 @@ public class Node extends Point implements Serializable {
      */
     public Node(Point point) {
         super(point);
+        hashCode = hash++;
     }
 
     /**
      *
      * @return
      */
-    public List<Node> getAdjacentNodes() {
+    public Set<Node> getAdjacentNodes() {
         return adjacentNodes;
     }
     
@@ -70,4 +73,18 @@ public class Node extends Point implements Serializable {
         return adjacentNodes.add(node);
     }
     
+    @Override
+    public int hashCode() {
+        return hashCode;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        
+        return this.hashCode() == obj.hashCode();
+    }
+
 }
