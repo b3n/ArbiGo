@@ -56,7 +56,7 @@ public class Canvas extends javax.swing.JPanel {
     }
 
     private void paintGrid() {
-        g2d.setColor(new Color(0f, 0f, 0f, 0.1f));
+        g2d.setColor(new Color(0f, 0f, 0f, 0.2f));
         for (int x = 0; x < this.getWidth(); x += diameter*2) {
             g2d.draw(new Line2D.Float(x, 0, x, this.getHeight()));
         }
@@ -75,7 +75,7 @@ public class Canvas extends javax.swing.JPanel {
     }
     
     private void paintSelection() {
-        g2d.setColor(new Color(0f, 0f, 1f, 0.1f));
+        g2d.setColor(new Color(0f, 0f, 1f, 0.2f));
         int x = min(point.x, drag.x);
         int y = min(point.y, drag.y);
         int w = abs(drag.x - point.x);
