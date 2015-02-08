@@ -352,11 +352,11 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemCutActionPerformed
 
     private void jMenuItemUndoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemUndoActionPerformed
-        // TODO add your handling code here:
+        jPanelCanvas.undo();
     }//GEN-LAST:event_jMenuItemUndoActionPerformed
 
     private void jMenuItemRedoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRedoActionPerformed
-        // TODO add your handling code here:
+        jPanelCanvas.redo();
     }//GEN-LAST:event_jMenuItemRedoActionPerformed
 
 

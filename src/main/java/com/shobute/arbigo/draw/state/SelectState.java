@@ -105,7 +105,7 @@ public class SelectState extends MouseAdapter implements State {
                 }
             }
             drag = null;
-        }
+        } else if (!canvas.getSelectedNodes().isEmpty()) canvas.checkpoint();
     }
 
 }

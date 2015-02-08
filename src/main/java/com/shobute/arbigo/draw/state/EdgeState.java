@@ -64,6 +64,7 @@ public class EdgeState extends MouseAdapter implements State {
             currentNode.addAdjacentNode(previousNode);
             previousNode.addAdjacentNode(currentNode);
             previousNode = null;
+            canvas.checkpoint();
         } else {
             currentNode = canvas.getGoban().nodeAt(pressed);
         }

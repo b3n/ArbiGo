@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import org.apache.commons.lang.SerializationUtils;
 
 
 /**
@@ -85,6 +86,8 @@ public class Canvas extends JPanel implements ActionListener {
         
         timer = new Timer(20, this);
         timer.start();
+        
+        history.add(new Graph());
     }
 
     private void paintGrid() {
@@ -99,9 +102,10 @@ public class Canvas extends JPanel implements ActionListener {
     }
     
     private void paintNodes() {
+        int z = goban.getZoom();
         for (Node node : goban.getNodes()) {
             if (selectedNodes.contains(node)) g2d.setColor(Color.BLUE);
-            g2d.fill(new Ellipse2D.Float(node.x - goban.getZoom()/2, node.y - goban.getZoom()/2, goban.getZoom(), goban.getZoom()));
+            g2d.fill(new Ellipse2D.Float(node.x - z/2, node.y - z/2, z, z));
             g2d.setColor(defaultColor);
         }
     }
@@ -144,7 +148,7 @@ public class Canvas extends JPanel implements ActionListener {
         for (Node selectedNode : selectedNodes) {
             goban.removeNode(selectedNode);
         }
-        repaint();
+        checkpoint();
     }
     
     public void copy() {
@@ -163,11 +167,21 @@ public class Canvas extends JPanel implements ActionListener {
             selectedNodes.add(node);
             goban.addNode(node);
         }
-        repaint();
+        checkpoint();
     }
     
     public void checkpoint() {
-        
+        history.add(++historyIndex, (Graph) SerializationUtils.clone(goban));
+    }
+    
+    public void undo() {
+        if (historyIndex > 0) goban = history.get(--historyIndex);
+        selectedNodes.clear();
+    }
+    
+    public void redo() {
+        if (historyIndex < history.size() - 1) goban = history.get(++historyIndex);
+        selectedNodes.clear();
     }
     
     public void setState(State state) {
@@ -184,7 +198,7 @@ public class Canvas extends JPanel implements ActionListener {
     
     public void setGoban(Graph goban) {
         this.goban = goban;
-        repaint();
+        checkpoint();
     }
     
     public void setGrid(boolean enable) {

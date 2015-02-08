@@ -57,6 +57,7 @@ public class NodeState extends MouseAdapter implements State {
         Point point = me.getPoint();
         if (canvas.getGrid()) point = canvas.getGoban().closestOnGrid(point);
         canvas.getGoban().addNode(point);
+        canvas.checkpoint();
     }
 
     @Override
