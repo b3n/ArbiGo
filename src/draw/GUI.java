@@ -101,6 +101,7 @@ public class GUI extends javax.swing.JFrame {
         jMenuFile.setText("File");
 
         jMenuItemOpen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemOpen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/common/icons/image_add.png"))); // NOI18N
         jMenuItemOpen.setText("Open...");
         jMenuItemOpen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -110,6 +111,7 @@ public class GUI extends javax.swing.JFrame {
         jMenuFile.add(jMenuItemOpen);
 
         jMenuItemSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/common/icons/disk.png"))); // NOI18N
         jMenuItemSave.setText("Save");
         jMenuItemSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -119,6 +121,7 @@ public class GUI extends javax.swing.JFrame {
         jMenuFile.add(jMenuItemSave);
 
         jMenuItemSaveAs.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemSaveAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/common/icons/disk_multiple.png"))); // NOI18N
         jMenuItemSaveAs.setText("Save as...");
         jMenuItemSaveAs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -129,6 +132,7 @@ public class GUI extends javax.swing.JFrame {
         jMenuFile.add(jSeparator1);
 
         jMenuItemQuit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemQuit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/common/icons/door_out.png"))); // NOI18N
         jMenuItemQuit.setText("Quit");
         jMenuItemQuit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -142,6 +146,7 @@ public class GUI extends javax.swing.JFrame {
         jMenuEdit.setText("Edit");
 
         jMenuItemCut.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemCut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/common/icons/cut.png"))); // NOI18N
         jMenuItemCut.setText("Cut");
         jMenuItemCut.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -151,6 +156,7 @@ public class GUI extends javax.swing.JFrame {
         jMenuEdit.add(jMenuItemCut);
 
         jMenuItemCopy.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemCopy.setIcon(new javax.swing.ImageIcon(getClass().getResource("/common/icons/page_copy.png"))); // NOI18N
         jMenuItemCopy.setText("Copy");
         jMenuItemCopy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -160,6 +166,7 @@ public class GUI extends javax.swing.JFrame {
         jMenuEdit.add(jMenuItemCopy);
 
         jMenuItemPaste.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemPaste.setIcon(new javax.swing.ImageIcon(getClass().getResource("/common/icons/paste_plain.png"))); // NOI18N
         jMenuItemPaste.setText("Paste");
         jMenuItemPaste.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -169,6 +176,7 @@ public class GUI extends javax.swing.JFrame {
         jMenuEdit.add(jMenuItemPaste);
 
         jMenuItemDelete.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, 0));
+        jMenuItemDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/common/icons/delete.png"))); // NOI18N
         jMenuItemDelete.setText("Delete");
         jMenuItemDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -184,6 +192,7 @@ public class GUI extends javax.swing.JFrame {
         jCheckBoxMenuItemGrid.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, 0));
         jCheckBoxMenuItemGrid.setSelected(true);
         jCheckBoxMenuItemGrid.setText("Grid");
+        jCheckBoxMenuItemGrid.setIcon(new javax.swing.ImageIcon(getClass().getResource("/common/icons/application_view_tile.png"))); // NOI18N
         jCheckBoxMenuItemGrid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCheckBoxMenuItemGridActionPerformed(evt);
@@ -199,6 +208,7 @@ public class GUI extends javax.swing.JFrame {
         buttonGroupTool.add(jRadioButtonMenuItemSelect);
         jRadioButtonMenuItemSelect.setSelected(true);
         jRadioButtonMenuItemSelect.setText("Select");
+        jRadioButtonMenuItemSelect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/common/icons/shape_handles.png"))); // NOI18N
         jRadioButtonMenuItemSelect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRadioButtonMenuItemSelectActionPerformed(evt);
@@ -209,6 +219,7 @@ public class GUI extends javax.swing.JFrame {
         jRadioButtonMenuItemNode.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, 0));
         buttonGroupTool.add(jRadioButtonMenuItemNode);
         jRadioButtonMenuItemNode.setText("Node");
+        jRadioButtonMenuItemNode.setIcon(new javax.swing.ImageIcon(getClass().getResource("/common/icons/bullet_black.png"))); // NOI18N
         jRadioButtonMenuItemNode.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRadioButtonMenuItemNodeActionPerformed(evt);
@@ -219,6 +230,7 @@ public class GUI extends javax.swing.JFrame {
         jRadioButtonMenuItemEdge.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, 0));
         buttonGroupTool.add(jRadioButtonMenuItemEdge);
         jRadioButtonMenuItemEdge.setText("Edge");
+        jRadioButtonMenuItemEdge.setIcon(new javax.swing.ImageIcon(getClass().getResource("/common/icons/chart_line_add.png"))); // NOI18N
         jRadioButtonMenuItemEdge.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRadioButtonMenuItemEdgeActionPerformed(evt);
