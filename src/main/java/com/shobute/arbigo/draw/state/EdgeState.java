@@ -21,10 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package draw.state;
+package com.shobute.arbigo.draw.state;
 
-import draw.Canvas;
-import draw.Node;
+import com.shobute.arbigo.draw.Canvas;
+import com.shobute.arbigo.draw.Node;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;

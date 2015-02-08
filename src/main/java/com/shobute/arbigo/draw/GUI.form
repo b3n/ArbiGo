@@ -19,7 +19,7 @@
                   <KeyStroke key="Ctrl+O"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/common/icons/image_add.png"/>
+                  <Image iconType="3" name="/icons/image_add.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Open..."/>
               </Properties>
@@ -33,7 +33,7 @@
                   <KeyStroke key="Ctrl+S"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/common/icons/disk.png"/>
+                  <Image iconType="3" name="/icons/disk.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Save"/>
               </Properties>
@@ -47,7 +47,7 @@
                   <KeyStroke key="Shift+Ctrl+S"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/common/icons/disk_multiple.png"/>
+                  <Image iconType="3" name="/icons/disk_multiple.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Save as..."/>
               </Properties>
@@ -63,7 +63,7 @@
                   <KeyStroke key="Ctrl+Q"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/common/icons/door_out.png"/>
+                  <Image iconType="3" name="/icons/door_out.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Quit"/>
               </Properties>
@@ -78,13 +78,43 @@
             <Property name="text" type="java.lang.String" value="Edit"/>
           </Properties>
           <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemUndo">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+Z"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/icons/arrow_undo.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Undo"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemUndoActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemRedo">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+Y"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/icons/arrow_redo.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Redo"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemRedoActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator2">
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemCut">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+X"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/common/icons/cut.png"/>
+                  <Image iconType="3" name="/icons/cut.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Cut"/>
               </Properties>
@@ -98,7 +128,7 @@
                   <KeyStroke key="Ctrl+C"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/common/icons/page_copy.png"/>
+                  <Image iconType="3" name="/icons/page_copy.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Copy"/>
               </Properties>
@@ -112,7 +142,7 @@
                   <KeyStroke key="Ctrl+V"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/common/icons/paste_plain.png"/>
+                  <Image iconType="3" name="/icons/paste_plain.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Paste"/>
               </Properties>
@@ -126,7 +156,7 @@
                   <KeyStroke key="DELETE"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/common/icons/delete.png"/>
+                  <Image iconType="3" name="/icons/delete.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Delete"/>
               </Properties>
@@ -149,7 +179,7 @@
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Grid"/>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/common/icons/application_view_tile.png"/>
+                  <Image iconType="3" name="/icons/application_view_tile.png"/>
                 </Property>
               </Properties>
               <Events>
@@ -174,7 +204,7 @@
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Select"/>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/common/icons/shape_handles.png"/>
+                  <Image iconType="3" name="/icons/shape_handles.png"/>
                 </Property>
               </Properties>
               <Events>
@@ -191,7 +221,7 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Node"/>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/common/icons/bullet_black.png"/>
+                  <Image iconType="3" name="/icons/bullet_black.png"/>
                 </Property>
               </Properties>
               <Events>
@@ -208,7 +238,7 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Edge"/>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/common/icons/chart_line_add.png"/>
+                  <Image iconType="3" name="/icons/chart_line_add.png"/>
                 </Property>
               </Properties>
               <Events>
@@ -254,7 +284,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="draw.Canvas" name="jPanelCanvas">
+    <Container class="com.shobute.arbigo.draw.Canvas" name="jPanelCanvas">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -264,12 +294,12 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="541" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="543" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="395" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="397" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>

@@ -21,12 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package draw;
+package com.shobute.arbigo.draw;
 
-import draw.state.*;
+import com.shobute.arbigo.draw.state.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.JPanel;
@@ -46,6 +47,8 @@ public class Canvas extends JPanel implements ActionListener {
     private final Color defaultColor = Color.BLACK;
     private State state;
     private Timer timer;
+    private ArrayList<Graph> history = new ArrayList<>();
+    private int historyIndex = 0;
     
     public Canvas() {
         state = new SelectState(this);
@@ -161,6 +164,10 @@ public class Canvas extends JPanel implements ActionListener {
             goban.addNode(node);
         }
         repaint();
+    }
+    
+    public void checkpoint() {
+        
     }
     
     public void setState(State state) {

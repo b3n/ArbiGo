@@ -21,48 +21,70 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package draw.state;
+package com.shobute.arbigo.draw;
 
-import draw.Canvas;
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.geom.Ellipse2D;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
  * @author Ben Lloyd
  */
-public class NodeState extends MouseAdapter implements State {
+public class Node extends Point implements Serializable {
     
-    private Canvas canvas;
-    private Point pointer = new Point();
+    private final Set<Node> adjacentNodes = new HashSet<>();
+    private static int hash = 0;
+    private final int hashCode;
     
-    public NodeState(Canvas canvas) {
-        this.canvas = canvas;
+    /**
+     *
+     * @param point
+     */
+    public Node(Point point) {
+        super(point);
+        hashCode = hash++;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Set<Node> getAdjacentNodes() {
+        return adjacentNodes;
+    }
+    
+    /**
+     *
+     * @param node
+     * @return
+     */
+    public boolean removeAdjacentNode(Node node) {
+        return adjacentNodes.remove(node);
+    }
+        
+    /**
+     *
+     * @param node
+     * @return
+     */
+    public boolean addAdjacentNode(Node node) {
+        return adjacentNodes.add(node);
+    }
+    
+    @Override
+    public int hashCode() {
+        return hashCode;
     }
 
     @Override
-    public void draw(Graphics2D g2d) {
-        int z = canvas.getGoban().getZoom();
-        g2d.setColor(new Color(0f, 0f, 0f, 0.2f));
-        g2d.fill(new Ellipse2D.Float(pointer.x - z/2, pointer.y - z/2, z, z));
-        g2d.setColor(Color.BLACK);
-    }
-    
-    @Override
-    public void mouseClicked(MouseEvent me) {
-        Point point = me.getPoint();
-        if (canvas.getGrid()) point = canvas.getGoban().closestOnGrid(point);
-        canvas.getGoban().addNode(point);
+    public boolean equals(Object obj) {
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        
+        return this.hashCode() == obj.hashCode();
     }
 
-    @Override
-    public void mouseMoved(MouseEvent me) {
-        pointer = me.getPoint();
-        if (canvas.getGrid()) pointer = canvas.getGoban().closestOnGrid(pointer);
-    }
-    
 }

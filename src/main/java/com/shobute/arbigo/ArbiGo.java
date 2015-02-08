@@ -21,9 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package arbigo;
+package com.shobute.arbigo;
 
-import draw.GUI;
+import com.shobute.arbigo.draw.GUI;
 
 /**
  *
