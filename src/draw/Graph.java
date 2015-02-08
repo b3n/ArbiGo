@@ -32,7 +32,7 @@ import java.util.Set;
  *
  * @author Ben Lloyd
  */
-public class Goban implements Serializable {
+public class Graph implements Serializable {
     
     private final Set<Node> nodes = new HashSet<>();
     private final int nodeDiameter = 10;
@@ -60,6 +60,10 @@ public class Goban implements Serializable {
             return true;
         }
         return false;
+    }
+    
+    public Boolean addNode(Node node) {
+        return nodes.add(node);
     }
     
     public Boolean removeNode(Node nodeToRemove) {

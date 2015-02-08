@@ -42,8 +42,9 @@ public class Canvas extends javax.swing.JPanel {
     private Point point;
     private Point drag;
     private final int diameter = 10;    // TODO: Use for zooming?
-    private Goban goban = new Goban();
+    private Graph goban = new Graph();
     private final Set<Node> selectedNodes = new HashSet<>();
+    private final Set<Point> copied = new HashSet<>();
     private Node currentNode;
     private Node previousNode;
     private boolean grid = true;
@@ -142,11 +143,31 @@ public class Canvas extends javax.swing.JPanel {
         repaint();
     }
     
-    public Goban getGoban() {
+    public void copy() {
+        copied.clear();
+        for (Node selectedNode : selectedNodes) {
+            copied.add(selectedNode.getLocation());
+        }
+    }
+    
+    public void paste() {
+        Node node;
+        selectedNodes.clear();
+        for (Point copiedPoint : copied) {
+            copiedPoint.translate(diameter, diameter);
+            node = new Node(copiedPoint);
+            selectedNodes.add(node);
+            goban.addNode(node);
+        }
+        repaint();
+    }
+
+    
+    public Graph getGoban() {
         return this.goban;
     }
     
-    public void setGoban(Goban goban) {
+    public void setGoban(Graph goban) {
         this.goban = goban;
         repaint();
     }
@@ -201,7 +222,7 @@ public class Canvas extends javax.swing.JPanel {
         @Override
         public void mouseClicked(MouseEvent me) {
             if (previousNode != null && currentNode != null && previousNode != currentNode) {
-                //clickedNode.addAdjacentNode(currentNode);
+                currentNode.addAdjacentNode(previousNode);
                 previousNode.addAdjacentNode(currentNode);
                 previousNode = null;
                 repaint();  // TODO: Is this needed? Tool.EDGE repaints on mouse move anyway.
