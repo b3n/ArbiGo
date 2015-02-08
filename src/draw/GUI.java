@@ -23,6 +23,9 @@
  */
 package draw;
 
+import draw.state.EdgeState;
+import draw.state.NodeState;
+import draw.state.SelectState;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -250,19 +253,19 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemDeleteActionPerformed
 
     private void jCheckBoxMenuItemGridActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItemGridActionPerformed
-        jPanelCanvas.grid(jCheckBoxMenuItemGrid.getState());
+        jPanelCanvas.setGrid(jCheckBoxMenuItemGrid.getState());
     }//GEN-LAST:event_jCheckBoxMenuItemGridActionPerformed
 
     private void jRadioButtonMenuItemSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemSelectActionPerformed
-        jPanelCanvas.setTool(Tool.SELECT);
+        jPanelCanvas.setState(new SelectState(jPanelCanvas));
     }//GEN-LAST:event_jRadioButtonMenuItemSelectActionPerformed
 
     private void jRadioButtonMenuItemNodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemNodeActionPerformed
-        jPanelCanvas.setTool(Tool.NODE);
+        jPanelCanvas.setState(new NodeState(jPanelCanvas));
     }//GEN-LAST:event_jRadioButtonMenuItemNodeActionPerformed
 
     private void jRadioButtonMenuItemEdgeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonMenuItemEdgeActionPerformed
-        jPanelCanvas.setTool(Tool.EDGE);
+        jPanelCanvas.setState(new EdgeState(jPanelCanvas));
     }//GEN-LAST:event_jRadioButtonMenuItemEdgeActionPerformed
 
     private void jMenuItemSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveAsActionPerformed

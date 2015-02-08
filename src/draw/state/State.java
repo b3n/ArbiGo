@@ -21,12 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package draw;
+package draw.state;
+
+import java.awt.Graphics2D;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 /**
  *
  * @author Ben Lloyd
  */
-public enum Tool {
-    SELECT, NODE, EDGE
+public interface State extends MouseListener, MouseMotionListener {
+
+    void draw(Graphics2D g2d);
+
 }

@@ -35,7 +35,7 @@ import java.util.Set;
 public class Graph implements Serializable {
     
     private final Set<Node> nodes = new HashSet<>();
-    private final int nodeDiameter = 10;
+    private final int zoom = 10;
     
     /**
      *
@@ -44,7 +44,7 @@ public class Graph implements Serializable {
      */
     public Node nodeAt(Point point) {
         for (Node node : nodes) {
-            if (node.distance(point) < nodeDiameter) return node;
+            if (node.distance(point) < zoom) return node;
         }
         return null;
     }
@@ -79,6 +79,22 @@ public class Graph implements Serializable {
      */
     public Set<Node> getNodes() {
         return nodes;
+    }
+    
+    public int getZoom() {
+        return zoom;
+    }
+    
+    public Point closestOnGrid(Point point) {
+        int x = point.x;
+        int y = point.y;
+        int xmod = x % (getZoom() * 2);
+        int ymod = y % (getZoom() * 2);
+        x -= xmod;
+        y -= ymod;
+        if (xmod > getZoom()) x += getZoom() * 2;
+        if (ymod > getZoom()) y += getZoom() * 2;
+        return new Point(x, y);
     }
     
 }
