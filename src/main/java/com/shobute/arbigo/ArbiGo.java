@@ -23,7 +23,7 @@
  */
 package com.shobute.arbigo;
 
-import com.shobute.arbigo.draw.GUI;
+import com.shobute.arbigo.play.GUI;
 
 /**
  *

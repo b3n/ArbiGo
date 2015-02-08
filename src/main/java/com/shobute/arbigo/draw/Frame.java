@@ -1,29 +1,13 @@
 /*
- * The MIT License
- *
- * Copyright 2015 Ben Lloyd.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package com.shobute.arbigo.draw;
 
-import com.shobute.arbigo.draw.state.*;
+import com.shobute.arbigo.draw.state.EdgeState;
+import com.shobute.arbigo.draw.state.NodeState;
+import com.shobute.arbigo.draw.state.SelectState;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -36,16 +20,16 @@ import javax.swing.JFileChooser;
 
 /**
  *
- * @author Ben Lloyd (12238199)
+ * @author Ben Lloyd
  */
-public class GUI extends javax.swing.JFrame {
+public class Frame extends javax.swing.JInternalFrame {
     
     private String file = null;
 
     /**
-     * Creates new form ArbiGo
+     * Creates new form NewJInternalFrame
      */
-    public GUI() {
+    public Frame() {
         initComponents();
     }
 
@@ -67,7 +51,7 @@ public class GUI extends javax.swing.JFrame {
         jMenuItemSave = new javax.swing.JMenuItem();
         jMenuItemSaveAs = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        jMenuItemQuit = new javax.swing.JMenuItem();
+        jMenuItemClose = new javax.swing.JMenuItem();
         jMenuEdit = new javax.swing.JMenu();
         jMenuItemUndo = new javax.swing.JMenuItem();
         jMenuItemRedo = new javax.swing.JMenuItem();
@@ -83,8 +67,7 @@ public class GUI extends javax.swing.JFrame {
         jRadioButtonMenuItemNode = new javax.swing.JRadioButtonMenuItem();
         jRadioButtonMenuItemEdge = new javax.swing.JRadioButtonMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("ArbiGo");
+        setResizable(true);
 
         jPanelCanvas.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -92,11 +75,11 @@ public class GUI extends javax.swing.JFrame {
         jPanelCanvas.setLayout(jPanelCanvasLayout);
         jPanelCanvasLayout.setHorizontalGroup(
             jPanelCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 543, Short.MAX_VALUE)
+            .addGap(0, 394, Short.MAX_VALUE)
         );
         jPanelCanvasLayout.setVerticalGroup(
             jPanelCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 397, Short.MAX_VALUE)
+            .addGap(0, 253, Short.MAX_VALUE)
         );
 
         jMenuFile.setText("File");
@@ -132,15 +115,15 @@ public class GUI extends javax.swing.JFrame {
         jMenuFile.add(jMenuItemSaveAs);
         jMenuFile.add(jSeparator1);
 
-        jMenuItemQuit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemQuit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/door_out.png"))); // NOI18N
-        jMenuItemQuit.setText("Quit");
-        jMenuItemQuit.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemClose.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItemClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/door_out.png"))); // NOI18N
+        jMenuItemClose.setText("Close");
+        jMenuItemClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemQuitActionPerformed(evt);
+                jMenuItemCloseActionPerformed(evt);
             }
         });
-        jMenuFile.add(jMenuItemQuit);
+        jMenuFile.add(jMenuItemClose);
 
         jMenuBar1.add(jMenuFile);
 
@@ -159,6 +142,7 @@ public class GUI extends javax.swing.JFrame {
         jMenuItemRedo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemRedo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/arrow_redo.png"))); // NOI18N
         jMenuItemRedo.setText("Redo");
+        jMenuItemRedo.setEnabled(false);
         jMenuItemRedo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemRedoActionPerformed(evt);
@@ -190,6 +174,7 @@ public class GUI extends javax.swing.JFrame {
         jMenuItemPaste.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemPaste.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/paste_plain.png"))); // NOI18N
         jMenuItemPaste.setText("Paste");
+        jMenuItemPaste.setEnabled(false);
         jMenuItemPaste.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemPasteActionPerformed(evt);
@@ -268,19 +253,83 @@ public class GUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelCanvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGap(0, 394, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jPanelCanvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelCanvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGap(0, 253, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jPanelCanvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItemQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemQuitActionPerformed
-        System.exit(0);
-    }//GEN-LAST:event_jMenuItemQuitActionPerformed
+    private void jMenuItemOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemOpenActionPerformed
+        if (jFileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            file = jFileChooser.getSelectedFile().getAbsoluteFile().toString();
+            try {
+                ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
+                Graph goban = (Graph)in.readObject();
+                jPanelCanvas.setGoban(goban);
+            } catch (IOException ex) {
+                Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jMenuItemOpenActionPerformed
+
+    private void jMenuItemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveActionPerformed
+        if (file == null) jMenuItemSaveAsActionPerformed(evt);
+        else {
+            try {
+                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
+                out.writeObject(jPanelCanvas.getGoban());
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_jMenuItemSaveActionPerformed
+
+    private void jMenuItemSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveAsActionPerformed
+        if (jFileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            file = jFileChooser.getSelectedFile().getAbsoluteFile().toString();
+            jMenuItemSaveActionPerformed(evt);
+        }
+    }//GEN-LAST:event_jMenuItemSaveAsActionPerformed
+
+    private void jMenuItemCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCloseActionPerformed
+        dispose();
+    }//GEN-LAST:event_jMenuItemCloseActionPerformed
+
+    private void jMenuItemUndoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemUndoActionPerformed
+        jPanelCanvas.undo();
+        jMenuItemRedo.setEnabled(true);
+    }//GEN-LAST:event_jMenuItemUndoActionPerformed
+
+    private void jMenuItemRedoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRedoActionPerformed
+        jPanelCanvas.redo();
+    }//GEN-LAST:event_jMenuItemRedoActionPerformed
+
+    private void jMenuItemCutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCutActionPerformed
+        jPanelCanvas.copy();
+        jPanelCanvas.delete();
+        jMenuItemPaste.setEnabled(true);
+    }//GEN-LAST:event_jMenuItemCutActionPerformed
+
+    private void jMenuItemCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCopyActionPerformed
+        jPanelCanvas.copy();
+        jMenuItemPaste.setEnabled(true);
+    }//GEN-LAST:event_jMenuItemCopyActionPerformed
+
+    private void jMenuItemPasteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPasteActionPerformed
+        jPanelCanvas.paste();
+    }//GEN-LAST:event_jMenuItemPasteActionPerformed
 
     private void jMenuItemDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDeleteActionPerformed
         jPanelCanvas.delete();
@@ -302,63 +351,6 @@ public class GUI extends javax.swing.JFrame {
         jPanelCanvas.setState(new EdgeState(jPanelCanvas));
     }//GEN-LAST:event_jRadioButtonMenuItemEdgeActionPerformed
 
-    private void jMenuItemSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveAsActionPerformed
-        if (jFileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-            file = jFileChooser.getSelectedFile().getAbsoluteFile().toString();
-            jMenuItemSaveActionPerformed(evt);
-        }
-    }//GEN-LAST:event_jMenuItemSaveAsActionPerformed
-
-    private void jMenuItemOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemOpenActionPerformed
-        if (jFileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            file = jFileChooser.getSelectedFile().getAbsoluteFile().toString();
-            try {
-                ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
-                Graph goban = (Graph)in.readObject();
-                jPanelCanvas.setGoban(goban);
-            } catch (IOException ex) {
-                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }//GEN-LAST:event_jMenuItemOpenActionPerformed
-
-    private void jMenuItemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveActionPerformed
-        if (file == null) jMenuItemSaveAsActionPerformed(evt);
-        else {
-            try {
-                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
-                out.writeObject(jPanelCanvas.getGoban());
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }//GEN-LAST:event_jMenuItemSaveActionPerformed
-
-    private void jMenuItemPasteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPasteActionPerformed
-        jPanelCanvas.paste();
-    }//GEN-LAST:event_jMenuItemPasteActionPerformed
-
-    private void jMenuItemCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCopyActionPerformed
-        jPanelCanvas.copy();
-    }//GEN-LAST:event_jMenuItemCopyActionPerformed
-
-    private void jMenuItemCutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCutActionPerformed
-        jPanelCanvas.copy();
-        jPanelCanvas.delete();
-    }//GEN-LAST:event_jMenuItemCutActionPerformed
-
-    private void jMenuItemUndoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemUndoActionPerformed
-        jPanelCanvas.undo();
-    }//GEN-LAST:event_jMenuItemUndoActionPerformed
-
-    private void jMenuItemRedoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRedoActionPerformed
-        jPanelCanvas.redo();
-    }//GEN-LAST:event_jMenuItemRedoActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupTool;
@@ -368,12 +360,12 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuEdit;
     private javax.swing.JMenu jMenuFile;
+    private javax.swing.JMenuItem jMenuItemClose;
     private javax.swing.JMenuItem jMenuItemCopy;
     private javax.swing.JMenuItem jMenuItemCut;
     private javax.swing.JMenuItem jMenuItemDelete;
     private javax.swing.JMenuItem jMenuItemOpen;
     private javax.swing.JMenuItem jMenuItemPaste;
-    private javax.swing.JMenuItem jMenuItemQuit;
     private javax.swing.JMenuItem jMenuItemRedo;
     private javax.swing.JMenuItem jMenuItemSave;
     private javax.swing.JMenuItem jMenuItemSaveAs;
@@ -386,5 +378,4 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     // End of variables declaration//GEN-END:variables
-
 }
