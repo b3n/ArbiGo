@@ -1,10 +1,29 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * The MIT License
+ *
+ * Copyright 2015 Ben Lloyd.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package com.shobute.arbigo.setup.draw;
 
+import com.shobute.arbigo.common.Graph;
 import com.shobute.arbigo.setup.draw.state.EdgeState;
 import com.shobute.arbigo.setup.draw.state.NodeState;
 import com.shobute.arbigo.setup.draw.state.SelectState;
@@ -23,7 +42,7 @@ import javax.swing.JFileChooser;
  * @author Ben Lloyd
  */
 public class FrameDraw extends javax.swing.JInternalFrame {
-    
+
     private String file = null;
 
     /**
@@ -271,7 +290,7 @@ public class FrameDraw extends javax.swing.JInternalFrame {
             file = jFileChooser.getSelectedFile().getAbsoluteFile().toString();
             try {
                 ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
-                Graph goban = (Graph)in.readObject();
+                Graph goban = (Graph) in.readObject();
                 jPanelCanvas.setBoard(goban);
             } catch (IOException ex) {
                 Logger.getLogger(FrameDraw.class.getName()).log(Level.SEVERE, null, ex);
@@ -282,8 +301,9 @@ public class FrameDraw extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jMenuItemOpenActionPerformed
 
     private void jMenuItemSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSaveActionPerformed
-        if (file == null) jMenuItemSaveAsActionPerformed(evt);
-        else {
+        if (file == null) {
+            jMenuItemSaveAsActionPerformed(evt);
+        } else {
             try {
                 ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
                 out.writeObject(jPanelCanvas.getBoard());

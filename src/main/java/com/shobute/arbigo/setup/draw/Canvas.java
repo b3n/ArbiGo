@@ -23,6 +23,8 @@
  */
 package com.shobute.arbigo.setup.draw;
 
+import com.shobute.arbigo.common.Node;
+import com.shobute.arbigo.common.Graph;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
@@ -101,37 +103,6 @@ public class Canvas extends JPanel implements ActionListener {
         g2d.setColor(defaultColor);
     }
     
-    private void paintNodes() {
-        int z = board.getZoom();
-        for (Node node : board.getNodes()) {
-            if (selectedNodes.contains(node)) g2d.setColor(Color.BLUE);
-            g2d.fill(new Ellipse2D.Float(node.x - z/2, node.y - z/2, z, z));
-            g2d.setColor(defaultColor);
-        }
-    }
-    
-    private void paintEdges() {
-        g2d.setStroke(new BasicStroke(2));
-        for (Node node : board.getNodes()) {
-            for (Node adjacentNode : node.getAdjacentNodes()) {
-                g2d.draw(new Line2D.Float(node.x, node.y, adjacentNode.x, adjacentNode.y)); 
-            }
-        }
-        g2d.setStroke(new BasicStroke());
-    }
-    
-    public Point closestOnGrid(Point point) {
-        int x = point.x;
-        int y = point.y;
-        int xmod = x % (board.getZoom() * 2);
-        int ymod = y % (board.getZoom() * 2);
-        x -= xmod;
-        y -= ymod;
-        if (xmod > board.getZoom()) x += board.getZoom() * 2;
-        if (ymod > board.getZoom()) y += board.getZoom() * 2;
-        return new Point(x, y);
-    }
-    
     @Override
     public void paint(Graphics g) {
         super.paint(g); // clears the graphic
@@ -139,8 +110,8 @@ public class Canvas extends JPanel implements ActionListener {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         if (grid) paintGrid();
-        paintNodes();
-        paintEdges();
+        board.paintNodes(g2d);
+        board.paintEdges(g2d);
         state.draw(g2d);
     }
     

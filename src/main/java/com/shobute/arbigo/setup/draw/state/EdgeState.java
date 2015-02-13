@@ -24,7 +24,7 @@
 package com.shobute.arbigo.setup.draw.state;
 
 import com.shobute.arbigo.setup.draw.Canvas;
-import com.shobute.arbigo.setup.draw.Node;
+import com.shobute.arbigo.common.Node;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;

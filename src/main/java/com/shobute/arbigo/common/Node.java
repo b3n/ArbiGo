@@ -21,8 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.shobute.arbigo.setup.draw;
+package com.shobute.arbigo.common;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -37,6 +38,7 @@ public class Node extends Point implements Serializable {
     private final Set<Node> adjacentNodes = new HashSet<>();
     private static int hash = 0;
     private final int hashCode;
+    private Color stone;
     
     /**
      *
@@ -45,6 +47,14 @@ public class Node extends Point implements Serializable {
     public Node(Point point) {
         super(point);
         hashCode = hash++;
+    }
+
+    public Color getStone() {
+        return stone;
+    }
+
+    public void setStone(Color stone) {
+        this.stone = stone;
     }
 
     /**

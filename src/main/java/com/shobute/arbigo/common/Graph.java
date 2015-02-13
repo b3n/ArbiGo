@@ -21,9 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.shobute.arbigo.setup.draw;
+package com.shobute.arbigo.common;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -36,6 +41,7 @@ public class Graph implements Serializable {
     
     private final Set<Node> nodes = new HashSet<>();
     private final int zoom = 10;
+    private Color colour = Color.BLACK;
     
     /**
      *
@@ -49,6 +55,16 @@ public class Graph implements Serializable {
         return null;
     }
 
+    public void setColour(Color colour) {
+        this.colour = colour;
+    }
+    
+    public void removeColourings() {
+        for (Node node : getNodes()) {
+            node.setStone(null);
+        }
+    }
+    
     /**
      *
      * @param point
@@ -95,6 +111,37 @@ public class Graph implements Serializable {
         if (xmod > getZoom()) x += getZoom() * 2;
         if (ymod > getZoom()) y += getZoom() * 2;
         return new Point(x, y);
+    }
+    
+    public void paintNodes(Graphics2D g2d) {
+        g2d.setColor(colour);
+        int z = getZoom();
+        for (Node node : getNodes()) {
+            //if (selectedNodes.contains(node)) g2d.setColor(Color.BLUE);
+            g2d.fill(new Ellipse2D.Float(node.x - z/2, node.y - z/2, z, z));
+            g2d.setColor(colour);
+        }
+    }
+    
+    public void paintEdges(Graphics2D g2d) {
+        g2d.setColor(colour);
+        g2d.setStroke(new BasicStroke(2));
+        for (Node node : getNodes()) {
+            for (Node adjacentNode : node.getAdjacentNodes()) {
+                g2d.draw(new Line2D.Float(node.x, node.y, adjacentNode.x, adjacentNode.y)); 
+            }
+        }
+        g2d.setStroke(new BasicStroke());
+    }
+    
+    public void paintStones(Graphics2D g2d) {
+        int z = getZoom();
+        for (Node node : getNodes()) {
+            if (node.getStone() != null) {
+                g2d.setColor(node.getStone());
+                g2d.fill(new Ellipse2D.Float(node.x - z, node.y - z, z*2, z*2));
+            }
+        }
     }
     
 }

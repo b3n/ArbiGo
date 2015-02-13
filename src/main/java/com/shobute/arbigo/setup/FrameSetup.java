@@ -57,6 +57,7 @@ public class FrameSetup extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         frameDraw = new com.shobute.arbigo.setup.draw.FrameDraw();
+        framePlay = new com.shobute.arbigo.play.FamePlay();
         jButtonDraw = new javax.swing.JButton();
         jButtonPlay = new javax.swing.JButton();
         jButtonLoad = new javax.swing.JButton();
@@ -70,6 +71,8 @@ public class FrameSetup extends javax.swing.JInternalFrame {
 
         frameDraw.setVisible(false);
 
+        framePlay.setVisible(true);
+
         setClosable(true);
         setTitle("Setup Game");
 
@@ -81,6 +84,11 @@ public class FrameSetup extends javax.swing.JInternalFrame {
         });
 
         jButtonPlay.setText("Play!");
+        jButtonPlay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPlayActionPerformed(evt);
+            }
+        });
 
         jButtonLoad.setText("Load");
 
@@ -125,7 +133,7 @@ public class FrameSetup extends javax.swing.JInternalFrame {
                                     .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel4)))
-                        .addGap(0, 70, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -148,7 +156,7 @@ public class FrameSetup extends javax.swing.JInternalFrame {
                     .addComponent(jLabel3)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 161, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonPlay)
@@ -163,9 +171,16 @@ public class FrameSetup extends javax.swing.JInternalFrame {
         frameDraw.setVisible(true);
     }//GEN-LAST:event_jButtonDrawActionPerformed
 
+    private void jButtonPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPlayActionPerformed
+        desktop.add(framePlay);
+        framePlay.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButtonPlayActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.shobute.arbigo.setup.draw.FrameDraw frameDraw;
+    private com.shobute.arbigo.play.FamePlay framePlay;
     private javax.swing.JButton jButtonDraw;
     private javax.swing.JButton jButtonLoad;
     private javax.swing.JButton jButtonPlay;
