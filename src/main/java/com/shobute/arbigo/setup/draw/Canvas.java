@@ -21,9 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.shobute.arbigo.draw;
+package com.shobute.arbigo.setup.draw;
 
-import com.shobute.arbigo.draw.state.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
@@ -33,6 +32,7 @@ import java.util.Set;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import org.apache.commons.lang.SerializationUtils;
+import com.shobute.arbigo.setup.draw.state.*;
 
 
 /**
@@ -41,7 +41,7 @@ import org.apache.commons.lang.SerializationUtils;
  */
 public class Canvas extends JPanel implements ActionListener {
     private Graphics2D g2d;
-    private Graph goban = new Graph();
+    private Graph board = new Graph();
     private final Set<Node> selectedNodes = new HashSet<>();
     private final Set<Point> copied = new HashSet<>();
     private boolean grid = true;
@@ -92,18 +92,18 @@ public class Canvas extends JPanel implements ActionListener {
 
     private void paintGrid() {
         g2d.setColor(new Color(0f, 0f, 0f, 0.2f));
-        for (int x = 0; x < this.getWidth(); x += goban.getZoom()*2) {
+        for (int x = 0; x < this.getWidth(); x += board.getZoom()*2) {
             g2d.draw(new Line2D.Float(x, 0, x, this.getHeight()));
         }
-        for (int y = 0; y < this.getHeight(); y += goban.getZoom()*2) {
+        for (int y = 0; y < this.getHeight(); y += board.getZoom()*2) {
             g2d.draw(new Line2D.Float(0, y, this.getWidth(), y));
         }
         g2d.setColor(defaultColor);
     }
     
     private void paintNodes() {
-        int z = goban.getZoom();
-        for (Node node : goban.getNodes()) {
+        int z = board.getZoom();
+        for (Node node : board.getNodes()) {
             if (selectedNodes.contains(node)) g2d.setColor(Color.BLUE);
             g2d.fill(new Ellipse2D.Float(node.x - z/2, node.y - z/2, z, z));
             g2d.setColor(defaultColor);
@@ -112,7 +112,7 @@ public class Canvas extends JPanel implements ActionListener {
     
     private void paintEdges() {
         g2d.setStroke(new BasicStroke(2));
-        for (Node node : goban.getNodes()) {
+        for (Node node : board.getNodes()) {
             for (Node adjacentNode : node.getAdjacentNodes()) {
                 g2d.draw(new Line2D.Float(node.x, node.y, adjacentNode.x, adjacentNode.y)); 
             }
@@ -123,12 +123,12 @@ public class Canvas extends JPanel implements ActionListener {
     public Point closestOnGrid(Point point) {
         int x = point.x;
         int y = point.y;
-        int xmod = x % (goban.getZoom() * 2);
-        int ymod = y % (goban.getZoom() * 2);
+        int xmod = x % (board.getZoom() * 2);
+        int ymod = y % (board.getZoom() * 2);
         x -= xmod;
         y -= ymod;
-        if (xmod > goban.getZoom()) x += goban.getZoom() * 2;
-        if (ymod > goban.getZoom()) y += goban.getZoom() * 2;
+        if (xmod > board.getZoom()) x += board.getZoom() * 2;
+        if (ymod > board.getZoom()) y += board.getZoom() * 2;
         return new Point(x, y);
     }
     
@@ -146,7 +146,7 @@ public class Canvas extends JPanel implements ActionListener {
     
     public void delete() {
         for (Node selectedNode : selectedNodes) {
-            goban.removeNode(selectedNode);
+            board.removeNode(selectedNode);
         }
         checkpoint();
     }
@@ -162,25 +162,25 @@ public class Canvas extends JPanel implements ActionListener {
         Node node;
         selectedNodes.clear();
         for (Point copiedPoint : copied) {
-            copiedPoint.translate(goban.getZoom(), goban.getZoom());
+            copiedPoint.translate(board.getZoom(), board.getZoom());
             node = new Node(copiedPoint);
             selectedNodes.add(node);
-            goban.addNode(node);
+            board.addNode(node);
         }
         checkpoint();
     }
     
     public void checkpoint() {
-        history.add(++historyIndex, (Graph) SerializationUtils.clone(goban));
+        history.add(++historyIndex, (Graph) SerializationUtils.clone(board));
     }
     
     public void undo() {
-        if (historyIndex > 0) goban = history.get(--historyIndex);
+        if (historyIndex > 0) board = history.get(--historyIndex);
         selectedNodes.clear();
     }
     
     public void redo() {
-        if (historyIndex < history.size() - 1) goban = history.get(++historyIndex);
+        if (historyIndex < history.size() - 1) board = history.get(++historyIndex);
         selectedNodes.clear();
     }
     
@@ -192,12 +192,12 @@ public class Canvas extends JPanel implements ActionListener {
         return selectedNodes;
     }
     
-    public Graph getGoban() {
-        return this.goban;
+    public Graph getBoard() {
+        return this.board;
     }
     
-    public void setGoban(Graph goban) {
-        this.goban = goban;
+    public void setBoard(Graph board) {
+        this.board = board;
         checkpoint();
     }
     

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.shobute.arbigo.draw;
+package com.shobute.arbigo.setup.draw;
 
 import java.awt.Point;
 import java.io.Serializable;
@@ -32,59 +32,69 @@ import java.util.Set;
  *
  * @author Ben Lloyd
  */
-public class Node extends Point implements Serializable {
+public class Graph implements Serializable {
     
-    private final Set<Node> adjacentNodes = new HashSet<>();
-    private static int hash = 0;
-    private final int hashCode;
+    private final Set<Node> nodes = new HashSet<>();
+    private final int zoom = 10;
     
     /**
      *
      * @param point
-     */
-    public Node(Point point) {
-        super(point);
-        hashCode = hash++;
-    }
-
-    /**
-     *
      * @return
      */
-    public Set<Node> getAdjacentNodes() {
-        return adjacentNodes;
-    }
-    
-    /**
-     *
-     * @param node
-     * @return
-     */
-    public boolean removeAdjacentNode(Node node) {
-        return adjacentNodes.remove(node);
-    }
-        
-    /**
-     *
-     * @param node
-     * @return
-     */
-    public boolean addAdjacentNode(Node node) {
-        return adjacentNodes.add(node);
-    }
-    
-    @Override
-    public int hashCode() {
-        return hashCode;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
+    public Node nodeAt(Point point) {
+        for (Node node : nodes) {
+            if (node.distance(point) < zoom) return node;
         }
-        
-        return this.hashCode() == obj.hashCode();
+        return null;
     }
 
+    /**
+     *
+     * @param point
+     * @return
+     */
+    public Boolean addNode(Point point) {
+        if (this.nodeAt(point) == null) {
+            nodes.add(new Node(point));
+            return true;
+        }
+        return false;
+    }
+    
+    public Boolean addNode(Node node) {
+        return nodes.add(node);
+    }
+    
+    public Boolean removeNode(Node nodeToRemove) {
+        for (Node node : nodes) {   // TODO: Is there a better data structure to make this faster?
+            node.removeAdjacentNode(nodeToRemove);
+        }
+        return nodes.remove(nodeToRemove);
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public Set<Node> getNodes() {
+        return nodes;
+    }
+    
+    public int getZoom() {
+        return zoom;
+    }
+    
+    public Point closestOnGrid(Point point) {
+        int x = point.x;
+        int y = point.y;
+        int xmod = x % (getZoom() * 2);
+        int ymod = y % (getZoom() * 2);
+        x -= xmod;
+        y -= ymod;
+        if (xmod > getZoom()) x += getZoom() * 2;
+        if (ymod > getZoom()) y += getZoom() * 2;
+        return new Point(x, y);
+    }
+    
 }

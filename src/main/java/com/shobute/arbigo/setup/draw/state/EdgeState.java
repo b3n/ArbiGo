@@ -21,10 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.shobute.arbigo.draw.state;
+package com.shobute.arbigo.setup.draw.state;
 
-import com.shobute.arbigo.draw.Canvas;
-import com.shobute.arbigo.draw.Node;
+import com.shobute.arbigo.setup.draw.Canvas;
+import com.shobute.arbigo.setup.draw.Node;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -66,20 +66,20 @@ public class EdgeState extends MouseAdapter implements State {
             previousNode = null;
             canvas.checkpoint();
         } else {
-            currentNode = canvas.getGoban().nodeAt(pressed);
+            currentNode = canvas.getBoard().nodeAt(pressed);
         }
     }
 
     @Override
     public void mouseMoved(MouseEvent me) {
-        clicked = canvas.getGrid() ? canvas.getGoban().closestOnGrid(me.getPoint()) : me.getPoint();
+        clicked = canvas.getGrid() ? canvas.getBoard().closestOnGrid(me.getPoint()) : me.getPoint();
     }
     
     @Override
     public void mousePressed(MouseEvent me) {
         pressed = me.getPoint();
         previousNode = currentNode;
-        currentNode = canvas.getGoban().nodeAt(pressed);
+        currentNode = canvas.getBoard().nodeAt(pressed);
     }
     
 }

@@ -21,10 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.shobute.arbigo.draw.state;
+package com.shobute.arbigo.setup.draw.state;
 
-import com.shobute.arbigo.draw.Canvas;
-import com.shobute.arbigo.draw.Node;
+import com.shobute.arbigo.setup.draw.Canvas;
+import com.shobute.arbigo.setup.draw.Node;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -73,7 +73,7 @@ public class SelectState extends MouseAdapter implements State {
             for (Node node : canvas.getSelectedNodes()) {
                 node.translate(dx, dy);
                 if (canvas.getGrid()) {
-                    node.setLocation(canvas.getGoban().closestOnGrid(node));
+                    node.setLocation(canvas.getBoard().closestOnGrid(node));
                 }
             }
         }
@@ -82,10 +82,10 @@ public class SelectState extends MouseAdapter implements State {
     @Override
     public void mousePressed(MouseEvent me) {
         point = me.getPoint();
-        currentNode = canvas.getGoban().nodeAt(point);
-        if (!canvas.getSelectedNodes().contains(canvas.getGoban().nodeAt(point))) {
+        currentNode = canvas.getBoard().nodeAt(point);
+        if (!canvas.getSelectedNodes().contains(canvas.getBoard().nodeAt(point))) {
             canvas.getSelectedNodes().clear();
-            Node node = canvas.getGoban().nodeAt(point);
+            Node node = canvas.getBoard().nodeAt(point);
             if (node != null) {
                 canvas.getSelectedNodes().add(node);
             }
@@ -96,7 +96,7 @@ public class SelectState extends MouseAdapter implements State {
     public void mouseReleased(MouseEvent me) {
         if (drag != null) {
             canvas.getSelectedNodes().clear();
-            for (Node node : canvas.getGoban().getNodes()) {
+            for (Node node : canvas.getBoard().getNodes()) {
                 int x = node.x;
                 int y = node.y;
                 if (x > min(point.x, drag.x) && y > min(point.y, drag.y) && 

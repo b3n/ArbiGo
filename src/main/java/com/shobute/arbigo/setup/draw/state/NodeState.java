@@ -21,18 +21,49 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.shobute.arbigo.draw.state;
+package com.shobute.arbigo.setup.draw.state;
 
+import com.shobute.arbigo.setup.draw.Canvas;
+import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Ellipse2D;
 
 /**
  *
  * @author Ben Lloyd
  */
-public interface State extends MouseListener, MouseMotionListener {
+public class NodeState extends MouseAdapter implements State {
+    
+    private Canvas canvas;
+    private Point pointer = new Point();
+    
+    public NodeState(Canvas canvas) {
+        this.canvas = canvas;
+    }
 
-    void draw(Graphics2D g2d);
+    @Override
+    public void draw(Graphics2D g2d) {
+        int z = canvas.getBoard().getZoom();
+        g2d.setColor(new Color(0f, 0f, 0f, 0.2f));
+        g2d.fill(new Ellipse2D.Float(pointer.x - z/2, pointer.y - z/2, z, z));
+        g2d.setColor(Color.BLACK);
+    }
+    
+    @Override
+    public void mouseClicked(MouseEvent me) {
+        Point point = me.getPoint();
+        if (canvas.getGrid()) point = canvas.getBoard().closestOnGrid(point);
+        canvas.getBoard().addNode(point);
+        canvas.checkpoint();
+    }
 
+    @Override
+    public void mouseMoved(MouseEvent me) {
+        pointer = me.getPoint();
+        if (canvas.getGrid()) pointer = canvas.getBoard().closestOnGrid(pointer);
+    }
+    
 }

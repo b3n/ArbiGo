@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.shobute.arbigo.draw;
+package com.shobute.arbigo.setup.draw;
 
-import com.shobute.arbigo.draw.state.EdgeState;
-import com.shobute.arbigo.draw.state.NodeState;
-import com.shobute.arbigo.draw.state.SelectState;
+import com.shobute.arbigo.setup.draw.state.EdgeState;
+import com.shobute.arbigo.setup.draw.state.NodeState;
+import com.shobute.arbigo.setup.draw.state.SelectState;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -22,14 +22,14 @@ import javax.swing.JFileChooser;
  *
  * @author Ben Lloyd
  */
-public class Frame extends javax.swing.JInternalFrame {
+public class FrameDraw extends javax.swing.JInternalFrame {
     
     private String file = null;
 
     /**
      * Creates new form NewJInternalFrame
      */
-    public Frame() {
+    public FrameDraw() {
         initComponents();
     }
 
@@ -44,7 +44,7 @@ public class Frame extends javax.swing.JInternalFrame {
 
         buttonGroupTool = new javax.swing.ButtonGroup();
         jFileChooser = new javax.swing.JFileChooser();
-        jPanelCanvas = new com.shobute.arbigo.draw.Canvas();
+        jPanelCanvas = new com.shobute.arbigo.setup.draw.Canvas();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuItemOpen = new javax.swing.JMenuItem();
@@ -67,7 +67,10 @@ public class Frame extends javax.swing.JInternalFrame {
         jRadioButtonMenuItemNode = new javax.swing.JRadioButtonMenuItem();
         jRadioButtonMenuItemEdge = new javax.swing.JRadioButtonMenuItem();
 
+        setClosable(true);
+        setMaximizable(true);
         setResizable(true);
+        setTitle("Draw New Board");
 
         jPanelCanvas.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -75,11 +78,11 @@ public class Frame extends javax.swing.JInternalFrame {
         jPanelCanvas.setLayout(jPanelCanvasLayout);
         jPanelCanvasLayout.setHorizontalGroup(
             jPanelCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addGap(0, 396, Short.MAX_VALUE)
         );
         jPanelCanvasLayout.setVerticalGroup(
             jPanelCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 253, Short.MAX_VALUE)
+            .addGap(0, 255, Short.MAX_VALUE)
         );
 
         jMenuFile.setText("File");
@@ -253,15 +256,11 @@ public class Frame extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanelCanvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanelCanvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 253, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanelCanvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanelCanvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -273,11 +272,11 @@ public class Frame extends javax.swing.JInternalFrame {
             try {
                 ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
                 Graph goban = (Graph)in.readObject();
-                jPanelCanvas.setGoban(goban);
+                jPanelCanvas.setBoard(goban);
             } catch (IOException ex) {
-                Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FrameDraw.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException ex) {
-                Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FrameDraw.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_jMenuItemOpenActionPerformed
@@ -287,11 +286,11 @@ public class Frame extends javax.swing.JInternalFrame {
         else {
             try {
                 ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
-                out.writeObject(jPanelCanvas.getGoban());
+                out.writeObject(jPanelCanvas.getBoard());
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FrameDraw.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
-                Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FrameDraw.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_jMenuItemSaveActionPerformed
@@ -371,7 +370,7 @@ public class Frame extends javax.swing.JInternalFrame {
     private javax.swing.JMenuItem jMenuItemSaveAs;
     private javax.swing.JMenuItem jMenuItemUndo;
     private javax.swing.JMenu jMenuView;
-    private com.shobute.arbigo.draw.Canvas jPanelCanvas;
+    private com.shobute.arbigo.setup.draw.Canvas jPanelCanvas;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemEdge;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemNode;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemSelect;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.shobute.arbigo.play;
+package com.shobute.arbigo.main;
 
 /**
  *
@@ -28,30 +28,24 @@ public class GUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jDesktopPane1 = new javax.swing.JDesktopPane();
-        jInternalFrameDraw = new com.shobute.arbigo.draw.Frame();
+        frameSetup = new com.shobute.arbigo.setup.FrameSetup(jDesktopPane1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ArbiGo");
 
-        jDesktopPane1.setSelectedFrame(jInternalFrameDraw);
-
-        jInternalFrameDraw.setResizable(true);
-        jInternalFrameDraw.setTitle("Draw Goban");
-        jInternalFrameDraw.setVisible(true);
-        jDesktopPane1.add(jInternalFrameDraw);
-        jInternalFrameDraw.setBounds(12, 12, 498, 349);
+        frameSetup.setVisible(true);
+        jDesktopPane1.add(frameSetup);
+        frameSetup.setBounds(110, 60, 431, 354);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jDesktopPane1)
-                .addContainerGap())
+            .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 644, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jDesktopPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
         );
 
         pack();
@@ -93,7 +87,7 @@ public class GUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.shobute.arbigo.setup.FrameSetup frameSetup;
     private javax.swing.JDesktopPane jDesktopPane1;
-    private com.shobute.arbigo.draw.Frame jInternalFrameDraw;
     // End of variables declaration//GEN-END:variables
 }
