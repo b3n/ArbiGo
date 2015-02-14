@@ -23,6 +23,8 @@
  */
 package com.shobute.arbigo.setup;
 
+import com.shobute.arbigo.common.Graph;
+import com.shobute.arbigo.play.FramePlay;
 import javax.swing.JDesktopPane;
 
 /**
@@ -31,7 +33,8 @@ import javax.swing.JDesktopPane;
  */
 public class FrameSetup extends javax.swing.JInternalFrame {
     
-    JDesktopPane desktop;
+    private JDesktopPane desktop;
+    private Graph board;
     
     @Deprecated
     public FrameSetup() {
@@ -46,6 +49,10 @@ public class FrameSetup extends javax.swing.JInternalFrame {
         initComponents();
         this.desktop = desktop;
     }
+    
+    public void setBoard(Graph board) {
+        this.board = board;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -56,8 +63,8 @@ public class FrameSetup extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        frameDraw = new com.shobute.arbigo.setup.draw.FrameDraw();
-        framePlay = new com.shobute.arbigo.play.FamePlay();
+        frameDraw = new com.shobute.arbigo.setup.draw.FrameDraw(this);
+        framePlay = new com.shobute.arbigo.play.FramePlay();
         jButtonDraw = new javax.swing.JButton();
         jButtonPlay = new javax.swing.JButton();
         jButtonLoad = new javax.swing.JButton();
@@ -186,6 +193,7 @@ public class FrameSetup extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButtonDrawActionPerformed
 
     private void jButtonPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPlayActionPerformed
+        framePlay = new FramePlay(board);
         desktop.add(framePlay);
         framePlay.setVisible(true);
         this.dispose();
@@ -194,7 +202,7 @@ public class FrameSetup extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.shobute.arbigo.setup.draw.FrameDraw frameDraw;
-    private com.shobute.arbigo.play.FamePlay framePlay;
+    private com.shobute.arbigo.play.FramePlay framePlay;
     private javax.swing.JButton jButtonDraw;
     private javax.swing.JButton jButtonLoad;
     private javax.swing.JButton jButtonPlay;

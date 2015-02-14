@@ -24,6 +24,7 @@
 package com.shobute.arbigo.setup.draw;
 
 import com.shobute.arbigo.common.Graph;
+import com.shobute.arbigo.setup.FrameSetup;
 import com.shobute.arbigo.setup.draw.state.EdgeState;
 import com.shobute.arbigo.setup.draw.state.NodeState;
 import com.shobute.arbigo.setup.draw.state.SelectState;
@@ -36,19 +37,27 @@ import java.io.ObjectOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JInternalFrame;
 
 /**
  *
  * @author Ben Lloyd
  */
-public class FrameDraw extends javax.swing.JInternalFrame {
+public class FrameDraw extends JInternalFrame {
 
     private String file = null;
+    private FrameSetup setup;
 
     /**
      * Creates new form NewJInternalFrame
      */
+    @Deprecated
     public FrameDraw() {
+        initComponents();
+    }
+    
+    public FrameDraw(FrameSetup setup) {
+        this.setup = setup;
         initComponents();
     }
 
@@ -64,13 +73,13 @@ public class FrameDraw extends javax.swing.JInternalFrame {
         buttonGroupTool = new javax.swing.ButtonGroup();
         jFileChooser = new javax.swing.JFileChooser();
         jPanelCanvas = new com.shobute.arbigo.setup.draw.Canvas();
+        jButtonDone = new javax.swing.JButton();
+        jButtonCancel = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuFile = new javax.swing.JMenu();
         jMenuItemOpen = new javax.swing.JMenuItem();
         jMenuItemSave = new javax.swing.JMenuItem();
         jMenuItemSaveAs = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        jMenuItemClose = new javax.swing.JMenuItem();
         jMenuEdit = new javax.swing.JMenu();
         jMenuItemUndo = new javax.swing.JMenuItem();
         jMenuItemRedo = new javax.swing.JMenuItem();
@@ -101,8 +110,22 @@ public class FrameDraw extends javax.swing.JInternalFrame {
         );
         jPanelCanvasLayout.setVerticalGroup(
             jPanelCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 255, Short.MAX_VALUE)
+            .addGap(0, 183, Short.MAX_VALUE)
         );
+
+        jButtonDone.setText("Done");
+        jButtonDone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDoneActionPerformed(evt);
+            }
+        });
+
+        jButtonCancel.setText("Cancel");
+        jButtonCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelActionPerformed(evt);
+            }
+        });
 
         jMenuFile.setText("File");
 
@@ -135,17 +158,6 @@ public class FrameDraw extends javax.swing.JInternalFrame {
             }
         });
         jMenuFile.add(jMenuItemSaveAs);
-        jMenuFile.add(jSeparator1);
-
-        jMenuItemClose.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItemClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/door_out.png"))); // NOI18N
-        jMenuItemClose.setText("Close");
-        jMenuItemClose.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemCloseActionPerformed(evt);
-            }
-        });
-        jMenuFile.add(jMenuItemClose);
 
         jMenuBar1.add(jMenuFile);
 
@@ -276,10 +288,20 @@ public class FrameDraw extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanelCanvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButtonCancel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonDone))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelCanvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanelCanvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonDone)
+                    .addComponent(jButtonCancel)))
         );
 
         pack();
@@ -321,10 +343,6 @@ public class FrameDraw extends javax.swing.JInternalFrame {
             jMenuItemSaveActionPerformed(evt);
         }
     }//GEN-LAST:event_jMenuItemSaveAsActionPerformed
-
-    private void jMenuItemCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCloseActionPerformed
-        dispose();
-    }//GEN-LAST:event_jMenuItemCloseActionPerformed
 
     private void jMenuItemUndoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemUndoActionPerformed
         jPanelCanvas.undo();
@@ -370,16 +388,26 @@ public class FrameDraw extends javax.swing.JInternalFrame {
         jPanelCanvas.setState(new EdgeState(jPanelCanvas));
     }//GEN-LAST:event_jRadioButtonMenuItemEdgeActionPerformed
 
+    private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
+        dispose();
+    }//GEN-LAST:event_jButtonCancelActionPerformed
+
+    private void jButtonDoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDoneActionPerformed
+        setup.setBoard(jPanelCanvas.getBoard());
+        dispose();
+    }//GEN-LAST:event_jButtonDoneActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupTool;
+    private javax.swing.JButton jButtonCancel;
+    private javax.swing.JButton jButtonDone;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItemGrid;
     private javax.swing.JFileChooser jFileChooser;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuEdit;
     private javax.swing.JMenu jMenuFile;
-    private javax.swing.JMenuItem jMenuItemClose;
     private javax.swing.JMenuItem jMenuItemCopy;
     private javax.swing.JMenuItem jMenuItemCut;
     private javax.swing.JMenuItem jMenuItemDelete;
@@ -394,7 +422,6 @@ public class FrameDraw extends javax.swing.JInternalFrame {
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemEdge;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemNode;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItemSelect;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     // End of variables declaration//GEN-END:variables
 }

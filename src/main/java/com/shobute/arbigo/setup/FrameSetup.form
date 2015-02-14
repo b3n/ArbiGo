@@ -6,8 +6,11 @@
       <Properties>
         <Property name="visible" type="boolean" value="false"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.shobute.arbigo.setup.draw.FrameDraw(this)"/>
+      </AuxValues>
     </Component>
-    <Component class="com.shobute.arbigo.play.FamePlay" name="framePlay">
+    <Component class="com.shobute.arbigo.play.FramePlay" name="framePlay">
       <Properties>
         <Property name="visible" type="boolean" value="true"/>
       </Properties>

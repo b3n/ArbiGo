@@ -23,18 +23,29 @@
  */
 package com.shobute.arbigo.play;
 
+import com.shobute.arbigo.common.Graph;
+
 /**
  *
  * @author Ben Lloyd
  */
-public class FamePlay extends javax.swing.JInternalFrame {
+public class FramePlay extends javax.swing.JInternalFrame {
+    
+    private Graph graph;
 
     /**
      * Creates new form FamePlay
      */
-    public FamePlay() {
+    @Deprecated
+    public FramePlay() {
         initComponents();
     }
+    
+    public FramePlay(Graph graph) {
+        this.graph = graph;
+        initComponents();
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -45,20 +56,20 @@ public class FamePlay extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        board1 = new com.shobute.arbigo.play.Board();
+        board = new com.shobute.arbigo.play.Board(graph);
 
         setResizable(true);
 
-        board1.setBackground(new java.awt.Color(255, 255, 255));
+        board.setBackground(new java.awt.Color(255, 255, 255));
 
-        javax.swing.GroupLayout board1Layout = new javax.swing.GroupLayout(board1);
-        board1.setLayout(board1Layout);
-        board1Layout.setHorizontalGroup(
-            board1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout boardLayout = new javax.swing.GroupLayout(board);
+        board.setLayout(boardLayout);
+        boardLayout.setHorizontalGroup(
+            boardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 520, Short.MAX_VALUE)
         );
-        board1Layout.setVerticalGroup(
-            board1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        boardLayout.setVerticalGroup(
+            boardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 449, Short.MAX_VALUE)
         );
 
@@ -66,11 +77,11 @@ public class FamePlay extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(board1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(board, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(board1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(board, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -78,6 +89,6 @@ public class FamePlay extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.shobute.arbigo.play.Board board1;
+    private com.shobute.arbigo.play.Board board;
     // End of variables declaration//GEN-END:variables
 }

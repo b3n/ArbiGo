@@ -27,7 +27,6 @@ import com.shobute.arbigo.common.Graph;
 import com.shobute.arbigo.common.Node;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 import java.util.HashSet;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -44,22 +43,25 @@ public class Board extends JPanel implements ActionListener {
     private Color[] players;
     private int turn = 0;
     
-    public Board() {
-        // Initiate 9x9 grid for testing
-        board  = new Graph();
-        Node[][] nodes = new Node[9][9];
-        for (int x = 0; x < 9 ; x++) {
-            for (int y = 0; y < 9; y++) {
-                nodes[x][y] = new Node(new Point(30+x*30, 30+y*30));
+    public Board(Graph graph) {
+        this.board = graph;
+        
+        if (board == null) {
+            board  = new Graph();
+            Node[][] nodes = new Node[9][9];
+            for (int x = 0; x < 9 ; x++) {
+                for (int y = 0; y < 9; y++) {
+                    nodes[x][y] = new Node(new Point(30+x*30, 30+y*30));
+                }
             }
-        }
-        for (int x = 0; x < nodes.length; x++) {
-            for (int y = 0; y < nodes[x].length; y++) {
-                if (y+1 < nodes[x].length) nodes[x][y].addAdjacentNode(nodes[x][y+1]);
-                if (y > 0) nodes[x][y].addAdjacentNode(nodes[x][y-1]);
-                if (x+1 < nodes.length) nodes[x][y].addAdjacentNode(nodes[x+1][y]);
-                if (x > 0) nodes[x][y].addAdjacentNode(nodes[x-1][y]);
-                board.addNode(nodes[x][y]);
+            for (int x = 0; x < nodes.length; x++) {
+                for (int y = 0; y < nodes[x].length; y++) {
+                    if (y+1 < nodes[x].length) nodes[x][y].addAdjacentNode(nodes[x][y+1]);
+                    if (y > 0) nodes[x][y].addAdjacentNode(nodes[x][y-1]);
+                    if (x+1 < nodes.length) nodes[x][y].addAdjacentNode(nodes[x+1][y]);
+                    if (x > 0) nodes[x][y].addAdjacentNode(nodes[x-1][y]);
+                    board.addNode(nodes[x][y]);
+                }
             }
         }
         
@@ -95,7 +97,7 @@ public class Board extends JPanel implements ActionListener {
     }
     
     private boolean valid(Node node) {
-        return true;
+        return true;    // TODO: superko
     }
     
     private void removeCaptured(Node playedNode) {
