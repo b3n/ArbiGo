@@ -27,6 +27,8 @@ import com.shobute.arbigo.common.Graph;
 import com.shobute.arbigo.common.Node;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -36,9 +38,11 @@ import javax.swing.Timer;
  */
 public class Board extends JPanel implements ActionListener {
     
-    Graph board;
-    Graphics2D g2d;
-    Timer timer;
+    private Graph board;
+    private Graphics2D g2d;
+    private Timer timer;
+    private Color[] players;
+    private int turn = 0;
     
     public Board() {
         // Initiate 9x9 grid for testing
@@ -59,6 +63,9 @@ public class Board extends JPanel implements ActionListener {
             }
         }
         
+        // Initate 2 players, for testing
+        players = new Color[]{ Color.RED, Color.BLUE };
+        
         board.removeColourings();
         board.setColour(new Color(150, 150, 150));
         
@@ -66,7 +73,11 @@ public class Board extends JPanel implements ActionListener {
             @Override
             public void mouseClicked(MouseEvent me) {
                 Node node = board.nodeAt(me.getPoint());
-                if (node != null) node.setStone(Color.orange);
+                if (node != null && valid(node)) {
+                    node.setStone(players[turn]);
+                    removeCaptured(node);
+                    turn = (turn + 1) % players.length;
+                }
             }
             
             @Override
@@ -81,6 +92,19 @@ public class Board extends JPanel implements ActionListener {
         timer = new Timer(20, this);
         timer.start();
         
+    }
+    
+    private boolean valid(Node node) {
+        return true;
+    }
+    
+    private void removeCaptured(Node playedNode) {
+        for (Node node : playedNode.getAdjacentNodes()) {
+            HashSet<Node> group = board.group(node);
+            if (!board.liberties(group)) {
+                for (Node n : group) n.setStone(null);
+            }
+        }
     }
     
     @Override

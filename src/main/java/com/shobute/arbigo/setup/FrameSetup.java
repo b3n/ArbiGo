@@ -68,6 +68,8 @@ public class FrameSetup extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jLabel5 = new javax.swing.JLabel();
 
         frameDraw.setVisible(false);
 
@@ -97,13 +99,19 @@ public class FrameSetup extends javax.swing.JInternalFrame {
         jLabel2.setText("Players");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2", "3", "4", "5", "6", "7", "8", "9" }));
+        jComboBox1.setEnabled(false);
 
         jLabel3.setText("Time");
 
         jTextField1.setText("30");
+        jTextField1.setEnabled(false);
 
         jLabel4.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel4.setText("seconds added each move.");
+
+        jCheckBox1.setEnabled(false);
+
+        jLabel5.setText("Online");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -120,7 +128,8 @@ public class FrameSetup extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel3))
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel5))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -132,7 +141,8 @@ public class FrameSetup extends javax.swing.JInternalFrame {
                                     .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel4)))
+                                .addComponent(jLabel4))
+                            .addComponent(jCheckBox1))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -156,7 +166,11 @@ public class FrameSetup extends javax.swing.JInternalFrame {
                     .addComponent(jLabel3)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5)
+                    .addComponent(jCheckBox1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 173, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonPlay)
@@ -184,11 +198,13 @@ public class FrameSetup extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButtonDraw;
     private javax.swing.JButton jButtonLoad;
     private javax.swing.JButton jButtonPlay;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables

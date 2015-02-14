@@ -30,6 +30,7 @@ import java.awt.Point;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -95,6 +96,29 @@ public class Graph implements Serializable {
      */
     public Set<Node> getNodes() {
         return nodes;
+    }
+    
+    public HashSet<Node> group(Node node) {
+        return group(node, new HashSet<Node>());
+    }
+    
+    private HashSet<Node> group(Node node, HashSet<Node> group) {
+        if (group.contains(node)) return null;
+        group.add(node);
+        for (Node n : node.getAdjacentNodes()) {
+            if (n.getStone() == node.getStone()) group(n, group);
+        }
+        return group;
+    }
+    
+    // TODO: This can probably be optomized.
+    public boolean liberties(HashSet<Node> group) {
+        for (Node node : group) {
+            for (Node adjNode : node.getAdjacentNodes()) {
+                if (adjNode.getStone() == null) return true;
+            }
+        }
+        return false;
     }
     
     public int getZoom() {
