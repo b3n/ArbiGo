@@ -42,8 +42,11 @@ public class Board extends JPanel implements ActionListener {
     private Timer timer;
     private Color[] players;
     private int turn = 0;
+    private final Color[] colours = new Color[]{
+        Color.BLACK, Color.WHITE, Color.BLUE, Color.RED, Color.YELLOW,
+        Color.GREEN, Color.CYAN, Color.ORANGE, Color.PINK, Color.GRAY};
     
-    public Board(Graph graph) {
+    public Board(Graph graph, int numPlayers) {
         this.board = graph;
         
         if (board == null) {
@@ -65,8 +68,10 @@ public class Board extends JPanel implements ActionListener {
             }
         }
         
-        // Initate 2 players, for testing
-        players = new Color[]{ Color.RED, Color.BLUE };
+        // Initate players
+        if (numPlayers < 2 || numPlayers > colours.length) numPlayers = 2;
+        players = new Color[numPlayers];
+        for (int i = 0; i < numPlayers; i++) players[i] = colours[i];
         
         board.removeColourings();
         board.setColour(new Color(150, 150, 150));

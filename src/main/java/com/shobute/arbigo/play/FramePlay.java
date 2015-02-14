@@ -32,6 +32,7 @@ import com.shobute.arbigo.common.Graph;
 public class FramePlay extends javax.swing.JInternalFrame {
     
     private Graph graph;
+    private int numPlayers;
 
     /**
      * Creates new form FamePlay
@@ -41,8 +42,9 @@ public class FramePlay extends javax.swing.JInternalFrame {
         initComponents();
     }
     
-    public FramePlay(Graph graph) {
+    public FramePlay(Graph graph, int numPlayers) {
         this.graph = graph;
+        this.numPlayers = numPlayers;
         initComponents();
     }
     
@@ -56,7 +58,7 @@ public class FramePlay extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        board = new com.shobute.arbigo.play.Board(graph);
+        board = new com.shobute.arbigo.play.Board(graph, numPlayers);
 
         setResizable(true);
 
