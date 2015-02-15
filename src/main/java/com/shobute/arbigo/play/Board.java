@@ -101,7 +101,8 @@ public class Board extends JPanel implements ActionListener {
     }
     
     private boolean valid(Node node) {
-        return true;    // TODO: superko
+        if (node == null) return false;
+        return node.getStone() == null;    // TODO: superko
     }
     
     private void removeCaptured(Node playedNode) {
@@ -114,7 +115,7 @@ public class Board extends JPanel implements ActionListener {
     }
     
     private void paintHover(Graphics2D g2d) {
-        if (hoverNode != null) {
+        if (valid(hoverNode)) {
             players[turn].getStone().paint(g2d, hoverNode.x, hoverNode.y, 99);
         }
     }
