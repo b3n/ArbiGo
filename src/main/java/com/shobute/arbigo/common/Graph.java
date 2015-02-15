@@ -27,6 +27,8 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.io.Serializable;
@@ -163,7 +165,12 @@ public class Graph implements Serializable {
         for (Node node : getNodes()) {
             if (node.getStone() != null) {
                 g2d.setColor(node.getStone());
-                g2d.fill(new Ellipse2D.Float(node.x - z, node.y - z, z*2, z*2));
+                Shape circle = new Ellipse2D.Float(node.x - z, node.y - z, z*2, z*2);
+                g2d.fill(circle);
+                
+                // Stroke
+                g2d.setPaint(Color.BLACK);
+                g2d.draw(circle);
             }
         }
     }
