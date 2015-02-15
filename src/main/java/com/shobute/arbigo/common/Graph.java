@@ -160,17 +160,13 @@ public class Graph implements Serializable {
         g2d.setStroke(new BasicStroke());
     }
     
+    
     public void paintStones(Graphics2D g2d) {
-        int z = getZoom();
+        Stone stone;
         for (Node node : getNodes()) {
-            if (node.getStone() != null) {
-                g2d.setColor(node.getStone());
-                Shape circle = new Ellipse2D.Float(node.x - z, node.y - z, z*2, z*2);
-                g2d.fill(circle);
-                
-                // Stroke
-                g2d.setPaint(Color.BLACK);
-                g2d.draw(circle);
+            stone = node.getStone();
+            if (stone != null) {
+                stone.paint(g2d, node.x, node.y);
             }
         }
     }

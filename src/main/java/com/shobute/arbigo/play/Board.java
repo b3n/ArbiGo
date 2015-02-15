@@ -23,6 +23,7 @@
  */
 package com.shobute.arbigo.play;
 
+import com.shobute.arbigo.common.Stone;
 import com.shobute.arbigo.common.Graph;
 import com.shobute.arbigo.common.Node;
 import java.awt.*;
@@ -40,11 +41,9 @@ public class Board extends JPanel implements ActionListener {
     private Graph board;
     private Graphics2D g2d;
     private Timer timer;
-    private Color[] players;
+    private Player[] players;
     private int turn = 0;
-    private final Color[] colours = new Color[]{
-        Color.BLACK, Color.WHITE, Color.BLUE, Color.RED, Color.YELLOW,
-        Color.GREEN, Color.CYAN, Color.ORANGE, Color.PINK, Color.GRAY};
+    private Node hoverNode;
     
     public Board(Graph graph, int numPlayers) {
         this.board = graph;
@@ -69,9 +68,9 @@ public class Board extends JPanel implements ActionListener {
         }
         
         // Initate players
-        if (numPlayers < 2 || numPlayers > colours.length) numPlayers = 2;
-        players = new Color[numPlayers];
-        for (int i = 0; i < numPlayers; i++) players[i] = colours[i];
+        if (numPlayers < 2 || numPlayers > Stone.colours.length) numPlayers = 2;
+        players = new Player[numPlayers];
+        for (int i = 0; i < numPlayers; i++) players[i] = new Player();
         
         board.removeColourings();
         board.setColour(new Color(150, 150, 150));
@@ -81,7 +80,7 @@ public class Board extends JPanel implements ActionListener {
             public void mouseClicked(MouseEvent me) {
                 Node node = board.nodeAt(me.getPoint());
                 if (node != null && valid(node)) {
-                    node.setStone(players[turn]);
+                    node.setStone(players[turn].getStone());
                     removeCaptured(node);
                     turn = (turn + 1) % players.length;
                 }
@@ -89,7 +88,7 @@ public class Board extends JPanel implements ActionListener {
             
             @Override
             public void mouseMoved(MouseEvent me) {
-                //System.out.println("moved");
+                hoverNode = board.nodeAt(me.getPoint());
             }
         };
         
@@ -114,6 +113,12 @@ public class Board extends JPanel implements ActionListener {
         }
     }
     
+    private void paintHover(Graphics2D g2d) {
+        if (hoverNode != null) {
+            players[turn].getStone().paint(g2d, hoverNode.x, hoverNode.y, 99);
+        }
+    }
+    
     @Override
     public void paint(Graphics g) {
         super.paint(g); // clears the graphic
@@ -123,6 +128,7 @@ public class Board extends JPanel implements ActionListener {
         board.paintNodes(g2d);
         board.paintEdges(g2d);
         board.paintStones(g2d);
+        paintHover(g2d);
     }
 
     @Override

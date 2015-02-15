@@ -26,6 +26,7 @@ package com.shobute.arbigo.setup;
 import com.shobute.arbigo.common.Graph;
 import com.shobute.arbigo.play.FramePlay;
 import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
 
 /**
  *
@@ -64,7 +65,6 @@ public class FrameSetup extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         frameDraw = new com.shobute.arbigo.setup.draw.FrameDraw(this);
-        framePlay = new com.shobute.arbigo.play.FramePlay();
         jButtonDraw = new javax.swing.JButton();
         jButtonPlay = new javax.swing.JButton();
         jButtonLoad = new javax.swing.JButton();
@@ -79,8 +79,6 @@ public class FrameSetup extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
 
         frameDraw.setVisible(false);
-
-        framePlay.setVisible(true);
 
         setClosable(true);
         setTitle("Setup Game");
@@ -192,7 +190,7 @@ public class FrameSetup extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButtonDrawActionPerformed
 
     private void jButtonPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPlayActionPerformed
-        framePlay = new FramePlay(board, Integer.parseInt(jComboBoxPlayers.getSelectedItem().toString()));
+        JInternalFrame framePlay = new FramePlay(board, Integer.parseInt(jComboBoxPlayers.getSelectedItem().toString()));
         desktop.add(framePlay);
         framePlay.setVisible(true);
         this.dispose();
@@ -201,7 +199,6 @@ public class FrameSetup extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.shobute.arbigo.setup.draw.FrameDraw frameDraw;
-    private com.shobute.arbigo.play.FramePlay framePlay;
     private javax.swing.JButton jButtonDraw;
     private javax.swing.JButton jButtonLoad;
     private javax.swing.JButton jButtonPlay;

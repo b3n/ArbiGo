@@ -21,31 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.shobute.arbigo.common;
+package com.shobute.arbigo.play;
 
-import java.awt.Point;
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import com.shobute.arbigo.common.Stone;
 
 /**
  *
  * @author Ben Lloyd
  */
-public class Node extends Point implements Serializable {
+public class Player {
     
-    private final Set<Node> adjacentNodes = new HashSet<>();
-    private static int hash = 0;
-    private final int hashCode;
     private Stone stone;
-    
-    /**
-     *
-     * @param point
-     */
-    public Node(Point point) {
-        super(point);
-        hashCode = hash++;
+    private String name;
+    private static int id = 0;
+
+    public Player() {
+        //this.name = name;
+        this.stone = new Stone(id++);
+        
     }
 
     public Stone getStone() {
@@ -56,44 +49,12 @@ public class Node extends Point implements Serializable {
         this.stone = stone;
     }
 
-    /**
-     *
-     * @return
-     */
-    public Set<Node> getAdjacentNodes() {
-        return adjacentNodes;
-    }
-    
-    /**
-     *
-     * @param node
-     * @return
-     */
-    public boolean removeAdjacentNode(Node node) {
-        return adjacentNodes.remove(node);
-    }
-        
-    /**
-     *
-     * @param node
-     * @return
-     */
-    public boolean addAdjacentNode(Node node) {
-        return adjacentNodes.add(node);
-    }
-    
-    @Override
-    public int hashCode() {
-        return hashCode;
+    public String getName() {
+        return name;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        
-        return this.hashCode() == obj.hashCode();
+    public void setName(String name) {
+        this.name = name;
     }
-
+    
 }
