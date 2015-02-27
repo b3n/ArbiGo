@@ -41,7 +41,7 @@ import static java.lang.Math.min;
  */
 public class SelectState extends MouseAdapter implements State {
 
-    private Canvas canvas;
+    private final Canvas canvas;
     private Point drag, point;
     private Node currentNode;
 

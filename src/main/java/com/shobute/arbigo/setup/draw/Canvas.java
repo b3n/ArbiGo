@@ -49,8 +49,8 @@ public class Canvas extends JPanel implements ActionListener {
     private boolean grid = true;
     private final Color defaultColor = Color.BLACK;
     private State state;
-    private Timer timer;
-    private ArrayList<Graph> history = new ArrayList<>();
+    private final Timer timer;
+    private final ArrayList<Graph> history = new ArrayList<>();
     private int historyIndex = 0;
     
     public Canvas() {

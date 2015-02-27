@@ -40,7 +40,7 @@ public class Board extends JPanel implements ActionListener {
     
     private Graph board;
     private Graphics2D g2d;
-    private Timer timer;
+    private final Timer timer;
     private Player[] players;
     private int turn = 0;
     private Node hoverNode;

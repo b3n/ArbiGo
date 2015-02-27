@@ -60,6 +60,10 @@ public class Graph implements Serializable {
         }
         return null;
     }
+    
+    public Node nodeAt(int x, int y) {
+        return nodeAt(new Point(x, y));
+    }
 
     public void setColour(Color colour) {
         this.colour = colour;
@@ -78,8 +82,7 @@ public class Graph implements Serializable {
      */
     public Boolean addNode(Point point) {
         if (this.nodeAt(point) == null) {
-            nodes.add(new Node(point));
-            return true;
+            return addNode(new Node(point));
         }
         return false;
     }

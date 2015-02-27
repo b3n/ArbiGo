@@ -23,9 +23,12 @@
  */
 package com.shobute.arbigo.common;
 
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.HashSet;
 import org.junit.*;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  *
@@ -35,7 +38,6 @@ public class GraphTest {
     
     private Graph graph;
     private int diameter;
-    private Node[][] nodes;
     private static Stone black;
     private static Stone white;
     
@@ -46,11 +48,7 @@ public class GraphTest {
     }
     
     @Before
-    public void setUp() {
-        graph = new Graph();
-        
-        diameter = graph.getDiameter();
-        
+    public void setUp() {        
         // Constructs a 3x3 grid with a game state that looks like:
         //
         //     # O .
@@ -59,40 +57,15 @@ public class GraphTest {
         //
         // Where a '.' is an empty node, a '#' is a black stone, and a 'O' is a
         // white stone. Giving nodes x/y values of 0, 100, 200. 
+        graph = Helper.createGrid(3);
+        graph.nodeAt(0, 0).setStone(black);
+        graph.nodeAt(100, 0).setStone(white);
+        graph.nodeAt(100, 100).setStone(white);
+        graph.nodeAt(100, 200).setStone(black);
+        graph.nodeAt(200, 100).setStone(black);
+        graph.nodeAt(200, 200).setStone(black);
         
-        nodes = new Node[3][3];
-        
-        for (int x = 0; x < 3 ; x++) {
-            for (int y = 0; y < 3; y++) {
-                nodes[x][y] = new Node(new Point(x*100, y*100));
-            }
-        }
-        
-        nodes[0][0].setStone(black);
-        nodes[1][0].setStone(white);
-        nodes[1][1].setStone(white);
-        nodes[1][2].setStone(black);
-        nodes[2][1].setStone(black);
-        nodes[2][2].setStone(black);
-        
-        for (int x = 0; x < nodes.length; x++) {
-            for (int y = 0; y < nodes[x].length; y++) {
-                if (y+1 < nodes[x].length) {
-                    nodes[x][y].addAdjacentNode(nodes[x][y+1]);
-                }
-                if (y > 0) {
-                    nodes[x][y].addAdjacentNode(nodes[x][y-1]);
-                }
-                if (x+1 < nodes.length) {
-                    nodes[x][y].addAdjacentNode(nodes[x+1][y]);
-                }
-                if (x > 0) {
-                    nodes[x][y].addAdjacentNode(nodes[x-1][y]);
-                }
-                graph.addNode(nodes[x][y]);
-            }
-        }
-        
+        diameter = graph.getDiameter();
     }
     
     @Test
@@ -100,18 +73,34 @@ public class GraphTest {
         Node node;
         
         node = graph.nodeAt(new Point(99, 99));
-        Assert.assertNotNull(node);
-        Assert.assertEquals(100, node.x);
-        Assert.assertEquals(100, node.y);
+        assertNotNull(node);
+        assertEquals(100, node.x);
+        assertEquals(100, node.y);
         
         node = graph.nodeAt(new Point(50, 50));
-        Assert.assertNull(node);
+        assertNull(node);
         
         node = graph.nodeAt(new Point(diameter, 0));
-        Assert.assertNull(node);
+        assertNull(node);
         
         node = graph.nodeAt(new Point(diameter - 1, 0));
-        Assert.assertNotNull(node);
+        assertNotNull(node);
+    }
+    
+    @Test
+    public void testremoveColourings() {
+        graph.removeColourings();
+        for (Node node : graph.getNodes()) {
+            assertNull(node.getStone());
+        }
+    }
+    
+    @Test
+    public void testAddNode() {
+        int numNodes = graph.getNodes().size();
+        assertTrue(graph.addNode(new Point(999, 999)));
+        assertFalse(graph.addNode(new Point(999, 999)));
+        assertEquals(numNodes + 1, graph.getNodes().size());
     }
     
     @Test
@@ -119,12 +108,12 @@ public class GraphTest {
         HashSet<Node> group1, group2;
         
         // Test sizes.
-        group1 = graph.group(nodes[0][0]);
-        Assert.assertEquals(1, group1.size());
-        group1 = graph.group(nodes[1][1]);
-        Assert.assertEquals(2, group1.size());
-        group1 = graph.group(nodes[2][2]);
-        Assert.assertEquals(3, group1.size());
+        group1 = graph.group(graph.nodeAt(0, 0));
+        assertEquals(1, group1.size());
+        group1 = graph.group(graph.nodeAt(100, 100));
+        assertEquals(2, group1.size());
+        group1 = graph.group(graph.nodeAt(200, 200));
+        assertEquals(3, group1.size());
         
         // Test null node.
         Throwable caught = null;
@@ -133,29 +122,43 @@ public class GraphTest {
         } catch (IllegalArgumentException e) {
             caught = e;
         }
-        Assert.assertNotNull(caught);
+        assertNotNull(caught);
         
         // Test getting the same group from different nodes.
-        group1 = graph.group(nodes[2][2]);
-        group2 = graph.group(nodes[1][2]);
-        Assert.assertEquals(group1, group2);
+        group1 = graph.group(graph.nodeAt(200, 200));
+        group2 = graph.group(graph.nodeAt(100, 200));
+        assertEquals(group1, group2);
     }
     
     @Test
     public void testLiberties() {
-        HashSet<Node> group = graph.group(nodes[0][0]);
-        Assert.assertTrue(graph.liberties(group));
+        HashSet<Node> group = graph.group(graph.nodeAt(0, 0));
+        assertTrue(graph.liberties(group));
         
-        nodes[0][1].setStone(white);
-        Assert.assertFalse(graph.liberties(group));
+        graph.nodeAt(0, 100).setStone(white);
+        assertFalse(graph.liberties(group));
     }
     
     @Test
     public void testClosestOnGrid() {
         int d = graph.getDiameter();
-        Point point = new Point(d, d);
-        Assert.assertEquals(point, graph.closestOnGrid(new Point(d+1, d+1)));
-        Assert.assertNotEquals(point, graph.closestOnGrid(new Point(d*2, d*2)));
+        int g = d * 2;    // Grid width is twice the diameter.
+        Point point = new Point(g, g);
+        
+        assertEquals(point, graph.closestOnGrid(new Point(g+1, g+1)));
+        assertEquals(point, graph.closestOnGrid(new Point(g-1, g-1)));
+        assertEquals(point, graph.closestOnGrid(new Point(g+d, g+d)));
+        assertEquals(point, graph.closestOnGrid(new Point(g-d+1, g-d+1)));
+        
+        assertNotEquals(point, graph.closestOnGrid(new Point(g+d+1, g+d+1)));
+        assertNotEquals(point, graph.closestOnGrid(new Point(g-d, g-d)));
+    }
+    
+    @Test
+    public void testPaintNodes() {
+        Graphics2D g2d = mock(Graphics2D.class);
+        graph.paintNodes(g2d);
+        //verify(g2d).fill();
     }
     
 }
