@@ -27,12 +27,9 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Shape;
-import java.awt.Stroke;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,9 +39,15 @@ import java.util.Set;
  */
 public class Graph implements Serializable {
     
-    private final Set<Node> nodes = new HashSet<>();
-    private final int zoom = 10;
-    private Color colour = Color.BLACK;
+    private final Set<Node> nodes;
+    private final int diameter;
+    private Color colour;
+    
+    public Graph() {
+        nodes = new HashSet<>();
+        diameter = 10;
+        colour = Color.BLACK;
+    }
     
     /**
      *
@@ -53,7 +56,7 @@ public class Graph implements Serializable {
      */
     public Node nodeAt(Point point) {
         for (Node node : nodes) {
-            if (node.distance(point) < zoom) return node;
+            if (node.distance(point) < diameter) return node;
         }
         return null;
     }
@@ -101,6 +104,7 @@ public class Graph implements Serializable {
     }
     
     public HashSet<Node> group(Node node) {
+        if (node == null) throw new IllegalArgumentException();
         return group(node, new HashSet<Node>());
     }
     
@@ -123,25 +127,25 @@ public class Graph implements Serializable {
         return false;
     }
     
-    public int getZoom() {
-        return zoom;
+    public int getDiameter() {
+        return diameter;
     }
     
     public Point closestOnGrid(Point point) {
         int x = point.x;
         int y = point.y;
-        int xmod = x % (getZoom() * 2);
-        int ymod = y % (getZoom() * 2);
+        int xmod = x % (getDiameter() * 2);
+        int ymod = y % (getDiameter() * 2);
         x -= xmod;
         y -= ymod;
-        if (xmod > getZoom()) x += getZoom() * 2;
-        if (ymod > getZoom()) y += getZoom() * 2;
+        if (xmod > getDiameter()) x += getDiameter() * 2;
+        if (ymod > getDiameter()) y += getDiameter() * 2;
         return new Point(x, y);
     }
     
     public void paintNodes(Graphics2D g2d) {
         g2d.setColor(colour);
-        int z = getZoom();
+        int z = getDiameter();
         for (Node node : getNodes()) {
             //if (selectedNodes.contains(node)) g2d.setColor(Color.BLUE);
             g2d.fill(new Ellipse2D.Float(node.x - z/2, node.y - z/2, z, z));

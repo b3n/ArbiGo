@@ -46,7 +46,7 @@ public class NodeState extends MouseAdapter implements State {
 
     @Override
     public void draw(Graphics2D g2d) {
-        int z = canvas.getBoard().getZoom();
+        int z = canvas.getBoard().getDiameter();
         g2d.setColor(new Color(0f, 0f, 0f, 0.2f));
         g2d.fill(new Ellipse2D.Float(pointer.x - z/2, pointer.y - z/2, z, z));
         g2d.setColor(Color.BLACK);

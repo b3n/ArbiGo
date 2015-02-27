@@ -94,10 +94,10 @@ public class Canvas extends JPanel implements ActionListener {
 
     private void paintGrid() {
         g2d.setColor(new Color(0f, 0f, 0f, 0.2f));
-        for (int x = 0; x < this.getWidth(); x += board.getZoom()*2) {
+        for (int x = 0; x < this.getWidth(); x += board.getDiameter()*2) {
             g2d.draw(new Line2D.Float(x, 0, x, this.getHeight()));
         }
-        for (int y = 0; y < this.getHeight(); y += board.getZoom()*2) {
+        for (int y = 0; y < this.getHeight(); y += board.getDiameter()*2) {
             g2d.draw(new Line2D.Float(0, y, this.getWidth(), y));
         }
         g2d.setColor(defaultColor);
@@ -133,7 +133,7 @@ public class Canvas extends JPanel implements ActionListener {
         Node node;
         selectedNodes.clear();
         for (Point copiedPoint : copied) {
-            copiedPoint.translate(board.getZoom(), board.getZoom());
+            copiedPoint.translate(board.getDiameter(), board.getDiameter());
             node = new Node(copiedPoint);
             selectedNodes.add(node);
             board.addNode(node);

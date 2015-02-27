@@ -21,12 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.shobute.arbigo;
+package com.shobute.arbigo.common;
 
-import com.shobute.arbigo.common.Node;
 import java.awt.Point;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.*;
 
 /**
  *
@@ -34,11 +32,18 @@ import org.junit.Test;
  */
 public class NodeTest {
     
+    private Node node1, node2;
+    
+    @Before
+    public void init() {
+        Point point = new Point();
+        
+        node1 = new Node(point);
+        node2 = new Node(point);
+    }
+    
     @Test
     public void equality() {
-        Point point = new Point();
-        Node node1 = new Node(point);
-        Node node2 = new Node(point);
         Assert.assertNotEquals(node1, node2);
         
         int hash1 = node1.hashCode();
@@ -49,9 +54,6 @@ public class NodeTest {
     
     @Test
     public void adjacentNodes() {
-        Point point = new Point();
-        Node node1 = new Node(point);
-        Node node2 = new Node(point);
         Assert.assertTrue(node1.addAdjacentNode(node2));
         Assert.assertFalse(node1.addAdjacentNode(node2));
         Assert.assertTrue(node1.getAdjacentNodes().size() == 1);
