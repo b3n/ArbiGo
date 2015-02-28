@@ -57,7 +57,8 @@ public class Graph implements Serializable {
 
         for (int x = 0; x < n; x++) {
             for (int y = 0; y < n; y++) {
-                myNodes[x][y] = new Node(new Point(spacing + x * size, spacing + y * size));
+                myNodes[x][y] = new Node(
+                        new Point(spacing + x * size, spacing + y * size));
             }
         }
 
@@ -128,7 +129,8 @@ public class Graph implements Serializable {
     }
 
     public Boolean removeNode(Node nodeToRemove) {
-        for (Node node : nodes) {   // TODO: Is there a better data structure to make this faster?
+        // TODO: Is there a better data structure to make this faster?
+        for (Node node : nodes) {
             node.removeAdjacentNode(nodeToRemove);
         }
         return nodes.remove(nodeToRemove);
@@ -154,8 +156,9 @@ public class Graph implements Serializable {
             return null;
         }
         group.add(node);
+        Stone stone = node.getStone();
         for (Node n : node.getAdjacentNodes()) {
-            if (n.getStone() == node.getStone()) {
+            if (stone != null && stone.equals(n.getStone())) {
                 group(n, group);
             }
         }
@@ -208,8 +211,8 @@ public class Graph implements Serializable {
         g2d.setColor(colour);
         g2d.setStroke(new BasicStroke(2));
         for (Node node : getNodes()) {
-            for (Node adjacentNode : node.getAdjacentNodes()) {
-                g2d.draw(new Line2D.Float(node.x, node.y, adjacentNode.x, adjacentNode.y));
+            for (Node adjNode : node.getAdjacentNodes()) {
+                g2d.draw(new Line2D.Float(node.x, node.y, adjNode.x, adjNode.y));
             }
         }
         g2d.setStroke(new BasicStroke());

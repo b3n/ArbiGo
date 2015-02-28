@@ -123,11 +123,20 @@ public class Board extends JPanel implements ActionListener {
 
     private void removeCaptured(Node playedNode) {
         for (Node node : playedNode.getAdjacentNodes()) {
+            if (playedNode.getStone().equals(node.getStone())) continue;
             HashSet<Node> group = graph.group(node);
             if (!graph.liberties(group)) {
                 for (Node n : group) {
                     n.setStone(null);
                 }
+            }
+        }
+        
+        // Suicide
+        HashSet<Node> group = graph.group(playedNode);
+        if (!graph.liberties(group)) {
+            for (Node n : group) {
+                n.setStone(null);
             }
         }
     }
