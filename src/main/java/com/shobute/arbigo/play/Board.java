@@ -26,109 +26,127 @@ package com.shobute.arbigo.play;
 import com.shobute.arbigo.common.Stone;
 import com.shobute.arbigo.common.Graph;
 import com.shobute.arbigo.common.Node;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.HashSet;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import org.apache.commons.lang.SerializationUtils;
 
 /**
  *
  * @author Ben Lloyd
  */
 public class Board extends JPanel implements ActionListener {
-    
-    private Graph board;
+
+    private Graph graph;
     private Graphics2D g2d;
     private final Timer timer;
     private Player[] players;
     private int turn = 0;
     private Node hoverNode;
-    
-    public Board(Graph graph, int numPlayers) {
-        this.board = graph;
-        
-        if (board == null) {
-            board  = new Graph();
-            Node[][] nodes = new Node[9][9];
-            for (int x = 0; x < 9 ; x++) {
-                for (int y = 0; y < 9; y++) {
-                    nodes[x][y] = new Node(new Point(30+x*30, 30+y*30));
-                }
-            }
-            for (int x = 0; x < nodes.length; x++) {
-                for (int y = 0; y < nodes[x].length; y++) {
-                    if (y+1 < nodes[x].length) nodes[x][y].addAdjacentNode(nodes[x][y+1]);
-                    if (y > 0) nodes[x][y].addAdjacentNode(nodes[x][y-1]);
-                    if (x+1 < nodes.length) nodes[x][y].addAdjacentNode(nodes[x+1][y]);
-                    if (x > 0) nodes[x][y].addAdjacentNode(nodes[x-1][y]);
-                    board.addNode(nodes[x][y]);
-                }
-            }
+    private final ArrayList<Graph> history;
+
+    public Board(Graph g, int numPlayers) {
+        this.graph = g;
+
+        if (graph == null) {
+            graph = new Graph(9, 30, 30);
         }
-        
+
         // Initate players
-        if (numPlayers < 2 || numPlayers > Stone.colours.length) numPlayers = 2;
+        if (numPlayers < 2 || numPlayers > Stone.colours.length) {
+            numPlayers = 2;
+        }
         players = new Player[numPlayers];
-        for (int i = 0; i < numPlayers; i++) players[i] = new Player();
-        
-        board.removeColourings();
-        board.setColour(new Color(150, 150, 150));
-        
+        for (int i = 0; i < numPlayers; i++) {
+            players[i] = new Player();
+        }
+
+        graph.removeColourings();
+        graph.setColour(new Color(150, 150, 150));
+
+        // Start with initial graph in history (important that history.size() > 0).
+        history = new ArrayList<>(100); // 100 moves will be common
+        history.add((Graph) SerializationUtils.clone(graph));
+
         MouseAdapter listener = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
-                Node node = board.nodeAt(me.getPoint());
-                if (node != null && valid(node)) {
-                    node.setStone(players[turn].getStone());
-                    removeCaptured(node);
+                Node node = graph.nodeAt(me.getPoint());
+                if (playMove(node)) {
+                    history.add(graph);
                     turn = (turn + 1) % players.length;
                 }
             }
-            
+
             @Override
             public void mouseMoved(MouseEvent me) {
-                hoverNode = board.nodeAt(me.getPoint());
+                hoverNode = graph.nodeAt(me.getPoint());
             }
         };
-        
+
         addMouseListener(listener);
         addMouseMotionListener(listener);
 
         timer = new Timer(20, this);
         timer.start();
-        
+
     }
-    
-    private boolean valid(Node node) {
-        if (node == null) return false;
-        return node.getStone() == null;    // TODO: superko
+
+    private boolean playMove(Node node) {
+        graph = (Graph) SerializationUtils.clone(history.get(history.size() - 1));
+        node = graph.nodeAt(node);
+
+        if (node == null || node.getStone() != null) {
+            return false;
+        }
+
+        node.setStone(players[turn].getStone());
+        removeCaptured(node);
+
+        for (Graph prevState : history) {
+            if (graph.equals(prevState)) {
+                return false;
+            }
+        }
+
+        return true;
     }
-    
+
     private void removeCaptured(Node playedNode) {
         for (Node node : playedNode.getAdjacentNodes()) {
-            HashSet<Node> group = board.group(node);
-            if (!board.liberties(group)) {
-                for (Node n : group) n.setStone(null);
+            HashSet<Node> group = graph.group(node);
+            if (!graph.liberties(group)) {
+                for (Node n : group) {
+                    n.setStone(null);
+                }
             }
         }
     }
-    
-    private void paintHover(Graphics2D g2d) {
-        if (valid(hoverNode)) {
+
+    private void paintHover(Graphics2D g2d) {   // TODO: No need to recompute unless hoverNode is different from last time.
+        if (playMove(hoverNode)) {
             players[turn].getStone().paint(g2d, hoverNode.x, hoverNode.y, 99);
         }
     }
-    
+
     @Override
     public void paint(Graphics g) {
-        super.paint(g); // clears the graphic
-        g2d = (Graphics2D)g;
+        super.paint(g); // Clears the graphic.
+        g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
-        board.paintNodes(g2d);
-        board.paintEdges(g2d);
-        board.paintStones(g2d);
+        graph.paintNodes(g2d);
+        graph.paintEdges(g2d);
+        history.get(history.size() - 1).paintStones(g2d);
         paintHover(g2d);
     }
 
@@ -136,5 +154,5 @@ public class Board extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         repaint();
     }
-    
+
 }

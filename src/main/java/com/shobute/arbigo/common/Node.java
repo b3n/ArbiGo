@@ -33,12 +33,12 @@ import java.util.Set;
  * @author Ben Lloyd
  */
 public class Node extends Point implements Serializable {
-    
+
     private final Set<Node> adjacentNodes = new HashSet<>();
     private static int hash = 0;
     private final int hashCode;
     private Stone stone;
-    
+
     /**
      *
      * @param point
@@ -63,7 +63,7 @@ public class Node extends Point implements Serializable {
     public Set<Node> getAdjacentNodes() {
         return adjacentNodes;
     }
-    
+
     /**
      *
      * @param node
@@ -72,7 +72,7 @@ public class Node extends Point implements Serializable {
     public boolean removeAdjacentNode(Node node) {
         return adjacentNodes.remove(node);
     }
-        
+
     /**
      *
      * @param node
@@ -81,9 +81,9 @@ public class Node extends Point implements Serializable {
     public boolean addAdjacentNode(Node node) {
         return adjacentNodes.add(node);
     }
-    
+
     @Override
-    public int hashCode() {
+    public int hashCode() { // TODO: fix this terrible hashcode
         return hashCode;
     }
 
@@ -92,8 +92,25 @@ public class Node extends Point implements Serializable {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        
-        return this.hashCode() == obj.hashCode();
+
+        if (this.hashCode() != obj.hashCode()) {
+            return false;
+        }
+
+        final Node other = (Node) obj;
+        if (stone == null) {
+            if (other.getStone() != null) {
+                return false;
+            }
+            return super.equals(obj);
+        }
+        return super.equals(obj) && stone.equals(other.getStone());
+    }
+
+    @Override
+    public String toString() {
+        String colour = stone == null ? "none" : stone.getColour().toString();
+        return "[x=" + x + ", y=" + y + ", colour=" + colour + "]";
     }
 
 }

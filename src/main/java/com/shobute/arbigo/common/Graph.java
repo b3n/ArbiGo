@@ -31,6 +31,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -38,29 +39,64 @@ import java.util.Set;
  * @author Ben Lloyd
  */
 public class Graph implements Serializable {
-    
+
     private final Set<Node> nodes;
     private final int diameter;
     private Color colour;
-    
+
     public Graph() {
         nodes = new HashSet<>();
         diameter = 10;
         colour = Color.BLACK;
     }
-    
+
+    public Graph(int n, int size, int spacing) {
+        this();
+
+        Node[][] myNodes = new Node[n][n];
+
+        for (int x = 0; x < n; x++) {
+            for (int y = 0; y < n; y++) {
+                myNodes[x][y] = new Node(new Point(spacing + x * size, spacing + y * size));
+            }
+        }
+
+        for (int x = 0; x < myNodes.length; x++) {
+            for (int y = 0; y < myNodes[x].length; y++) {
+                if (y + 1 < myNodes[x].length) {
+                    myNodes[x][y].addAdjacentNode(myNodes[x][y + 1]);
+                }
+                if (y > 0) {
+                    myNodes[x][y].addAdjacentNode(myNodes[x][y - 1]);
+                }
+                if (x + 1 < myNodes.length) {
+                    myNodes[x][y].addAdjacentNode(myNodes[x + 1][y]);
+                }
+                if (x > 0) {
+                    myNodes[x][y].addAdjacentNode(myNodes[x - 1][y]);
+                }
+                nodes.add(myNodes[x][y]);
+            }
+        }
+    }
+
     /**
      *
      * @param point
      * @return
      */
     public Node nodeAt(Point point) {
+        if (point == null) {
+            return null;
+        }
         for (Node node : nodes) {
-            if (node.distance(point) < diameter) return node;
+            if (node.distance(point) < diameter) {
+                return node;
+            }
         }
         return null;
     }
-    
+
     public Node nodeAt(int x, int y) {
         return nodeAt(new Point(x, y));
     }
@@ -68,13 +104,13 @@ public class Graph implements Serializable {
     public void setColour(Color colour) {
         this.colour = colour;
     }
-    
+
     public void removeColourings() {
         for (Node node : getNodes()) {
             node.setStone(null);
         }
     }
-    
+
     /**
      *
      * @param point
@@ -86,18 +122,18 @@ public class Graph implements Serializable {
         }
         return false;
     }
-    
+
     public Boolean addNode(Node node) {
         return nodes.add(node);
     }
-    
+
     public Boolean removeNode(Node nodeToRemove) {
         for (Node node : nodes) {   // TODO: Is there a better data structure to make this faster?
             node.removeAdjacentNode(nodeToRemove);
         }
         return nodes.remove(nodeToRemove);
     }
-    
+
     /**
      *
      * @return
@@ -105,35 +141,43 @@ public class Graph implements Serializable {
     public Set<Node> getNodes() {
         return nodes;
     }
-    
+
     public HashSet<Node> group(Node node) {
-        if (node == null) throw new IllegalArgumentException();
+        if (node == null) {
+            throw new IllegalArgumentException();
+        }
         return group(node, new HashSet<Node>());
     }
-    
+
     private HashSet<Node> group(Node node, HashSet<Node> group) {
-        if (group.contains(node)) return null;
+        if (group.contains(node)) {
+            return null;
+        }
         group.add(node);
         for (Node n : node.getAdjacentNodes()) {
-            if (n.getStone() == node.getStone()) group(n, group);
+            if (n.getStone() == node.getStone()) {
+                group(n, group);
+            }
         }
         return group;
     }
-    
+
     // TODO: This can probably be optomized.
     public boolean liberties(HashSet<Node> group) {
         for (Node node : group) {
             for (Node adjNode : node.getAdjacentNodes()) {
-                if (adjNode.getStone() == null) return true;
+                if (adjNode.getStone() == null) {
+                    return true;
+                }
             }
         }
         return false;
     }
-    
+
     public int getDiameter() {
         return diameter;
     }
-    
+
     public Point closestOnGrid(Point point) {
         int x = point.x;
         int y = point.y;
@@ -141,33 +185,36 @@ public class Graph implements Serializable {
         int ymod = y % (getDiameter() * 2);
         x -= xmod;
         y -= ymod;
-        if (xmod > getDiameter()) x += getDiameter() * 2;
-        if (ymod > getDiameter()) y += getDiameter() * 2;
+        if (xmod > getDiameter()) {
+            x += getDiameter() * 2;
+        }
+        if (ymod > getDiameter()) {
+            y += getDiameter() * 2;
+        }
         return new Point(x, y);
     }
-    
+
     public void paintNodes(Graphics2D g2d) {
         g2d.setColor(colour);
         int z = getDiameter();
         for (Node node : getNodes()) {
             //if (selectedNodes.contains(node)) g2d.setColor(Color.BLUE);
-            g2d.fill(new Ellipse2D.Float(node.x - z/2, node.y - z/2, z, z));
+            g2d.fill(new Ellipse2D.Float(node.x - z / 2, node.y - z / 2, z, z));
             g2d.setColor(colour);
         }
     }
-    
+
     public void paintEdges(Graphics2D g2d) {
         g2d.setColor(colour);
         g2d.setStroke(new BasicStroke(2));
         for (Node node : getNodes()) {
             for (Node adjacentNode : node.getAdjacentNodes()) {
-                g2d.draw(new Line2D.Float(node.x, node.y, adjacentNode.x, adjacentNode.y)); 
+                g2d.draw(new Line2D.Float(node.x, node.y, adjacentNode.x, adjacentNode.y));
             }
         }
         g2d.setStroke(new BasicStroke());
     }
-    
-    
+
     public void paintStones(Graphics2D g2d) {
         Stone stone;
         for (Node node : getNodes()) {
@@ -177,5 +224,26 @@ public class Graph implements Serializable {
             }
         }
     }
-    
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 13 * hash + Objects.hashCode(this.nodes);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        if (hashCode() != obj.hashCode()) {
+            return false;
+        }
+
+        final Graph other = (Graph) obj;
+        return nodes.equals(other.getNodes());
+    }
+
 }

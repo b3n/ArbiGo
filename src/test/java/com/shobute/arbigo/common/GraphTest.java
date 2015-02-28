@@ -57,7 +57,7 @@ public class GraphTest {
         //
         // Where a '.' is an empty node, a '#' is a black stone, and a 'O' is a
         // white stone. Giving nodes x/y values of 0, 100, 200. 
-        graph = Helper.createGrid(3);
+        graph = new Graph(3, 100, 0);
         graph.nodeAt(0, 0).setStone(black);
         graph.nodeAt(100, 0).setStone(white);
         graph.nodeAt(100, 100).setStone(white);

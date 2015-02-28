@@ -27,15 +27,17 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
  * @author Ben Lloyd
  */
-public class Stone {
+public class Stone implements Serializable {
     
     private Color colour;
-    public static final Color[] colours = new Color[]{
+    public static final Color[] colours = new Color[] { // TODO: enum
         Color.BLACK, Color.WHITE, Color.RED, Color.BLUE, Color.GREEN,
         Color.YELLOW, Color.PINK, Color.CYAN, Color.ORANGE, Color.GRAY
     };
@@ -62,5 +64,28 @@ public class Stone {
         g2d.setPaint(new Color(0, 0, 0, alpha));
         g2d.draw(circle);
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 67 * hash + Objects.hashCode(this.colour);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Stone other = (Stone) obj;
+        if (!Objects.equals(this.colour, other.colour)) {
+            return false;
+        }
+        return true;
+    }
+    
     
 }
