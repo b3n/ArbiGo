@@ -24,27 +24,31 @@
 package com.shobute.arbigo.play;
 
 import com.shobute.arbigo.common.Graph;
+import javax.swing.JInternalFrame;
 
 /**
  *
  * @author Ben Lloyd
  */
-public class FramePlay extends javax.swing.JInternalFrame {
+public class FramePlay extends JInternalFrame {
     
     private Graph graph;
     private int numPlayers;
 
     /**
      * Creates new form FamePlay
+     * @param graph
+     * @param numPlayers
      */
-    @Deprecated
-    public FramePlay() {
-        initComponents();
-    }
+//    @Deprecated
+//    public FramePlay() {
+//        initComponents();
+//    }
     
-    public FramePlay(Graph graph, int numPlayers) {
-        this.graph = graph;
+    public FramePlay(Graph graph, int numPlayers) {      
+        this.graph = graph == null ? new Graph(9) : graph;
         this.numPlayers = numPlayers;
+        
         initComponents();
     }
     

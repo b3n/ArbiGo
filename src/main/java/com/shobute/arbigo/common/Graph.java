@@ -25,6 +25,7 @@ package com.shobute.arbigo.common;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Ellipse2D;
@@ -50,15 +51,20 @@ public class Graph implements Serializable {
         colour = Color.BLACK;
     }
 
-    public Graph(int n, int size, int spacing) {
+    /**
+     * Constructs a graph made of an nxn grid, where each node is 100 pixels
+     * apart, starting at (0, 0).
+     * 
+     * @param n The number of rows and columns the grid should contain.
+     */
+    public Graph(int n) {
         this();
 
         Node[][] myNodes = new Node[n][n];
 
         for (int x = 0; x < n; x++) {
             for (int y = 0; y < n; y++) {
-                myNodes[x][y] = new Node(
-                        new Point(spacing + x * size, spacing + y * size));
+                myNodes[x][y] = new Node(new Point(x * 100, y * 100));
             }
         }
 
@@ -76,9 +82,55 @@ public class Graph implements Serializable {
                 if (x > 0) {
                     myNodes[x][y].addAdjacentNode(myNodes[x - 1][y]);
                 }
-                nodes.add(myNodes[x][y]);
+                addNode(myNodes[x][y]);
             }
         }
+
+    }
+
+    public Dimension getSize() {
+        if (nodes.size() < 2) {
+            return new Dimension();
+        }
+        int xmin = Integer.MAX_VALUE;
+        int xmax = Integer.MIN_VALUE;
+        int ymin = Integer.MAX_VALUE;
+        int ymax = Integer.MIN_VALUE;
+        for (Node node : nodes) {
+            if (node.x < xmin) {
+                xmin = node.x;
+            } else if (node.x > xmax) {
+                xmax = node.x;
+            }
+            
+            if (node.y < ymin) {
+                ymin = node.y;
+            } else if (node.y > ymax) {
+                ymax = node.y;
+            }
+        }
+        return new Dimension(xmax - xmin, ymax - ymin);
+    }
+
+//    public void setSize(Dimension size) {
+//        Dimension oldSize = getSize();
+//        System.out.println("old" + oldSize);
+//        System.out.println("new" + size);
+//        float widthScale = size.width / (float) oldSize.width;
+//        float heightScale = size.height / (float) oldSize.height;
+//        float scale = Math.min(widthScale, heightScale);
+//        for (Node node : nodes) {
+//            node.scale(scale);
+//        }
+//    }
+    
+    /**
+     * Returns the shortest distance between any two points.
+     * @return
+     */
+        
+    public int getShortestDistance() {
+        return 10;  // TODO https://en.wikipedia.org/wiki/Closest_pair_of_points_problem
     }
 
     /**
@@ -90,6 +142,7 @@ public class Graph implements Serializable {
         if (point == null) {
             return null;
         }
+
         for (Node node : nodes) {
             if (node.distance(point) < diameter) {
                 return node;
@@ -106,12 +159,6 @@ public class Graph implements Serializable {
         this.colour = colour;
     }
 
-    public void removeColourings() {
-        for (Node node : getNodes()) {
-            node.setStone(null);
-        }
-    }
-
     /**
      *
      * @param point
@@ -124,7 +171,7 @@ public class Graph implements Serializable {
         return false;
     }
 
-    public Boolean addNode(Node node) {
+    public final Boolean addNode(Node node) {
         return nodes.add(node);
     }
 
@@ -142,39 +189,6 @@ public class Graph implements Serializable {
      */
     public Set<Node> getNodes() {
         return nodes;
-    }
-
-    public HashSet<Node> group(Node node) {
-        if (node == null) {
-            throw new IllegalArgumentException();
-        }
-        return group(node, new HashSet<Node>());
-    }
-
-    private HashSet<Node> group(Node node, HashSet<Node> group) {
-        if (group.contains(node)) {
-            return null;
-        }
-        group.add(node);
-        Stone stone = node.getStone();
-        for (Node n : node.getAdjacentNodes()) {
-            if (stone != null && stone.equals(n.getStone())) {
-                group(n, group);
-            }
-        }
-        return group;
-    }
-
-    // TODO: This can probably be optomized.
-    public boolean liberties(HashSet<Node> group) {
-        for (Node node : group) {
-            for (Node adjNode : node.getAdjacentNodes()) {
-                if (adjNode.getStone() == null) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     public int getDiameter() {
@@ -216,16 +230,6 @@ public class Graph implements Serializable {
             }
         }
         g2d.setStroke(new BasicStroke());
-    }
-
-    public void paintStones(Graphics2D g2d) {
-        Stone stone;
-        for (Node node : getNodes()) {
-            stone = node.getStone();
-            if (stone != null) {
-                stone.paint(g2d, node.x, node.y);
-            }
-        }
     }
 
     @Override

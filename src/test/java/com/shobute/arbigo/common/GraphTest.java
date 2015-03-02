@@ -49,22 +49,8 @@ public class GraphTest {
     
     @Before
     public void setUp() {        
-        // Constructs a 3x3 grid with a game state that looks like:
-        //
-        //     # O .
-        //     . O #
-        //     . # #
-        //
-        // Where a '.' is an empty node, a '#' is a black stone, and a 'O' is a
-        // white stone. Giving nodes x/y values of 0, 100, 200. 
-        graph = new Graph(3, 100, 0);
-        graph.nodeAt(0, 0).setStone(black);
-        graph.nodeAt(100, 0).setStone(white);
-        graph.nodeAt(100, 100).setStone(white);
-        graph.nodeAt(100, 200).setStone(black);
-        graph.nodeAt(200, 100).setStone(black);
-        graph.nodeAt(200, 200).setStone(black);
-        
+        // Constructs a 3x3 grid
+        graph = new Graph(3);
         diameter = graph.getDiameter();
     }
     
@@ -87,13 +73,6 @@ public class GraphTest {
         assertNotNull(node);
     }
     
-    @Test
-    public void testremoveColourings() {
-        graph.removeColourings();
-        for (Node node : graph.getNodes()) {
-            assertNull(node.getStone());
-        }
-    }
     
     @Test
     public void testAddNode() {
@@ -101,42 +80,6 @@ public class GraphTest {
         assertTrue(graph.addNode(new Point(999, 999)));
         assertFalse(graph.addNode(new Point(999, 999)));
         assertEquals(numNodes + 1, graph.getNodes().size());
-    }
-    
-    @Test
-    public void testGroup() {
-        HashSet<Node> group1, group2;
-        
-        // Test sizes.
-        group1 = graph.group(graph.nodeAt(0, 0));
-        assertEquals(1, group1.size());
-        group1 = graph.group(graph.nodeAt(100, 100));
-        assertEquals(2, group1.size());
-        group1 = graph.group(graph.nodeAt(200, 200));
-        assertEquals(3, group1.size());
-        
-        // Test null node.
-        Throwable caught = null;
-        try {
-            graph.group(null);
-        } catch (IllegalArgumentException e) {
-            caught = e;
-        }
-        assertNotNull(caught);
-        
-        // Test getting the same group from different nodes.
-        group1 = graph.group(graph.nodeAt(200, 200));
-        group2 = graph.group(graph.nodeAt(100, 200));
-        assertEquals(group1, group2);
-    }
-    
-    @Test
-    public void testLiberties() {
-        HashSet<Node> group = graph.group(graph.nodeAt(0, 0));
-        assertTrue(graph.liberties(group));
-        
-        graph.nodeAt(0, 100).setStone(white);
-        assertFalse(graph.liberties(group));
     }
     
     @Test

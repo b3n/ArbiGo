@@ -27,18 +27,22 @@ import com.shobute.arbigo.common.Stone;
 import com.shobute.arbigo.common.Graph;
 import com.shobute.arbigo.common.Node;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import org.apache.commons.lang.SerializationUtils;
 
 /**
  *
@@ -47,18 +51,19 @@ import org.apache.commons.lang.SerializationUtils;
 public class Board extends JPanel implements ActionListener {
 
     private Graph graph;
-    private Graphics2D g2d;
     private final Timer timer;
     private Player[] players;
-    private int turn = 0;
+    private int turn;
     private Node hoverNode;
-    private final ArrayList<Graph> history;
+    private final ArrayList<HashMap<Node, Stone>> history;
+    private HashMap<Node, Stone> state;
+    private Dimension size;
 
     public Board(Graph g, int numPlayers) {
         this.graph = g;
 
         if (graph == null) {
-            graph = new Graph(9, 30, 30);
+            graph = new Graph(9);
         }
 
         // Initate players
@@ -70,50 +75,66 @@ public class Board extends JPanel implements ActionListener {
             players[i] = new Player();
         }
 
-        graph.removeColourings();
+        //graph.removeColourings();
         graph.setColour(new Color(150, 150, 150));
 
-        // Start with initial graph in history (important that history.size() > 0).
+        // Start with blank state in history (important that history.size() > 0).
+        state = new HashMap<>();
         history = new ArrayList<>(100); // 100 moves will be common
-        history.add((Graph) SerializationUtils.clone(graph));
+        history.add(state);
 
         MouseAdapter listener = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
-                Node node = graph.nodeAt(me.getPoint());
+                Node node = graph.nodeAt(scalePoint(me.getPoint()));
                 if (playMove(node)) {
-                    history.add(graph);
+                    history.add(state);
                     turn = (turn + 1) % players.length;
                 }
             }
 
             @Override
             public void mouseMoved(MouseEvent me) {
-                hoverNode = graph.nodeAt(me.getPoint());
+                hoverNode = graph.nodeAt(scalePoint(me.getPoint()));
             }
         };
 
         addMouseListener(listener);
         addMouseMotionListener(listener);
+        
+        size = getSize();
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                size = getSize();
+            }
+        });
 
         timer = new Timer(20, this);
         timer.start();
 
     }
+    
+    public Point scalePoint(Point point) {
+        Dimension graphSize = graph.getSize();
+        int r = graph.getShortestDistance();
+        double newX = point.x * graphSize.getWidth() / (size.getWidth() - 2 * r) - 2 * r;
+        double newY = point.y * graphSize.getHeight() / (size.getHeight() - 2 * r) - 2 * r;
+        return new Point((int)newX, (int)newY);
+    }
 
     private boolean playMove(Node node) {
-        graph = (Graph) SerializationUtils.clone(history.get(history.size() - 1));
-        node = graph.nodeAt(node);
+        state = (HashMap<Node, Stone>) history.get(history.size() - 1).clone();
 
-        if (node == null || node.getStone() != null) {
+        if (node == null || state.containsKey(node)) {
             return false;
         }
 
-        node.setStone(players[turn].getStone());
+        state.put(node, players[turn].getStone());
         removeCaptured(node);
 
-        for (Graph prevState : history) {
-            if (graph.equals(prevState)) {
+        for (HashMap<Node, Stone> prevState : history) {
+            if (state.equals(prevState)) {
                 return false;
             }
         }
@@ -121,41 +142,84 @@ public class Board extends JPanel implements ActionListener {
         return true;
     }
 
+    private HashSet<Node> group(Node node, HashSet<Node> group) {
+        if (group.contains(node)) {
+            return null;
+        }
+        group.add(node);
+        Stone stone = state.get(node);
+        for (Node n : node.getAdjacentNodes()) {
+            if (stone != null && stone.equals(state.get(n))) {
+                group(n, group);
+            }
+        }
+        return group;
+    }
+    
+    private boolean surrounded(HashSet<Node> group) {
+        for (Node node : group) {
+            for (Node adjNode : node.getAdjacentNodes()) {
+                if (!state.containsKey(adjNode)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     private void removeCaptured(Node playedNode) {
         for (Node node : playedNode.getAdjacentNodes()) {
-            if (playedNode.getStone().equals(node.getStone())) continue;
-            HashSet<Node> group = graph.group(node);
-            if (!graph.liberties(group)) {
+            if (state.get(playedNode).equals(state.get(node))) continue;
+            HashSet<Node> group = group(node, new HashSet<Node>());
+            if (surrounded(group)) {
                 for (Node n : group) {
-                    n.setStone(null);
+                    state.remove(n);
                 }
             }
         }
         
         // Suicide
-        HashSet<Node> group = graph.group(playedNode);
-        if (!graph.liberties(group)) {
+        HashSet<Node> group = group(playedNode, new HashSet<Node>());
+        if (surrounded(group)) {
             for (Node n : group) {
-                n.setStone(null);
+                state.remove(n);
             }
         }
     }
 
     private void paintHover(Graphics2D g2d) {   // TODO: No need to recompute unless hoverNode is different from last time.
         if (playMove(hoverNode)) {
-            players[turn].getStone().paint(g2d, hoverNode.x, hoverNode.y, 99);
+            players[turn].getStone().paint(g2d, hoverNode.x, hoverNode.y,
+                    graph.getShortestDistance(), 99);
+        }
+    }
+    
+    public void paintStones(Graphics2D g2d) {
+        Stone stone;
+        for (Node node : history.get(history.size() - 1).keySet()) {
+            stone = history.get(history.size() - 1).get(node);
+            if (stone != null) {
+                stone.paint(g2d, node.x, node.y, graph.getShortestDistance());
+            }
         }
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g); // Clears the graphic.
-        g2d = (Graphics2D) g;
+        Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
+        
+        Dimension graphSize = graph.getSize();
+        int r = graph.getShortestDistance();
+        g2d.translate(r, r);
+        g2d.scale((size.getWidth() - 2 * r) / graphSize.getWidth(),
+                (size.getHeight() - 2 * r) / graphSize.getHeight());
+        
         graph.paintNodes(g2d);
         graph.paintEdges(g2d);
-        history.get(history.size() - 1).paintStones(g2d);
+        paintStones(g2d);
         paintHover(g2d);
     }
 

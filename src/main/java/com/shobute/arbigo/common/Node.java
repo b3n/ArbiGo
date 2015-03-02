@@ -37,7 +37,6 @@ public class Node extends Point implements Serializable {
     private final Set<Node> adjacentNodes = new HashSet<>();
     private static int hash = 0;
     private final int hashCode;
-    private Stone stone;
 
     /**
      *
@@ -47,13 +46,10 @@ public class Node extends Point implements Serializable {
         super(point);
         hashCode = hash++;
     }
-
-    public Stone getStone() {
-        return stone;
-    }
-
-    public void setStone(Stone stone) {
-        this.stone = stone;
+    
+    public void scale(float factor) {
+        x = (int) (factor * x);
+        y = (int) (factor * y);
     }
 
     /**
@@ -97,20 +93,7 @@ public class Node extends Point implements Serializable {
             return false;
         }
 
-        final Node other = (Node) obj;
-        if (stone == null) {
-            if (other.getStone() != null) {
-                return false;
-            }
-            return super.equals(obj);
-        }
-        return super.equals(obj) && stone.equals(other.getStone());
-    }
-
-    @Override
-    public String toString() {
-        String colour = stone == null ? "none" : stone.getColour().toString();
-        return "[x=" + x + ", y=" + y + ", colour=" + colour + "]";
+        return super.equals(obj);
     }
 
 }
