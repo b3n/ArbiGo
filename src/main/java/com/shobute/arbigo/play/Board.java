@@ -106,13 +106,13 @@ public class Board extends JPanel implements ActionListener {
         
         scaleFactor = 1;
         addComponentListener(new ComponentAdapter() {
-            private int d = 2 * graph.getShortestRadius();
+            private int r = graph.getShortestRadius();
             private Dimension graphSize = graph.getSize();
             
             @Override
             public void componentResized(ComponentEvent e) {
-                scaleFactor = Math.min((getSize().getWidth() - d) / graphSize.getWidth(),
-                        (getSize().getHeight() - d) / graphSize.getHeight());
+                scaleFactor = Math.min(getSize().getWidth() / (graphSize.getWidth() + 2 * r),
+                        getSize().getHeight() / (graphSize.getHeight() + 2 * r));
             }
         });
 
@@ -123,9 +123,10 @@ public class Board extends JPanel implements ActionListener {
     
     private Point scalePoint(Point point) {
         int r = graph.getShortestRadius();
-        double newX = (point.x -r ) / scaleFactor;
-        double newY = (point.y - r) / scaleFactor;
-        return new Point((int)newX, (int)newY);
+        Point origin = graph.getOrigin();
+        double newX = point.x / scaleFactor + origin.x - r;
+        double newY = point.y / scaleFactor + origin.y - r;
+        return new Point((int) newX, (int) newY);
     }
 
     private boolean playMove(Node node) {
@@ -218,8 +219,10 @@ public class Board extends JPanel implements ActionListener {
                 RenderingHints.VALUE_ANTIALIAS_ON);
         
         int r = graph.getShortestRadius();
-        g2d.translate(r, r);
+        Point origin = graph.getOrigin();
         g2d.scale(scaleFactor, scaleFactor);
+        g2d.translate(-1 * origin.x, -1 * origin.y);
+        g2d.translate(r, r);
         
         graph.paintNodes(g2d);
         graph.paintEdges(g2d);

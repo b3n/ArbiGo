@@ -88,15 +88,40 @@ public class Graph implements Serializable {
         }
 
     }
+    
+//    public Node getTopLeftNode() {
+//        Point origin = new Point();
+//        double distance = Double.MAX_VALUE;
+//        Node topLeftNode = null;
+//        for (Node node : nodes) {
+//            if (origin.distance(node) < distance) {
+//                distance = origin.distance(node);
+//                topLeftNode = node;
+//            }
+//        }
+//        return topLeftNode;
+//    }
+    
+    public Point getOrigin() {
+        int xmin = Integer.MAX_VALUE;
+        int ymin = Integer.MAX_VALUE;
+        for (Node node : nodes) {
+            if (node.x < xmin) xmin = node.x;
+            if (node.y < ymin) ymin = node.y;
+        }
+        return new Point(xmin, ymin);
+    }
 
     public Dimension getSize() {
         if (nodes.size() < 2) {
             return new Dimension();
         }
+        
         int xmin = Integer.MAX_VALUE;
         int xmax = Integer.MIN_VALUE;
         int ymin = Integer.MAX_VALUE;
         int ymax = Integer.MIN_VALUE;
+        
         for (Node node : nodes) {
             if (node.x < xmin) {
                 xmin = node.x;
@@ -110,6 +135,7 @@ public class Graph implements Serializable {
                 ymax = node.y;
             }
         }
+        
         return new Dimension(xmax - xmin, ymax - ymin);
     }
     
@@ -183,6 +209,7 @@ public class Graph implements Serializable {
     /**
      *
      * @param point
+     * @param distance
      * @return
      */
     public Node nodeAt(Point point, int distance) {
@@ -261,6 +288,7 @@ public class Graph implements Serializable {
             //if (selectedNodes.contains(node)) g2d.setColor(Color.BLUE);
             g2d.fill(new Ellipse2D.Float(node.x - z / 2, node.y - z / 2, z, z));
             g2d.setColor(colour);
+            //g2d.drawString("(" + node.x + ", " + node.y + ")", node.x, node.y);
         }
     }
 
