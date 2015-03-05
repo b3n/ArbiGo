@@ -313,7 +313,7 @@ public class FrameDraw extends JInternalFrame {
             try {
                 ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
                 Graph goban = (Graph) in.readObject();
-                jPanelCanvas.setBoard(goban);
+                jPanelCanvas.setGraph(goban);
             } catch (IOException ex) {
                 Logger.getLogger(FrameDraw.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException ex) {
@@ -328,7 +328,7 @@ public class FrameDraw extends JInternalFrame {
         } else {
             try {
                 ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
-                out.writeObject(jPanelCanvas.getBoard());
+                out.writeObject(jPanelCanvas.getGraph());
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(FrameDraw.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
@@ -393,7 +393,7 @@ public class FrameDraw extends JInternalFrame {
     }//GEN-LAST:event_jButtonCancelActionPerformed
 
     private void jButtonDoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDoneActionPerformed
-        setup.setBoard(jPanelCanvas.getBoard());
+        setup.setBoard(jPanelCanvas.getGraph());
         dispose();
     }//GEN-LAST:event_jButtonDoneActionPerformed
 

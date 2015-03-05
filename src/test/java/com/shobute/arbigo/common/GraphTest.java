@@ -58,18 +58,18 @@ public class GraphTest {
     public void testNodeAt() {
         Node node;
         
-        node = graph.nodeAt(new Point(99, 99));
+        node = graph.nodeAt(new Point(99, 99), 10);
         assertNotNull(node);
         assertEquals(100, node.x);
         assertEquals(100, node.y);
         
-        node = graph.nodeAt(new Point(50, 50));
+        node = graph.nodeAt(new Point(50, 50), 10);
         assertNull(node);
         
-        node = graph.nodeAt(new Point(diameter, 0));
+        node = graph.nodeAt(new Point(diameter, 0), 10);
         assertNull(node);
         
-        node = graph.nodeAt(new Point(diameter - 1, 0));
+        node = graph.nodeAt(new Point(diameter - 1, 0), 10);
         assertNotNull(node);
     }
     

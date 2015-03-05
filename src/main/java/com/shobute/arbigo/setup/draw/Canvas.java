@@ -43,7 +43,7 @@ import com.shobute.arbigo.setup.draw.state.*;
  */
 public class Canvas extends JPanel implements ActionListener {
     private Graphics2D g2d;
-    private Graph board = new Graph();
+    private Graph graph = new Graph();
     private final Set<Node> selectedNodes = new HashSet<>();
     private final Set<Point> copied = new HashSet<>();
     private boolean grid = true;
@@ -94,10 +94,10 @@ public class Canvas extends JPanel implements ActionListener {
 
     private void paintGrid() {
         g2d.setColor(new Color(0f, 0f, 0f, 0.2f));
-        for (int x = 0; x < this.getWidth(); x += board.getDiameter()*2) {
+        for (int x = 0; x < this.getWidth(); x += graph.getDiameter()*2) {
             g2d.draw(new Line2D.Float(x, 0, x, this.getHeight()));
         }
-        for (int y = 0; y < this.getHeight(); y += board.getDiameter()*2) {
+        for (int y = 0; y < this.getHeight(); y += graph.getDiameter()*2) {
             g2d.draw(new Line2D.Float(0, y, this.getWidth(), y));
         }
         g2d.setColor(defaultColor);
@@ -110,14 +110,14 @@ public class Canvas extends JPanel implements ActionListener {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         if (grid) paintGrid();
-        board.paintNodes(g2d);
-        board.paintEdges(g2d);
+        graph.paintNodes(g2d);
+        graph.paintEdges(g2d);
         state.draw(g2d);
     }
     
     public void delete() {
         for (Node selectedNode : selectedNodes) {
-            board.removeNode(selectedNode);
+            graph.removeNode(selectedNode);
         }
         checkpoint();
     }
@@ -133,25 +133,25 @@ public class Canvas extends JPanel implements ActionListener {
         Node node;
         selectedNodes.clear();
         for (Point copiedPoint : copied) {
-            copiedPoint.translate(board.getDiameter(), board.getDiameter());
+            copiedPoint.translate(graph.getDiameter(), graph.getDiameter());
             node = new Node(copiedPoint);
             selectedNodes.add(node);
-            board.addNode(node);
+            graph.addNode(node);
         }
         checkpoint();
     }
     
     public void checkpoint() {
-        history.add(++historyIndex, (Graph) SerializationUtils.clone(board));
+        history.add(++historyIndex, (Graph) SerializationUtils.clone(graph));
     }
     
     public void undo() {
-        if (historyIndex > 0) board = history.get(--historyIndex);
+        if (historyIndex > 0) graph = history.get(--historyIndex);
         selectedNodes.clear();
     }
     
     public void redo() {
-        if (historyIndex < history.size() - 1) board = history.get(++historyIndex);
+        if (historyIndex < history.size() - 1) graph = history.get(++historyIndex);
         selectedNodes.clear();
     }
     
@@ -163,12 +163,12 @@ public class Canvas extends JPanel implements ActionListener {
         return selectedNodes;
     }
     
-    public Graph getBoard() {
-        return this.board;
+    public Graph getGraph() {
+        return this.graph;
     }
     
-    public void setBoard(Graph board) {
-        this.board = board;
+    public void setGraph(Graph board) {
+        this.graph = board;
         checkpoint();
     }
     

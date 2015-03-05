@@ -73,7 +73,7 @@ public class SelectState extends MouseAdapter implements State {
             for (Node node : canvas.getSelectedNodes()) {
                 node.translate(dx, dy);
                 if (canvas.getGrid()) {
-                    node.setLocation(canvas.getBoard().closestOnGrid(node));
+                    node.setLocation(canvas.getGraph().closestOnGrid(node));
                 }
             }
         }
@@ -82,10 +82,10 @@ public class SelectState extends MouseAdapter implements State {
     @Override
     public void mousePressed(MouseEvent me) {
         point = me.getPoint();
-        currentNode = canvas.getBoard().nodeAt(point);
-        if (!canvas.getSelectedNodes().contains(canvas.getBoard().nodeAt(point))) {
+        currentNode = canvas.getGraph().nodeAt(point, 10);
+        if (!canvas.getSelectedNodes().contains(canvas.getGraph().nodeAt(point, 10))) {
             canvas.getSelectedNodes().clear();
-            Node node = canvas.getBoard().nodeAt(point);
+            Node node = canvas.getGraph().nodeAt(point, 10);
             if (node != null) {
                 canvas.getSelectedNodes().add(node);
             }
@@ -96,7 +96,7 @@ public class SelectState extends MouseAdapter implements State {
     public void mouseReleased(MouseEvent me) {
         if (drag != null) {
             canvas.getSelectedNodes().clear();
-            for (Node node : canvas.getBoard().getNodes()) {
+            for (Node node : canvas.getGraph().getNodes()) {
                 int x = node.x;
                 int y = node.y;
                 if (x > min(point.x, drag.x) && y > min(point.y, drag.y) && 

@@ -185,21 +185,17 @@ public class Graph implements Serializable {
      * @param point
      * @return
      */
-    public Node nodeAt(Point point) {
+    public Node nodeAt(Point point, int distance) {
         if (point == null) {
             return null;
         }
 
         for (Node node : nodes) {
-            if (node.distance(point) < getShortestRadius()) {
+            if (node.distance(point) < distance) {
                 return node;
             }
         }
         return null;
-    }
-
-    public Node nodeAt(int x, int y) {
-        return nodeAt(new Point(x, y));
     }
 
     public void setColour(Color colour) {
@@ -212,7 +208,7 @@ public class Graph implements Serializable {
      * @return
      */
     public Boolean addNode(Point point) {
-        if (this.nodeAt(point) == null) {
+        if (this.nodeAt(point, diameter) == null) {
             return addNode(new Node(point));
         }
         return false;

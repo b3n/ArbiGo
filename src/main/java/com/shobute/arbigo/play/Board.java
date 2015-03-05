@@ -84,9 +84,11 @@ public class Board extends JPanel implements ActionListener {
         history.add(state);
 
         MouseAdapter listener = new MouseAdapter() {
+            int shortestRadius = graph.getShortestRadius();
+            
             @Override
             public void mouseClicked(MouseEvent me) {
-                Node node = graph.nodeAt(scalePoint(me.getPoint()));
+                Node node = graph.nodeAt(scalePoint(me.getPoint()), shortestRadius);
                 if (playMove(node)) {
                     history.add(state);
                     turn = (turn + 1) % players.length;
@@ -95,7 +97,7 @@ public class Board extends JPanel implements ActionListener {
 
             @Override
             public void mouseMoved(MouseEvent me) {
-                hoverNode = graph.nodeAt(scalePoint(me.getPoint()));
+                hoverNode = graph.nodeAt(scalePoint(me.getPoint()), shortestRadius);
             }
         };
 

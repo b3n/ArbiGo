@@ -66,20 +66,20 @@ public class EdgeState extends MouseAdapter implements State {
             previousNode = null;
             canvas.checkpoint();
         } else {
-            currentNode = canvas.getBoard().nodeAt(pressed);
+            currentNode = canvas.getGraph().nodeAt(pressed, 10);
         }
     }
 
     @Override
     public void mouseMoved(MouseEvent me) {
-        clicked = canvas.getGrid() ? canvas.getBoard().closestOnGrid(me.getPoint()) : me.getPoint();
+        clicked = canvas.getGrid() ? canvas.getGraph().closestOnGrid(me.getPoint()) : me.getPoint();
     }
     
     @Override
     public void mousePressed(MouseEvent me) {
         pressed = me.getPoint();
         previousNode = currentNode;
-        currentNode = canvas.getBoard().nodeAt(pressed);
+        currentNode = canvas.getGraph().nodeAt(pressed, 10);
     }
     
 }

@@ -46,7 +46,7 @@ public class NodeState extends MouseAdapter implements State {
 
     @Override
     public void draw(Graphics2D g2d) {
-        int z = canvas.getBoard().getDiameter();
+        int z = canvas.getGraph().getDiameter();
         g2d.setColor(new Color(0f, 0f, 0f, 0.2f));
         g2d.fill(new Ellipse2D.Float(pointer.x - z/2, pointer.y - z/2, z, z));
         g2d.setColor(Color.BLACK);
@@ -55,15 +55,15 @@ public class NodeState extends MouseAdapter implements State {
     @Override
     public void mouseClicked(MouseEvent me) {
         Point point = me.getPoint();
-        if (canvas.getGrid()) point = canvas.getBoard().closestOnGrid(point);
-        canvas.getBoard().addNode(point);
+        if (canvas.getGrid()) point = canvas.getGraph().closestOnGrid(point);
+        canvas.getGraph().addNode(point);
         canvas.checkpoint();
     }
 
     @Override
     public void mouseMoved(MouseEvent me) {
         pointer = me.getPoint();
-        if (canvas.getGrid()) pointer = canvas.getBoard().closestOnGrid(pointer);
+        if (canvas.getGrid()) pointer = canvas.getGraph().closestOnGrid(pointer);
     }
     
 }
