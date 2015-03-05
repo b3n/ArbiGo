@@ -57,7 +57,7 @@ public class Board extends JPanel implements ActionListener {
     private Node hoverNode;
     private final ArrayList<HashMap<Node, Stone>> history;
     private HashMap<Node, Stone> state;
-    private Dimension size;
+    private double scaleFactor;
 
     public Board(Graph g, int numPlayers) {
         this.graph = g;
@@ -102,11 +102,15 @@ public class Board extends JPanel implements ActionListener {
         addMouseListener(listener);
         addMouseMotionListener(listener);
         
-        size = getSize();
+        scaleFactor = 1;
         addComponentListener(new ComponentAdapter() {
+            private int d = 2 * graph.getShortestRadius();
+            private Dimension graphSize = graph.getSize();
+            
             @Override
             public void componentResized(ComponentEvent e) {
-                size = getSize();
+                scaleFactor = Math.min((getSize().getWidth() - d) / graphSize.getWidth(),
+                        (getSize().getHeight() - d) / graphSize.getHeight());
             }
         });
 
@@ -115,11 +119,10 @@ public class Board extends JPanel implements ActionListener {
 
     }
     
-    public Point scalePoint(Point point) {
-        Dimension graphSize = graph.getSize();
-        int r = graph.getShortestDistance();
-        double newX = point.x * graphSize.getWidth() / (size.getWidth() - 2 * r) - 2 * r;
-        double newY = point.y * graphSize.getHeight() / (size.getHeight() - 2 * r) - 2 * r;
+    private Point scalePoint(Point point) {
+        int r = graph.getShortestRadius();
+        double newX = (point.x -r ) / scaleFactor;
+        double newY = (point.y - r) / scaleFactor;
         return new Point((int)newX, (int)newY);
     }
 
@@ -189,8 +192,8 @@ public class Board extends JPanel implements ActionListener {
 
     private void paintHover(Graphics2D g2d) {   // TODO: No need to recompute unless hoverNode is different from last time.
         if (playMove(hoverNode)) {
-            players[turn].getStone().paint(g2d, hoverNode.x, hoverNode.y,
-                    graph.getShortestDistance(), 99);
+            int r = graph.getShortestRadius();
+            players[turn].getStone().paint(g2d, hoverNode.x, hoverNode.y, r, 99);
         }
     }
     
@@ -199,7 +202,8 @@ public class Board extends JPanel implements ActionListener {
         for (Node node : history.get(history.size() - 1).keySet()) {
             stone = history.get(history.size() - 1).get(node);
             if (stone != null) {
-                stone.paint(g2d, node.x, node.y, graph.getShortestDistance());
+                int r = graph.getShortestRadius();
+                stone.paint(g2d, node.x, node.y, r);
             }
         }
     }
@@ -211,11 +215,9 @@ public class Board extends JPanel implements ActionListener {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         
-        Dimension graphSize = graph.getSize();
-        int r = graph.getShortestDistance();
+        int r = graph.getShortestRadius();
         g2d.translate(r, r);
-        g2d.scale((size.getWidth() - 2 * r) / graphSize.getWidth(),
-                (size.getHeight() - 2 * r) / graphSize.getHeight());
+        g2d.scale(scaleFactor, scaleFactor);
         
         graph.paintNodes(g2d);
         graph.paintEdges(g2d);

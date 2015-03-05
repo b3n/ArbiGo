@@ -25,6 +25,7 @@ package com.shobute.arbigo.common;
 
 import java.awt.Point;
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -76,6 +77,24 @@ public class Node extends Point implements Serializable {
      */
     public boolean addAdjacentNode(Node node) {
         return adjacentNodes.add(node);
+    }
+    
+    public static Comparator<Node> xComparator() {
+        return new Comparator<Node>() {
+            @Override
+            public int compare(Node n1, Node n2) {
+                return Integer.compare(n1.x, n2.x);
+            }
+        };
+    }
+    
+    public static Comparator<Node> yComparator() {
+        return new Comparator<Node>() {
+            @Override
+            public int compare(Node n1, Node n2) {
+                return Integer.compare(n1.y, n2.y);
+            }
+        };
     }
 
     @Override

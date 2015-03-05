@@ -31,6 +31,7 @@ import java.awt.Point;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -111,26 +112,72 @@ public class Graph implements Serializable {
         }
         return new Dimension(xmax - xmin, ymax - ymin);
     }
-
-//    public void setSize(Dimension size) {
-//        Dimension oldSize = getSize();
-//        System.out.println("old" + oldSize);
-//        System.out.println("new" + size);
-//        float widthScale = size.width / (float) oldSize.width;
-//        float heightScale = size.height / (float) oldSize.height;
-//        float scale = Math.min(widthScale, heightScale);
-//        for (Node node : nodes) {
-//            node.scale(scale);
-//        }
-//    }
     
     /**
      * Returns the shortest distance between any two points.
      * @return
      */
         
-    public int getShortestDistance() {
-        return 10;  // TODO https://en.wikipedia.org/wiki/Closest_pair_of_points_problem
+    public int getShortestRadius() {      
+        Node[] nodesByX = new Node[nodes.size()];
+        Node[] nodesByY = new Node[nodes.size()];
+        int i = 0;
+        for (Node n : nodes) {
+            nodesByX[i] = n;
+            nodesByY[i] = n;
+            i++;
+        }
+        Arrays.sort(nodesByX, Node.xComparator());
+        Arrays.sort(nodesByY, Node.yComparator());
+        
+        return (int) (getShortestDistance(nodesByX, nodesByY) / 2);
+    }
+    
+    // https://en.wikipedia.org/wiki/Closest_pair_of_points_problem
+    private double getShortestDistance(Node[] nodesByX, Node[] nodesByY) {
+     
+        if (nodesByX.length <= 1) return Integer.MAX_VALUE;
+        if (nodesByX.length <= 2) return nodesByX[0].distance(nodesByX[1]);
+        
+        int mid = nodesByX.length/2;
+        
+        Node[] leftX = Arrays.copyOfRange(nodesByX, 0, mid);
+        Node[] rightX = Arrays.copyOfRange(nodesByX, mid + 1, nodesByX.length - 1);
+        
+        int midX = leftX[leftX.length - 1].x;
+        
+        Node[] leftY = new Node[nodesByY.length];
+        Node[] rightY = new Node[nodesByY.length];
+        int i = 0;
+        int j = 0;
+        for (Node node : nodesByY) {
+            if (node != null) {
+                if (node.x <= midX) leftY[i++] = node;
+                else rightY[j++] = node;
+            }
+        }
+        
+        double distLeft = getShortestDistance(leftX, leftY);
+        double distRight = getShortestDistance(rightX, rightY);
+        
+        double distMin = Math.min(distLeft, distRight);
+        
+        Node[] yStrip = new Node[nodesByY.length];
+        i = 0;
+        for (Node node : nodesByY) {
+            if (node != null && Math.abs(node.x - midX) < distMin) yStrip[i++] = node;
+        }
+        
+        for (i = 0; i < mid; i++) {
+            j = i + 1;
+            while (j <= yStrip.length && yStrip[j] != null && yStrip[j].y - yStrip[i].y < distMin) {
+                double dist = yStrip[j].distance(yStrip[i]);
+                if (dist < distMin) distMin = dist;
+                j++;
+            }
+        }
+        
+        return distMin;
     }
 
     /**
@@ -144,7 +191,7 @@ public class Graph implements Serializable {
         }
 
         for (Node node : nodes) {
-            if (node.distance(point) < diameter) {
+            if (node.distance(point) < getShortestRadius()) {
                 return node;
             }
         }
