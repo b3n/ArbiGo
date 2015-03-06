@@ -46,6 +46,9 @@ public class Graph implements Serializable {
     private final int diameter;
     private Color colour;
 
+    /**
+     * Constructs a new, empty graph.
+     */
     public Graph() {
         nodes = new HashSet<>();
         diameter = 10;
@@ -89,19 +92,11 @@ public class Graph implements Serializable {
 
     }
     
-//    public Node getTopLeftNode() {
-//        Point origin = new Point();
-//        double distance = Double.MAX_VALUE;
-//        Node topLeftNode = null;
-//        for (Node node : nodes) {
-//            if (origin.distance(node) < distance) {
-//                distance = origin.distance(node);
-//                topLeftNode = node;
-//            }
-//        }
-//        return topLeftNode;
-//    }
-    
+    /**
+     * Gets the origin which is defined to be the smallest X coordinate and
+     * smallest Y coordinate within the graph.
+     * @return A new Point at the origin.
+     */
     public Point getOrigin() {
         int xmin = Integer.MAX_VALUE;
         int ymin = Integer.MAX_VALUE;
@@ -112,6 +107,11 @@ public class Graph implements Serializable {
         return new Point(xmin, ymin);
     }
 
+    /**
+     * Gets the size of the graph, i.e., the distance between the leftmost and
+     * rightmost node, and the distance between the topmost and bottommost node.
+     * @return A new Dimension containing the width and height of this graph.
+     */
     public Dimension getSize() {
         if (nodes.size() < 2) {
             return new Dimension();
@@ -140,10 +140,9 @@ public class Graph implements Serializable {
     }
     
     /**
-     * Returns the shortest distance between any two points.
-     * @return
+     * Gets half the shortest distance between any two points.
+     * @return A floored integer of the stone radius. 
      */
-        
     public int getShortestRadius() {      
         Node[] nodesByX = new Node[nodes.size()];
         Node[] nodesByY = new Node[nodes.size()];
@@ -207,10 +206,10 @@ public class Graph implements Serializable {
     }
 
     /**
-     *
-     * @param point
-     * @param distance
-     * @return
+     * Finds the Node within distance of a particular point.
+     * @param point The point to look at.
+     * @param distance The distance to consider.
+     * @return The first found Node, or null if no Node was found.
      */
     public Node nodeAt(Point point, int distance) {
         if (point == null) {
@@ -225,14 +224,18 @@ public class Graph implements Serializable {
         return null;
     }
 
+    /**
+     * Set the colour the graph is drawn in.
+     * @param colour The colour to set.
+     */
     public void setColour(Color colour) {
         this.colour = colour;
     }
 
     /**
-     *
-     * @param point
-     * @return
+     * Add a node to the graph.
+     * @param point The point where the new node should be created.
+     * @return True if the node was added, false otherwise.
      */
     public Boolean addNode(Point point) {
         if (this.nodeAt(point, diameter) == null) {
@@ -241,10 +244,20 @@ public class Graph implements Serializable {
         return false;
     }
 
+    /**
+     * Add a node to the graph.
+     * @param node The node to be added.
+     * @return true if the node was added, false otherwise.
+     */
     public final Boolean addNode(Node node) {
         return nodes.add(node);
     }
 
+    /**
+     * Remove a node from the graph.
+     * @param nodeToRemove The node to be removed.
+     * @return True if the node was removed, false otherwise.
+     */
     public Boolean removeNode(Node nodeToRemove) {
         // TODO: Is there a better data structure to make this faster?
         for (Node node : nodes) {
@@ -254,17 +267,26 @@ public class Graph implements Serializable {
     }
 
     /**
-     *
-     * @return
+     * Get all the nodes in the graph.
+     * @return A set containing the nodes.
      */
     public Set<Node> getNodes() {
         return nodes;
     }
 
-    public int getDiameter() {
+    /**
+     * Get the graph's diameter.
+     * @return The graph's diameter.
+     */
+    public int getDiameter() {  // TODO: Rename?
         return diameter;
     }
 
+    /**
+     * Find the point closest to a particular point on a grid.
+     * @param point Initial point.
+     * @return A new point positioned on a grid.
+     */
     public Point closestOnGrid(Point point) {
         int x = point.x;
         int y = point.y;
@@ -281,6 +303,10 @@ public class Graph implements Serializable {
         return new Point(x, y);
     }
 
+    /**
+     * Paint the graph's nodes.
+     * @param g2d Graphics2D context.
+     */
     public void paintNodes(Graphics2D g2d) {
         g2d.setColor(colour);
         int z = getDiameter();
@@ -292,6 +318,10 @@ public class Graph implements Serializable {
         }
     }
 
+    /**
+     * Paint the graph's edges.
+     * @param g2d Graphics2D context.
+     */
     public void paintEdges(Graphics2D g2d) {
         g2d.setColor(colour);
         g2d.setStroke(new BasicStroke(2));
@@ -303,6 +333,10 @@ public class Graph implements Serializable {
         g2d.setStroke(new BasicStroke());
     }
 
+    /**
+     * Generate a hash code for this graph.
+     * @return An integer hash.
+     */
     @Override
     public int hashCode() {
         int hash = 7;
@@ -310,6 +344,11 @@ public class Graph implements Serializable {
         return hash;
     }
 
+    /**
+     * Compare two graphs.
+     * @param obj The graph to compare with.
+     * @return True if the graphs are equal, false otherwise.
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null || getClass() != obj.getClass()) {
