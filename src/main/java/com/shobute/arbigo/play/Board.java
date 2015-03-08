@@ -23,6 +23,7 @@
  */
 package com.shobute.arbigo.play;
 
+import com.shobute.arbigo.common.Colour;
 import com.shobute.arbigo.common.Stone;
 import com.shobute.arbigo.common.Graph;
 import com.shobute.arbigo.common.Node;
@@ -67,7 +68,7 @@ public class Board extends JPanel implements ActionListener {
         }
 
         // Initate players
-        if (numPlayers < 2 || numPlayers > Stone.colours.length) {
+        if (numPlayers < 2 || numPlayers > Colour.colours.length) {
             numPlayers = 2;
         }
         players = new Player[numPlayers];
@@ -121,6 +122,10 @@ public class Board extends JPanel implements ActionListener {
 
     }
     
+    public Player getPlayer() {
+        return players[turn];
+    }
+    
     private Point scalePoint(Point point) {
         int r = graph.getShortestRadius();
         Point origin = graph.getOrigin();
@@ -136,7 +141,7 @@ public class Board extends JPanel implements ActionListener {
             return false;
         }
 
-        state.put(node, players[turn].getStone());
+        state.put(node, getPlayer().getStone());
         removeCaptured(node);
 
         for (HashMap<Node, Stone> prevState : history) {
@@ -196,7 +201,7 @@ public class Board extends JPanel implements ActionListener {
     private void paintHover(Graphics2D g2d) {   // TODO: No need to recompute unless hoverNode is different from last time.
         if (playMove(hoverNode)) {
             int r = graph.getShortestRadius();
-            players[turn].getStone().paint(g2d, hoverNode.x, hoverNode.y, r, 99);
+            getPlayer().getStone().paint(g2d, hoverNode.x, hoverNode.y, r, 99);
         }
     }
     

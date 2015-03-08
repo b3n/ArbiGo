@@ -21,41 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.shobute.arbigo.play;
+package com.shobute.arbigo.common;
 
-import com.shobute.arbigo.common.Colour;
-import com.shobute.arbigo.common.Stone;
+import java.awt.Color;
+import java.lang.reflect.Field;
 
 /**
  *
  * @author Ben Lloyd
  */
-public class Player {
+public class Colour {
     
-    private Stone stone;
-    private String name;
-
-    public Player() {
-        String colour = Colour.getNextColour();
-        this.name = colour;
-        this.stone = new Stone(colour);
-        
+    public static final String[] colours = new String[] {
+        "Black", "White", "Red", "Blue", "Green", "Yellow", "Pink", "Cyan",
+        "Orange", "Gray"
+    };
+    
+    private static int id = 0;
+    
+    public static String getNextColour() {
+        return colours[id++];
     }
-
-    public Stone getStone() {
-        return stone;
-    }
-
-    public void setStone(Stone stone) {
-        this.stone = stone;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    
+    public static Color colourToColor(String colour) {
+        Color color;
+        try {
+            Field field = Color.class.getField(colour.toUpperCase());
+            color = (Color)field.get(null);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            color = null; // Not defined
+        }
+        return color;
     }
     
 }

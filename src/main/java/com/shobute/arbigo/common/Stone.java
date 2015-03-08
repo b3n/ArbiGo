@@ -37,13 +37,9 @@ import java.util.Objects;
 public class Stone implements Serializable {
     
     private Color colour;
-    public static final Color[] colours = new Color[] { // TODO: enum
-        Color.BLACK, Color.WHITE, Color.RED, Color.BLUE, Color.GREEN,
-        Color.YELLOW, Color.PINK, Color.CYAN, Color.ORANGE, Color.GRAY
-    };
     
-    public Stone(int colour) {
-        this.colour = colours[colour];
+    public Stone(String colour) {
+        this.colour = Colour.colourToColor(colour);
     }
     
     public Color getColour() {

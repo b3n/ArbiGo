@@ -48,11 +48,6 @@ public class Node extends Point implements Serializable {
         hashCode = hash++;
     }
     
-    public void scale(float factor) {
-        x = (int) (factor * x);
-        y = (int) (factor * y);
-    }
-
     /**
      *
      * @return

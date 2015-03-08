@@ -164,7 +164,7 @@ public class Graph implements Serializable {
         if (nodesByX.length <= 1) return Integer.MAX_VALUE;
         if (nodesByX.length <= 2) return nodesByX[0].distance(nodesByX[1]);
         
-        int mid = nodesByX.length/2;
+        int mid = nodesByX.length / 2;
         
         Node[] leftX = Arrays.copyOfRange(nodesByX, 0, mid);
         Node[] rightX = Arrays.copyOfRange(nodesByX, mid + 1, nodesByX.length - 1);

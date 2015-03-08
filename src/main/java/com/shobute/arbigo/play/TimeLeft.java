@@ -23,39 +23,46 @@
  */
 package com.shobute.arbigo.play;
 
-import com.shobute.arbigo.common.Colour;
-import com.shobute.arbigo.common.Stone;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JPanel;
+import javax.swing.Timer;
 
 /**
  *
  * @author Ben Lloyd
  */
-public class Player {
+public class TimeLeft extends JPanel implements ActionListener {
     
-    private Stone stone;
-    private String name;
-
-    public Player() {
-        String colour = Colour.getNextColour();
-        this.name = colour;
-        this.stone = new Stone(colour);
+    Board board;
+    Timer timer;
+    
+    public TimeLeft(Board board) {
+        this.board = board;
+        
+        timer = new Timer(100, this);
+        timer.start();
+    }
+    
+   @Override
+    public void paint(Graphics g) {
+        super.paint(g); // Clears the graphic.
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        
+        //g2d.setColor(new Color(0, 0, 0));
+        String turn = board.getPlayer().getName() + "'s turn";
+        g2d.drawString(turn, 5, 15);
         
     }
 
-    public Stone getStone() {
-        return stone;
-    }
-
-    public void setStone(Stone stone) {
-        this.stone = stone;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        repaint();
     }
     
 }

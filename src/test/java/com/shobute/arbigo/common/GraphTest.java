@@ -25,7 +25,6 @@ package com.shobute.arbigo.common;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.util.HashSet;
 import org.junit.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -43,8 +42,8 @@ public class GraphTest {
     
     @BeforeClass
     public static void setUpClass() {
-        black = new Stone(0);
-        white = new Stone(1);
+        black = new Stone("black");
+        white = new Stone("white");
     }
     
     @Before
