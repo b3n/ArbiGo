@@ -60,12 +60,14 @@ public class Board extends JPanel implements ActionListener {
     private HashMap<Node, Stone> state;
     private double scaleFactor;
 
-    public Board(Graph g, int numPlayers) {
-        this.graph = g;
+    public Board(final FramePlay framePlay) {
+        this.graph = framePlay.getGraph();
 
         if (graph == null) {
             graph = new Graph(9);
         }
+        
+        int numPlayers = framePlay.getNumPlayers();
 
         // Initate players
         if (numPlayers < 2 || numPlayers > Colour.colours.length) {
@@ -93,6 +95,7 @@ public class Board extends JPanel implements ActionListener {
                 if (playMove(node)) {
                     history.add(state);
                     getPlayer().incrementTime();
+                    framePlay.getSideBar().repaint();
                     turn = (turn + 1) % players.length;
                 }
             }

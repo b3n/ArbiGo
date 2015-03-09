@@ -40,7 +40,7 @@ public class Player {
         String colour = Colour.getNextColour();
         this.name = colour;
         this.stone = new Stone(colour);
-        this.time = 60;
+        this.time = 30;
     }
 
     public Stone getStone() {
@@ -68,7 +68,7 @@ public class Player {
     }
     
     public void incrementTime() {
-        time += 60;
+        time += 30;
     }
     
 }

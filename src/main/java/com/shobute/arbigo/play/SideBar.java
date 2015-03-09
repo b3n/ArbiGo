@@ -35,13 +35,13 @@ import javax.swing.Timer;
  *
  * @author Ben Lloyd
  */
-public class TimeLeft extends JPanel implements ActionListener {
+public class SideBar extends JPanel implements ActionListener {
     
     Board board;
     Timer timer;
     
-    public TimeLeft(Board board) {
-        this.board = board;
+    public SideBar(FramePlay framePlay) {
+        this.board = framePlay.getBoard();
         
         timer = new Timer(1000, this);
         timer.start();

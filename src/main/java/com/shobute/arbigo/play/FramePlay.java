@@ -40,7 +40,7 @@ public class FramePlay extends JInternalFrame {
     private Graph graph;
     private int numPlayers;
     private Board board;
-    private JPanel timer;
+    private JPanel sideBar;
     private JMenu jMenu1;
     private JMenu jMenu2;
     private JMenuBar jMenuBar1;   
@@ -56,10 +56,26 @@ public class FramePlay extends JInternalFrame {
         
         initComponents();
     }
+    
+    public JPanel getSideBar() {
+        return this.sideBar;
+    }
+    
+    public Board getBoard() {
+        return this.board;
+    }
+    
+    public Graph getGraph() {
+        return this.graph;
+    }
+    
+    public int getNumPlayers() {
+        return this.numPlayers;
+    }
                      
     private void initComponents() {
-        board = new Board(graph, numPlayers);
-        timer = new TimeLeft(board);
+        board = new Board(this);
+        sideBar = new SideBar(this);
         
         jMenuBar1 = new JMenuBar();
         jMenu1 = new JMenu();
@@ -67,6 +83,7 @@ public class FramePlay extends JInternalFrame {
 
         setSize(100, 100);
         setResizable(true);
+        setMaximizable(true);
         
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -79,11 +96,11 @@ public class FramePlay extends JInternalFrame {
         board.setBackground(new java.awt.Color(255, 255, 255));
         board.setPreferredSize(new Dimension(400, 400));
         
-        timer.setBackground(new java.awt.Color(200, 200, 200));
-        timer.setPreferredSize(new Dimension(100, 400));
+        sideBar.setBackground(new java.awt.Color(200, 200, 200));
+        sideBar.setPreferredSize(new Dimension(100, 400));
 
         add(board, BorderLayout.CENTER);
-        add(timer, BorderLayout.EAST);
+        add(sideBar, BorderLayout.EAST);
         
         pack();
     }                     
