@@ -92,6 +92,7 @@ public class Board extends JPanel implements ActionListener {
                 Node node = graph.nodeAt(scalePoint(me.getPoint()), shortestRadius);
                 if (playMove(node)) {
                     history.add(state);
+                    getPlayer().incrementTime();
                     turn = (turn + 1) % players.length;
                 }
             }

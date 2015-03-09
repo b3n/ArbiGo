@@ -43,7 +43,7 @@ public class TimeLeft extends JPanel implements ActionListener {
     public TimeLeft(Board board) {
         this.board = board;
         
-        timer = new Timer(100, this);
+        timer = new Timer(1000, this);
         timer.start();
     }
     
@@ -54,14 +54,16 @@ public class TimeLeft extends JPanel implements ActionListener {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         
-        //g2d.setColor(new Color(0, 0, 0));
         String turn = board.getPlayer().getName() + "'s turn";
         g2d.drawString(turn, 5, 15);
         
+        String time = board.getPlayer().getTime() + " seconds remaining";
+        g2d.drawString(time, 5, 35);
     }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
+        board.getPlayer().decrementTime();
         repaint();
     }
     
