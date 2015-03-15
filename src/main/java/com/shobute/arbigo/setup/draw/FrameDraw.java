@@ -55,7 +55,7 @@ public class FrameDraw extends JInternalFrame {
     public FrameDraw() {
         initComponents();
     }
-    
+
     public FrameDraw(FrameSetup setup) {
         this.setup = setup;
         initComponents();
@@ -396,7 +396,6 @@ public class FrameDraw extends JInternalFrame {
         setup.setBoard(jPanelCanvas.getGraph());
         dispose();
     }//GEN-LAST:event_jButtonDoneActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupTool;

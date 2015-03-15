@@ -83,11 +83,10 @@ public class SelectState extends MouseAdapter implements State {
     public void mousePressed(MouseEvent me) {
         point = me.getPoint();
         currentNode = canvas.getGraph().nodeAt(point, 10);
-        if (!canvas.getSelectedNodes().contains(canvas.getGraph().nodeAt(point, 10))) {
+        if (!canvas.getSelectedNodes().contains(currentNode)) {
             canvas.getSelectedNodes().clear();
-            Node node = canvas.getGraph().nodeAt(point, 10);
-            if (node != null) {
-                canvas.getSelectedNodes().add(node);
+            if (currentNode != null) {
+                canvas.getSelectedNodes().add(currentNode);
             }
         }
     }
@@ -99,13 +98,15 @@ public class SelectState extends MouseAdapter implements State {
             for (Node node : canvas.getGraph().getNodes()) {
                 int x = node.x;
                 int y = node.y;
-                if (x > min(point.x, drag.x) && y > min(point.y, drag.y) && 
-                        x < max(point.x, drag.x) && y < max(point.y, drag.y)) {
+                if (x > min(point.x, drag.x) && y > min(point.y, drag.y)
+                        && x < max(point.x, drag.x) && y < max(point.y, drag.y)) {
                     canvas.getSelectedNodes().add(node);
                 }
             }
             drag = null;
-        } else if (!canvas.getSelectedNodes().isEmpty()) canvas.checkpoint();
+        } else if (!canvas.getSelectedNodes().isEmpty()) {
+            canvas.checkpoint();
+        }
     }
 
 }

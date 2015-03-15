@@ -30,7 +30,8 @@ import com.shobute.arbigo.main.GUI;
  * @author Ben Lloyd (12238199)
  */
 public class ArbiGo {
-        /**
+
+    /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -60,6 +61,7 @@ public class ArbiGo {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new GUI().setVisible(true);
             }

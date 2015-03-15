@@ -34,45 +34,44 @@ import static org.mockito.Mockito.*;
  * @author Ben Lloyd
  */
 public class GraphTest {
-    
+
     private Graph graph;
     private int diameter;
     private static Stone black;
     private static Stone white;
-    
+
     @BeforeClass
     public static void setUpClass() {
         black = new Stone("black");
         white = new Stone("white");
     }
-    
+
     @Before
-    public void setUp() {        
+    public void setUp() {
         // Constructs a 3x3 grid
         graph = new Graph(3);
         diameter = graph.getDiameter();
     }
-    
+
     @Test
     public void testNodeAt() {
         Node node;
-        
+
         node = graph.nodeAt(new Point(99, 99), 10);
         assertNotNull(node);
         assertEquals(100, node.x);
         assertEquals(100, node.y);
-        
+
         node = graph.nodeAt(new Point(50, 50), 10);
         assertNull(node);
-        
+
         node = graph.nodeAt(new Point(diameter, 0), 10);
         assertNull(node);
-        
+
         node = graph.nodeAt(new Point(diameter - 1, 0), 10);
         assertNotNull(node);
     }
-    
-    
+
     @Test
     public void testAddNode() {
         int numNodes = graph.getNodes().size();
@@ -80,27 +79,27 @@ public class GraphTest {
         assertFalse(graph.addNode(new Point(999, 999)));
         assertEquals(numNodes + 1, graph.getNodes().size());
     }
-    
+
     @Test
     public void testClosestOnGrid() {
         int d = graph.getDiameter();
         int g = d * 2;    // Grid width is twice the diameter.
         Point point = new Point(g, g);
-        
-        assertEquals(point, graph.closestOnGrid(new Point(g+1, g+1)));
-        assertEquals(point, graph.closestOnGrid(new Point(g-1, g-1)));
-        assertEquals(point, graph.closestOnGrid(new Point(g+d, g+d)));
-        assertEquals(point, graph.closestOnGrid(new Point(g-d+1, g-d+1)));
-        
-        assertNotEquals(point, graph.closestOnGrid(new Point(g+d+1, g+d+1)));
-        assertNotEquals(point, graph.closestOnGrid(new Point(g-d, g-d)));
+
+        assertEquals(point, graph.closestOnGrid(new Point(g + 1, g + 1)));
+        assertEquals(point, graph.closestOnGrid(new Point(g - 1, g - 1)));
+        assertEquals(point, graph.closestOnGrid(new Point(g + d, g + d)));
+        assertEquals(point, graph.closestOnGrid(new Point(g - d + 1, g - d + 1)));
+
+        assertNotEquals(point, graph.closestOnGrid(new Point(g + d + 1, g + d + 1)));
+        assertNotEquals(point, graph.closestOnGrid(new Point(g - d, g - d)));
     }
-    
+
     @Test
     public void testPaintNodes() {
         Graphics2D g2d = mock(Graphics2D.class);
         graph.paintNodes(g2d);
         //verify(g2d).fill();
     }
-    
+
 }

@@ -35,24 +35,25 @@ import java.util.Objects;
  * @author Ben Lloyd
  */
 public class Stone implements Serializable {
-    
+
     private Color colour;
-    
+
     public Stone(String colour) {
-        this.colour = Colour.colourToColor(colour);
+        this.colour = Colour.stringToColor(colour);
     }
-    
+
     public Color getColour() {
         return colour;
     }
-    
+
     public void paint(Graphics2D g2d, float x, float y, int r) {
         this.paint(g2d, x, y, r, 255);
     }
-    
+
     public void paint(Graphics2D g2d, float x, float y, int r, int alpha) {
-        g2d.setColor(new Color(colour.getRed(), colour.getGreen(), colour.getBlue(), alpha));
-        Shape circle = new Ellipse2D.Float(x - r, y - r, r*2, r*2);
+        g2d.setColor(new Color(colour.getRed(), colour.getGreen(),
+                colour.getBlue(), alpha));
+        Shape circle = new Ellipse2D.Float(x - r, y - r, r * 2, r * 2);
         g2d.fill(circle);
 
         // Stroke
@@ -81,6 +82,5 @@ public class Stone implements Serializable {
         }
         return true;
     }
-    
-    
+
 }

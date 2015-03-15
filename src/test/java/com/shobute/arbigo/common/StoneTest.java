@@ -28,5 +28,5 @@ package com.shobute.arbigo.common;
  * @author Ben Lloyd
  */
 public class StoneTest {
-    
+
 }

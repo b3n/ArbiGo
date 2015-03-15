@@ -31,32 +31,32 @@ import org.junit.*;
  * @author Ben Lloyd
  */
 public class NodeTest {
-    
+
     private Node node1, node2;
-    
+
     @Before
     public void init() {
         Point point = new Point();
-        
+
         node1 = new Node(point);
         node2 = new Node(point);
     }
-    
+
     @Test
     public void equality() {
         Assert.assertNotEquals(node1, node2);
-        
+
         int hash1 = node1.hashCode();
         node1.setLocation(9, 9);
         int hash2 = node1.hashCode();
         Assert.assertEquals(hash1, hash2);
     }
-    
+
     @Test
     public void adjacentNodes() {
         Assert.assertTrue(node1.addAdjacentNode(node2));
         Assert.assertFalse(node1.addAdjacentNode(node2));
         Assert.assertTrue(node1.getAdjacentNodes().size() == 1);
     }
-    
+
 }

@@ -36,27 +36,27 @@ import javax.swing.Timer;
  * @author Ben Lloyd
  */
 public class SideBar extends JPanel implements ActionListener {
-    
+
     Board board;
     Timer timer;
-    
+
     public SideBar(FramePlay framePlay) {
         this.board = framePlay.getBoard();
-        
+
         timer = new Timer(1000, this);
         timer.start();
     }
-    
-   @Override
+
+    @Override
     public void paint(Graphics g) {
         super.paint(g); // Clears the graphic.
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
-        
+
         String turn = board.getPlayer().getName() + "'s turn";
         g2d.drawString(turn, 5, 15);
-        
+
         String time = board.getPlayer().getTime() + " seconds remaining";
         g2d.drawString(time, 5, 35);
     }
@@ -66,5 +66,5 @@ public class SideBar extends JPanel implements ActionListener {
         board.getPlayer().decrementTime();
         repaint();
     }
-    
+
 }

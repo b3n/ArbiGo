@@ -38,48 +38,52 @@ import java.awt.geom.Line2D;
  * @author Ben Lloyd
  */
 public class EdgeState extends MouseAdapter implements State {
-    
+
     private Canvas canvas;
-    private Node previousNode, currentNode;
+    private Node previousNode, node;
     private Point pressed, clicked;
-    
+
     public EdgeState(Canvas canvas) {
         this.canvas = canvas;
     }
-    
+
     @Override
     public void draw(Graphics2D g2d) {
-        if (currentNode != null) {
+        if (node != null) {
             g2d.setColor(new Color(0f, 0f, 0f, 0.2f));
             g2d.setStroke(new BasicStroke(2));
-            g2d.draw(new Line2D.Float(currentNode.x, currentNode.y, clicked.x, clicked.y));
+            g2d.draw(new Line2D.Float(node.x, node.y, clicked.x, clicked.y));
             g2d.setStroke(new BasicStroke());
             g2d.setColor(Color.BLACK);
         }
     }
-    
+
     @Override
     public void mouseClicked(MouseEvent me) {
-        if (previousNode != null && currentNode != null && previousNode != currentNode) {
-            currentNode.addAdjacentNode(previousNode);
-            previousNode.addAdjacentNode(currentNode);
+        if (previousNode != null && node != null && previousNode != node) {
+            node.addAdjacentNode(previousNode);
+            previousNode.addAdjacentNode(node);
             previousNode = null;
             canvas.checkpoint();
         } else {
-            currentNode = canvas.getGraph().nodeAt(pressed, 10);
+            node = canvas.getGraph().nodeAt(pressed, 10);
         }
     }
 
     @Override
     public void mouseMoved(MouseEvent me) {
-        clicked = canvas.getGrid() ? canvas.getGraph().closestOnGrid(me.getPoint()) : me.getPoint();
+        if (canvas.getGrid()) {
+            clicked = canvas.getGraph().closestOnGrid(me.getPoint());
+        } else {
+            clicked = me.getPoint();
+        }
     }
-    
+
     @Override
     public void mousePressed(MouseEvent me) {
         pressed = me.getPoint();
-        previousNode = currentNode;
-        currentNode = canvas.getGraph().nodeAt(pressed, 10);
+        previousNode = node;
+        node = canvas.getGraph().nodeAt(pressed, 10);
     }
-    
+
 }

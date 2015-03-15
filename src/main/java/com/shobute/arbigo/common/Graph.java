@@ -58,7 +58,7 @@ public class Graph implements Serializable {
     /**
      * Constructs a graph made of an nxn grid, where each node is 100 pixels
      * apart, starting at (0, 0).
-     * 
+     *
      * @param n The number of rows and columns the grid should contain.
      */
     public Graph(int n) {
@@ -91,18 +91,23 @@ public class Graph implements Serializable {
         }
 
     }
-    
+
     /**
      * Gets the origin which is defined to be the smallest X coordinate and
      * smallest Y coordinate within the graph.
+     *
      * @return A new Point at the origin.
      */
     public Point getOrigin() {
         int xmin = Integer.MAX_VALUE;
         int ymin = Integer.MAX_VALUE;
         for (Node node : nodes) {
-            if (node.x < xmin) xmin = node.x;
-            if (node.y < ymin) ymin = node.y;
+            if (node.x < xmin) {
+                xmin = node.x;
+            }
+            if (node.y < ymin) {
+                ymin = node.y;
+            }
         }
         return new Point(xmin, ymin);
     }
@@ -110,40 +115,42 @@ public class Graph implements Serializable {
     /**
      * Gets the size of the graph, i.e., the distance between the leftmost and
      * rightmost node, and the distance between the topmost and bottommost node.
+     *
      * @return A new Dimension containing the width and height of this graph.
      */
     public Dimension getSize() {
         if (nodes.size() < 2) {
             return new Dimension();
         }
-        
+
         int xmin = Integer.MAX_VALUE;
         int xmax = Integer.MIN_VALUE;
         int ymin = Integer.MAX_VALUE;
         int ymax = Integer.MIN_VALUE;
-        
+
         for (Node node : nodes) {
             if (node.x < xmin) {
                 xmin = node.x;
             } else if (node.x > xmax) {
                 xmax = node.x;
             }
-            
+
             if (node.y < ymin) {
                 ymin = node.y;
             } else if (node.y > ymax) {
                 ymax = node.y;
             }
         }
-        
+
         return new Dimension(xmax - xmin, ymax - ymin);
     }
-    
+
     /**
      * Gets half the shortest distance between any two points.
-     * @return A floored integer of the stone radius. 
+     *
+     * @return A floored integer of the stone radius.
      */
-    public int getShortestRadius() {      
+    public int getShortestRadius() {
         Node[] nodesByX = new Node[nodes.size()];
         Node[] nodesByY = new Node[nodes.size()];
         int i = 0;
@@ -154,59 +161,72 @@ public class Graph implements Serializable {
         }
         Arrays.sort(nodesByX, Node.xComparator());
         Arrays.sort(nodesByY, Node.yComparator());
-        
+
         return (int) (getShortestDistance(nodesByX, nodesByY) / 2);
     }
-    
+
     // https://en.wikipedia.org/wiki/Closest_pair_of_points_problem
     private double getShortestDistance(Node[] nodesByX, Node[] nodesByY) {
-     
-        if (nodesByX.length <= 1) return Integer.MAX_VALUE;
-        if (nodesByX.length <= 2) return nodesByX[0].distance(nodesByX[1]);
-        
+
+        if (nodesByX.length <= 1) {
+            return Integer.MAX_VALUE;
+        }
+        if (nodesByX.length <= 2) {
+            return nodesByX[0].distance(nodesByX[1]);
+        }
+
         int mid = nodesByX.length / 2;
-        
+
         Node[] leftX = Arrays.copyOfRange(nodesByX, 0, mid);
         Node[] rightX = Arrays.copyOfRange(nodesByX, mid + 1, nodesByX.length - 1);
-        
+
         int midX = leftX[leftX.length - 1].x;
-        
+
         Node[] leftY = new Node[nodesByY.length];
         Node[] rightY = new Node[nodesByY.length];
         int i = 0;
         int j = 0;
         for (Node node : nodesByY) {
             if (node != null) {
-                if (node.x <= midX) leftY[i++] = node;
-                else rightY[j++] = node;
+                if (node.x <= midX) {
+                    leftY[i++] = node;
+                } else {
+                    rightY[j++] = node;
+                }
             }
         }
-        
+
         double distLeft = getShortestDistance(leftX, leftY);
         double distRight = getShortestDistance(rightX, rightY);
-        
+
         double distMin = Math.min(distLeft, distRight);
-        
+
         Node[] yStrip = new Node[nodesByY.length];
         i = 0;
         for (Node node : nodesByY) {
-            if (node != null && Math.abs(node.x - midX) < distMin) yStrip[i++] = node;
+            if (node != null && Math.abs(node.x - midX) < distMin) {
+                yStrip[i++] = node;
+            }
         }
-        
+
         for (i = 0; i < mid; i++) {
             j = i + 1;
-            while (j <= yStrip.length && yStrip[j] != null && yStrip[j].y - yStrip[i].y < distMin) {
+            while (j <= yStrip.length && yStrip[j] != null
+                    && yStrip[j].y - yStrip[i].y < distMin) {
                 double dist = yStrip[j].distance(yStrip[i]);
-                if (dist < distMin) distMin = dist;
+                if (dist < distMin) {
+                    distMin = dist;
+                }
                 j++;
             }
         }
-        
+
         return distMin;
     }
 
     /**
      * Finds the Node within distance of a particular point.
+     *
      * @param point The point to look at.
      * @param distance The distance to consider.
      * @return The first found Node, or null if no Node was found.
@@ -226,6 +246,7 @@ public class Graph implements Serializable {
 
     /**
      * Set the colour the graph is drawn in.
+     *
      * @param colour The colour to set.
      */
     public void setColour(Color colour) {
@@ -234,6 +255,7 @@ public class Graph implements Serializable {
 
     /**
      * Add a node to the graph.
+     *
      * @param point The point where the new node should be created.
      * @return True if the node was added, false otherwise.
      */
@@ -246,6 +268,7 @@ public class Graph implements Serializable {
 
     /**
      * Add a node to the graph.
+     *
      * @param node The node to be added.
      * @return true if the node was added, false otherwise.
      */
@@ -255,6 +278,7 @@ public class Graph implements Serializable {
 
     /**
      * Remove a node from the graph.
+     *
      * @param nodeToRemove The node to be removed.
      * @return True if the node was removed, false otherwise.
      */
@@ -268,6 +292,7 @@ public class Graph implements Serializable {
 
     /**
      * Get all the nodes in the graph.
+     *
      * @return A set containing the nodes.
      */
     public Set<Node> getNodes() {
@@ -276,6 +301,7 @@ public class Graph implements Serializable {
 
     /**
      * Get the graph's diameter.
+     *
      * @return The graph's diameter.
      */
     public int getDiameter() {  // TODO: Rename?
@@ -284,6 +310,7 @@ public class Graph implements Serializable {
 
     /**
      * Find the point closest to a particular point on a grid.
+     *
      * @param point Initial point.
      * @return A new point positioned on a grid.
      */
@@ -305,6 +332,7 @@ public class Graph implements Serializable {
 
     /**
      * Paint the graph's nodes.
+     *
      * @param g2d Graphics2D context.
      */
     public void paintNodes(Graphics2D g2d) {
@@ -320,6 +348,7 @@ public class Graph implements Serializable {
 
     /**
      * Paint the graph's edges.
+     *
      * @param g2d Graphics2D context.
      */
     public void paintEdges(Graphics2D g2d) {
@@ -335,6 +364,7 @@ public class Graph implements Serializable {
 
     /**
      * Generate a hash code for this graph.
+     *
      * @return An integer hash.
      */
     @Override
@@ -346,6 +376,7 @@ public class Graph implements Serializable {
 
     /**
      * Compare two graphs.
+     *
      * @param obj The graph to compare with.
      * @return True if the graphs are equal, false otherwise.
      */

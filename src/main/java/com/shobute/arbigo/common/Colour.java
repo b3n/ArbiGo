@@ -31,27 +31,44 @@ import java.lang.reflect.Field;
  * @author Ben Lloyd
  */
 public class Colour {
-    
-    public static final String[] colours = new String[] {
+
+    private static int id = 0;
+
+    /**
+     * A sequence of valid colour names.
+     */
+    public static final String[] colours = new String[]{
         "Black", "White", "Red", "Blue", "Green", "Yellow", "Pink", "Cyan",
         "Orange", "Gray"
     };
-    
-    private static int id = 0;
-    
+
+    /**
+     * Gets the next colour in a sequence of colours as defined by `colours`.
+     *
+     * @return A colour name, or null if all colours have been used.
+     */
     public static String getNextColour() {
+        if (id == colours.length) {
+            return null;
+        }
         return colours[id++];
     }
-    
-    public static Color colourToColor(String colour) {
+
+    /**
+     * Converts the name of a colour into a Color object.
+     *
+     * @param colour The name of the colour.
+     * @return A java.awt.Color object representing the colour name.
+     */
+    public static Color stringToColor(String colour) {
         Color color;
         try {
             Field field = Color.class.getField(colour.toUpperCase());
-            color = (Color)field.get(null);
+            color = (Color) field.get(null);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             color = null; // Not defined
         }
         return color;
     }
-    
+
 }

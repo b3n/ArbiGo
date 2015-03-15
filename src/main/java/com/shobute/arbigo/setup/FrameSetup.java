@@ -33,10 +33,10 @@ import javax.swing.JInternalFrame;
  * @author Ben Lloyd
  */
 public class FrameSetup extends javax.swing.JInternalFrame {
-    
+
     private JDesktopPane desktop;
     private Graph board;
-    
+
     @Deprecated
     public FrameSetup() {
         initComponents();
@@ -44,13 +44,14 @@ public class FrameSetup extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form FrameSetup
+     *
      * @param desktop
      */
     public FrameSetup(JDesktopPane desktop) {
         initComponents();
         this.desktop = desktop;
     }
-    
+
     public void setBoard(Graph board) {
         this.board = board;
     }
@@ -190,12 +191,12 @@ public class FrameSetup extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButtonDrawActionPerformed
 
     private void jButtonPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPlayActionPerformed
-        JInternalFrame framePlay = new FramePlay(board, Integer.parseInt(jComboBoxPlayers.getSelectedItem().toString()));
+        int numPlayers = Integer.parseInt(jComboBoxPlayers.getSelectedItem().toString());
+        JInternalFrame framePlay = new FramePlay(board, numPlayers);
         desktop.add(framePlay);
         framePlay.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonPlayActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.shobute.arbigo.setup.draw.FrameDraw frameDraw;

@@ -31,7 +31,7 @@ import com.shobute.arbigo.common.Stone;
  * @author Ben Lloyd
  */
 public class Player {
-    
+
     private Stone stone;
     private String name;
     private int time;
@@ -58,17 +58,19 @@ public class Player {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public int getTime() {
         return time;
     }
-    
+
     public void decrementTime() {
-        if (time > 0) time--;
+        if (time > 0) {
+            time--;
+        }
     }
-    
+
     public void incrementTime() {
         time += 30;
     }
-    
+
 }

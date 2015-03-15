@@ -40,40 +40,49 @@ public class Node extends Point implements Serializable {
     private final int hashCode;
 
     /**
+     * Constructs a new Node positioned at point.
      *
-     * @param point
+     * @param point The Point where this Node should be positioned.
      */
     public Node(Point point) {
         super(point);
         hashCode = hash++;
     }
-    
+
     /**
+     * Get all Nodes adjacent to this.
      *
-     * @return
+     * @return A set of adjacent nodes.
      */
     public Set<Node> getAdjacentNodes() {
         return adjacentNodes;
     }
 
     /**
+     * Remove an adjacent node.
      *
-     * @param node
-     * @return
+     * @param node The adjacent node to remove.
+     * @return True on success, or false on failure.
      */
     public boolean removeAdjacentNode(Node node) {
         return adjacentNodes.remove(node);
     }
 
     /**
+     * Add an adjacent node.
      *
-     * @param node
-     * @return
+     * @param node The adjacent node to add.
+     * @return True on success, or false on failure.
      */
     public boolean addAdjacentNode(Node node) {
         return adjacentNodes.add(node);
     }
-    
+
+    /**
+     * Compare Nodes by their x-axis.
+     *
+     * @return A Comparator which compares Nodes by their x-axis.
+     */
     public static Comparator<Node> xComparator() {
         return new Comparator<Node>() {
             @Override
@@ -82,7 +91,12 @@ public class Node extends Point implements Serializable {
             }
         };
     }
-    
+
+    /**
+     * Compare Nodes by their y-axis.
+     *
+     * @return A Comparator which compares Nodes by their y-axis.
+     */
     public static Comparator<Node> yComparator() {
         return new Comparator<Node>() {
             @Override
