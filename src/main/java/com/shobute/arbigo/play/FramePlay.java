@@ -98,7 +98,7 @@ public class FramePlay extends JInternalFrame {
         board.setPreferredSize(new Dimension(400, 400));
 
         sideBar.setBackground(new java.awt.Color(200, 200, 200));
-        sideBar.setPreferredSize(new Dimension(100, 400));
+        sideBar.setPreferredSize(new Dimension(150, 400));
 
         add(board, BorderLayout.CENTER);
         add(sideBar, BorderLayout.EAST);
