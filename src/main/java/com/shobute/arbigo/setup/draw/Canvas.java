@@ -52,6 +52,7 @@ public class Canvas extends JPanel implements ActionListener {
     private final Timer timer;
     private final ArrayList<Graph> history = new ArrayList<>();
     private int historyIndex = 0;
+    private ArrayList<Line2D.Float> gridLines = null;
 
     public Canvas() {
         state = new SelectState(this);
@@ -90,15 +91,33 @@ public class Canvas extends JPanel implements ActionListener {
         timer.start();
 
         history.add(new Graph());
+        
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                constructGrid();
+            }
+        });
+    }
+    
+    private void constructGrid() {
+        int distance = graph.getDiameter() * 2;
+        gridLines = new ArrayList<>();
+        for (int x = 0; x < this.getWidth(); x += distance) {
+            gridLines.add(new Line2D.Float(x, 0, x, this.getHeight()));
+        }
+        for (int y = 0; y < this.getHeight(); y += distance) {
+            gridLines.add(new Line2D.Float(0, y, this.getWidth(), y));
+        }
     }
 
     private void paintGrid() {
-        g2d.setColor(new Color(0f, 0f, 0f, 0.2f));
-        for (int x = 0; x < this.getWidth(); x += graph.getDiameter() * 2) {
-            g2d.draw(new Line2D.Float(x, 0, x, this.getHeight()));
+        if (gridLines == null) {
+            constructGrid();
         }
-        for (int y = 0; y < this.getHeight(); y += graph.getDiameter() * 2) {
-            g2d.draw(new Line2D.Float(0, y, this.getWidth(), y));
+        g2d.setColor(new Color(0f, 0f, 0f, 0.2f));
+        for (Line2D.Float line : gridLines) {
+            g2d.draw(line);
         }
         g2d.setColor(defaultColor);
     }
@@ -107,11 +126,12 @@ public class Canvas extends JPanel implements ActionListener {
     public void paint(Graphics g) {
         super.paint(g); // clears the graphic
         g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+
         if (grid) {
             paintGrid();
         }
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+        RenderingHints.VALUE_ANTIALIAS_ON);
         graph.paintNodes(g2d);
         graph.paintEdges(g2d);
         state.draw(g2d);
