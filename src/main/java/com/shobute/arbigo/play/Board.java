@@ -42,6 +42,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -138,8 +139,9 @@ public class Board extends JPanel implements ActionListener {
         if (players.size() > 1) {
             players.remove(turn);
             turn = turn % players.size();
-        } else {
-            // We have a winner!
+            if (players.size() == 1) {
+                JOptionPane.showMessageDialog(this, getPlayer().getName() + " wins!");
+            }
         }
     }
 
