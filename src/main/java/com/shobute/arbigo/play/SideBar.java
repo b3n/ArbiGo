@@ -30,6 +30,8 @@ import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.YES_OPTION;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -52,7 +54,11 @@ public class SideBar extends JPanel implements ActionListener {
         jButtonResign.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                board.resign();
+                int option = JOptionPane.showConfirmDialog(board, "Are you sure?",
+                    "Confirm", JOptionPane.YES_NO_OPTION);
+                if (option == YES_OPTION) {
+                    board.resign();
+                }
             }
         });
 
