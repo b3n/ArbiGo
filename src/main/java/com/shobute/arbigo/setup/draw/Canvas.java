@@ -130,8 +130,9 @@ public class Canvas extends JPanel implements ActionListener {
         if (grid) {
             paintGrid();
         }
+        
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-        RenderingHints.VALUE_ANTIALIAS_ON);
+                RenderingHints.VALUE_ANTIALIAS_ON);
         graph.paintNodes(g2d);
         graph.paintEdges(g2d);
         state.draw(g2d);

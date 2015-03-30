@@ -53,7 +53,7 @@ public class Board extends JPanel implements ActionListener {
 
     private Graph graph;
     private final Timer timer;
-    private Player[] players;
+    private ArrayList<Player> players;
     private int turn;
     private Node hoverNode;
     private final ArrayList<HashMap<Node, Stone>> history;
@@ -73,9 +73,9 @@ public class Board extends JPanel implements ActionListener {
         if (numPlayers < 2 || numPlayers > Colour.colours.length) {
             numPlayers = 2;
         }
-        players = new Player[numPlayers];
+        players = new ArrayList<>(numPlayers);
         for (int i = 0; i < numPlayers; i++) {
-            players[i] = new Player();
+            players.add(new Player());
         }
 
         //graph.removeColourings();
@@ -96,7 +96,7 @@ public class Board extends JPanel implements ActionListener {
                     history.add(state);
                     getPlayer().incrementTime();
                     framePlay.getSideBar().repaint();
-                    turn = (turn + 1) % players.length;
+                    turn = (turn + 1) % players.size();
                 }
             }
 
@@ -131,7 +131,16 @@ public class Board extends JPanel implements ActionListener {
     }
 
     public Player getPlayer() {
-        return players[turn];
+        return players.get(turn);
+    }
+    
+    public void resign() {
+        if (players.size() > 1) {
+            players.remove(turn);
+            turn = turn % players.size();
+        } else {
+            // We have a winner!
+        }
     }
 
     private Point scalePoint(Point point) {

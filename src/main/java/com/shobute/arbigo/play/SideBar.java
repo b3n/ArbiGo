@@ -23,11 +23,13 @@
  */
 package com.shobute.arbigo.play;
 
+import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -42,6 +44,18 @@ public class SideBar extends JPanel implements ActionListener {
 
     public SideBar(FramePlay framePlay) {
         this.board = framePlay.getBoard();
+        setLayout(new BorderLayout());
+        
+        JButton jButtonResign = new JButton();
+        jButtonResign.setText("Resign");
+        add(jButtonResign, BorderLayout.SOUTH);
+        jButtonResign.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                board.resign();
+            }
+        });
+
 
         timer = new Timer(1000, this);
         timer.start();
