@@ -81,7 +81,6 @@ public class FrameSetup extends javax.swing.JInternalFrame {
 
         frameDraw.setVisible(false);
 
-        setClosable(true);
         setTitle("Setup Game");
 
         jButtonDraw.setText("Draw");
@@ -109,7 +108,6 @@ public class FrameSetup extends javax.swing.JInternalFrame {
         jLabel3.setText("Time");
 
         jTextField1.setText("30");
-        jTextField1.setEnabled(false);
 
         jLabel4.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel4.setText("seconds added each move.");
@@ -195,7 +193,6 @@ public class FrameSetup extends javax.swing.JInternalFrame {
         JInternalFrame framePlay = new FramePlay(board, numPlayers);
         desktop.add(framePlay);
         framePlay.setVisible(true);
-        this.dispose();
     }//GEN-LAST:event_jButtonPlayActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

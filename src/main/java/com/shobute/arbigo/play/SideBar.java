@@ -84,6 +84,7 @@ public class SideBar extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         board.getPlayer().decrementTime();
+        if (board.getPlayer().getTime() == 0) board.resign();
         repaint();
     }
 

@@ -85,6 +85,7 @@ public class FramePlay extends JInternalFrame {
         setSize(100, 100);
         setResizable(true);
         setMaximizable(true);
+        setClosable(true);
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -92,7 +93,7 @@ public class FramePlay extends JInternalFrame {
         jMenu2.setText("Edit");
         jMenuBar1.add(jMenu2);
 
-        setJMenuBar(jMenuBar1);
+        //setJMenuBar(jMenuBar1);
 
         board.setBackground(new java.awt.Color(255, 255, 255));
         board.setPreferredSize(new Dimension(400, 400));
