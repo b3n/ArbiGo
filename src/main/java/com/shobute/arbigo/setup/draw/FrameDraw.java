@@ -314,9 +314,7 @@ public class FrameDraw extends JInternalFrame {
                 ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
                 Graph goban = (Graph) in.readObject();
                 jPanelCanvas.setGraph(goban);
-            } catch (IOException ex) {
-                Logger.getLogger(FrameDraw.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
+            } catch (IOException | ClassNotFoundException ex) {
                 Logger.getLogger(FrameDraw.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

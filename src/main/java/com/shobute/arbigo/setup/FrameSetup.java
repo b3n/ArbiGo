@@ -25,7 +25,11 @@ package com.shobute.arbigo.setup;
 
 import com.shobute.arbigo.common.Graph;
 import com.shobute.arbigo.play.FramePlay;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import javax.swing.JDesktopPane;
+import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 
 /**
@@ -96,6 +100,11 @@ public class FrameSetup extends javax.swing.JInternalFrame {
         });
 
         jButtonLoad.setText("Load");
+        jButtonLoad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLoadActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Board");
 
@@ -183,6 +192,20 @@ public class FrameSetup extends javax.swing.JInternalFrame {
         desktop.add(framePlay);
         framePlay.setVisible(true);
     }//GEN-LAST:event_jButtonPlayActionPerformed
+
+    private void jButtonLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoadActionPerformed
+        JFileChooser jFileChooser = new JFileChooser();
+        if (jFileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            String file = jFileChooser.getSelectedFile().getAbsoluteFile().toString();
+            try {
+                ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
+                Graph graph = (Graph) in.readObject();
+                setBoard(graph);
+            } catch (IOException | ClassNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_jButtonLoadActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.shobute.arbigo.setup.draw.FrameDraw frameDraw;
