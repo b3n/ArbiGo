@@ -77,7 +77,7 @@ public class SideBar extends JPanel implements ActionListener {
         String turn = board.getPlayer().getName() + "'s turn";
         g2d.drawString(turn, 5, 15);
 
-        String time = board.getPlayer().getTime() + " seconds remaining";
+        String time = board.getPlayer().getTime() + "s remaining";
         g2d.drawString(time, 5, 35);
     }
 

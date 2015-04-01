@@ -336,12 +336,10 @@ public class Graph implements Serializable {
      * @param g2d Graphics2D context.
      */
     public void paintNodes(Graphics2D g2d) {
-        g2d.setColor(colour);
         int z = getDiameter();
         for (Node node : getNodes()) {
-            //if (selectedNodes.contains(node)) g2d.setColor(Color.BLUE);
+            g2d.setColor(node.getColour());
             g2d.fill(new Ellipse2D.Float(node.x - z / 2, node.y - z / 2, z, z));
-            g2d.setColor(colour);
             //g2d.drawString("(" + node.x + ", " + node.y + ")", node.x, node.y);
         }
     }

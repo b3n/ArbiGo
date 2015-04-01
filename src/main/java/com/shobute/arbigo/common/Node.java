@@ -23,6 +23,7 @@
  */
 package com.shobute.arbigo.common;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.io.Serializable;
 import java.util.Comparator;
@@ -38,6 +39,7 @@ public class Node extends Point implements Serializable {
     private final Set<Node> adjacentNodes = new HashSet<>();
     private static int hash = 0;
     private final int hashCode;
+    private Color colour;
 
     /**
      * Constructs a new Node positioned at point.
@@ -47,8 +49,19 @@ public class Node extends Point implements Serializable {
     public Node(Point point) {
         super(point);
         hashCode = hash++;
+        colour = Color.BLACK;
     }
 
+    public Color getColour() {
+        return colour;
+    }
+
+    public void setColour(Color colour) {
+        this.colour = colour;
+    }
+
+    
+    
     /**
      * Get all Nodes adjacent to this.
      *
