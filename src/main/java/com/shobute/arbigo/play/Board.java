@@ -27,7 +27,6 @@ import com.shobute.arbigo.common.Colour;
 import com.shobute.arbigo.common.Stone;
 import com.shobute.arbigo.common.Graph;
 import com.shobute.arbigo.common.Node;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -60,8 +59,11 @@ public class Board extends JPanel implements ActionListener {
     private final ArrayList<HashMap<Node, Stone>> history;
     private HashMap<Node, Stone> state;
     private double scaleFactor;
+    private FramePlay framePlay;
+    private MouseAdapter listener;
 
     public Board(final FramePlay framePlay) {
+        this.framePlay = framePlay;
         this.graph = framePlay.getGraph();
 
         if (graph == null) {
@@ -86,7 +88,7 @@ public class Board extends JPanel implements ActionListener {
         history = new ArrayList<>(100); // 100 moves will be common
         history.add(state);
 
-        MouseAdapter listener = new MouseAdapter() {
+        this.listener = new MouseAdapter() {
             int radius = graph.getShortestRadius();
 
             @Override
@@ -95,8 +97,8 @@ public class Board extends JPanel implements ActionListener {
                 if (playMove(node)) {
                     history.add(state);
                     getPlayer().incrementTime();
-                    framePlay.getSideBar().repaint();
                     turn = (turn + 1) % players.size();
+                    framePlay.getSideBar().repaint();
                 }
             }
 
@@ -140,6 +142,9 @@ public class Board extends JPanel implements ActionListener {
             turn = turn % players.size();
             if (players.size() == 1) {
                 JOptionPane.showMessageDialog(this, getPlayer().getName() + " wins!");
+                timer.stop();
+                framePlay.getSideBar().getTimer().stop();
+                removeMouseListener(listener);
             }
         }
     }

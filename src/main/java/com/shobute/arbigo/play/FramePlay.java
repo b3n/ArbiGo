@@ -41,7 +41,7 @@ public class FramePlay extends JInternalFrame {
     private int numPlayers;
     private int timeInterval;
     private Board board;
-    private JPanel sideBar;
+    private SideBar sideBar;
     private JMenu jMenu1;
     private JMenu jMenu2;
     private JMenuBar jMenuBar1;
@@ -65,7 +65,7 @@ public class FramePlay extends JInternalFrame {
         return timeInterval;
     }
     
-    public JPanel getSideBar() {
+    public SideBar getSideBar() {
         return this.sideBar;
     }
 
