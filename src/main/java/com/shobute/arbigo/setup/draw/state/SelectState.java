@@ -79,19 +79,15 @@ public class SelectState extends MouseAdapter implements State {
         }
     }
     
-    private void unSelectNodes() {
-        for (Node node : canvas.getSelectedNodes()) node.setColour(Color.BLACK);
-        canvas.getSelectedNodes().clear();
-    }
-
     @Override
     public void mousePressed(MouseEvent me) {
         point = me.getPoint();
         currentNode = canvas.getGraph().nodeAt(point, 10);
         if (!canvas.getSelectedNodes().contains(currentNode)) {
-            unSelectNodes();
+            canvas.unSelectNodes();
             if (currentNode != null) {
                 canvas.getSelectedNodes().add(currentNode);
+                currentNode.setColour(Color.BLUE);
             }
         }
     }
@@ -99,7 +95,7 @@ public class SelectState extends MouseAdapter implements State {
     @Override
     public void mouseReleased(MouseEvent me) {
         if (drag != null) {
-            unSelectNodes();
+            canvas.unSelectNodes();
             for (Node node : canvas.getGraph().getNodes()) {
                 int x = node.x;
                 int y = node.y;

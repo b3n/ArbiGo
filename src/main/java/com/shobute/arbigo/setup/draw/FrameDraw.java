@@ -391,6 +391,7 @@ public class FrameDraw extends JInternalFrame {
     }//GEN-LAST:event_jButtonCancelActionPerformed
 
     private void jButtonDoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDoneActionPerformed
+        jPanelCanvas.unSelectNodes();
         setup.setBoard(jPanelCanvas.getGraph());
         dispose();
     }//GEN-LAST:event_jButtonDoneActionPerformed

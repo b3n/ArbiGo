@@ -206,6 +206,11 @@ public class Canvas extends JPanel implements ActionListener {
     public boolean getGrid() {
         return grid;
     }
+    
+    public void unSelectNodes() {
+        for (Node node : getSelectedNodes()) node.setColour(Color.BLACK);
+        getSelectedNodes().clear();
+    }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
