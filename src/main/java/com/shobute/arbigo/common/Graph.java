@@ -211,7 +211,7 @@ public class Graph implements Serializable {
 
         for (i = 0; i < mid; i++) {
             j = i + 1;
-            while (j <= yStrip.length && yStrip[j] != null
+            while (j < yStrip.length && yStrip[j] != null
                     && yStrip[j].y - yStrip[i].y < distMin) {
                 double dist = yStrip[j].distance(yStrip[i]);
                 if (dist < distMin) {

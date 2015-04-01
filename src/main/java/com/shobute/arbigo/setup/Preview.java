@@ -83,14 +83,14 @@ public class Preview extends JPanel  {
         
         if (graph != null) {
             g2d.setColor(Color.GRAY);
-            g2d.drawString("Board preview.", 10, 20);
+            g2d.drawString("Board preview:", 10, 20);
             
             graph.scale(g2d, scaleFactor);
             graph.paintEdges(g2d);
             graph.paintNodes(g2d);
         } else {
             g2d.setColor(Color.GRAY);
-            g2d.drawString("No board loaded.", 10, 20);
+            g2d.drawString("No board loaded:", 10, 20);
         }
     }
     
