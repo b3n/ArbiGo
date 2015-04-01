@@ -49,8 +49,9 @@ public class Colour {
      */
     public static String getNextColour() {
         if (id == colours.length) {
-            return null;
+            id = 0;
         }
+        
         return colours[id++];
     }
 

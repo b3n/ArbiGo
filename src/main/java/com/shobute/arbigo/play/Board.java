@@ -79,8 +79,7 @@ public class Board extends JPanel implements ActionListener {
             players.add(new Player(framePlay.getTimeInterval()));
         }
 
-        //graph.removeColourings();
-        graph.setColour(new Color(150, 150, 150));
+        //graph.setColour(new Color(150, 150, 150));
 
         // Start with blank state in history (important that history.size() > 0).
         state = new HashMap<>();
