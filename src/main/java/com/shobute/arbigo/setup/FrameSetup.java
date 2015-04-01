@@ -39,7 +39,7 @@ import javax.swing.JInternalFrame;
 public class FrameSetup extends javax.swing.JInternalFrame {
 
     private JDesktopPane desktop;
-    private Graph board;
+    private Graph graph;
 
     @Deprecated
     public FrameSetup() {
@@ -56,8 +56,9 @@ public class FrameSetup extends javax.swing.JInternalFrame {
         this.desktop = desktop;
     }
 
-    public void setBoard(Graph board) {
-        this.board = board;
+    public void setBoard(Graph graph) {
+        this.graph = graph;
+        preview.setGraph(this.graph);
     }
 
     /**
@@ -80,9 +81,13 @@ public class FrameSetup extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jTextFieldTime = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        preview = new com.shobute.arbigo.setup.Preview();
 
         frameDraw.setVisible(false);
 
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
         setTitle("Setup Game");
 
         jButtonDraw.setText("Draw");
@@ -119,6 +124,19 @@ public class FrameSetup extends javax.swing.JInternalFrame {
         jLabel4.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel4.setText("seconds added each move.");
 
+        preview.setBackground(new java.awt.Color(204, 204, 204));
+
+        javax.swing.GroupLayout previewLayout = new javax.swing.GroupLayout(preview);
+        preview.setLayout(previewLayout);
+        previewLayout.setHorizontalGroup(
+            previewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        previewLayout.setVerticalGroup(
+            previewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 195, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -126,22 +144,24 @@ public class FrameSetup extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(preview, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jSeparator1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButtonPlay))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(23, 23, 23)
                                 .addComponent(jButtonDraw, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButtonLoad, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jComboBoxPlayers, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jTextFieldTime, javax.swing.GroupLayout.Alignment.LEADING))
@@ -161,7 +181,9 @@ public class FrameSetup extends javax.swing.JInternalFrame {
                     .addComponent(jButtonDraw)
                     .addComponent(jButtonLoad)
                     .addComponent(jLabel1))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(preview, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jComboBoxPlayers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -170,7 +192,7 @@ public class FrameSetup extends javax.swing.JInternalFrame {
                     .addComponent(jLabel3)
                     .addComponent(jTextFieldTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonPlay)
@@ -188,7 +210,7 @@ public class FrameSetup extends javax.swing.JInternalFrame {
     private void jButtonPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPlayActionPerformed
         int numPlayers = Integer.parseInt(jComboBoxPlayers.getSelectedItem().toString());
         int timeInterval = Integer.parseInt(jTextFieldTime.getText());
-        JInternalFrame framePlay = new FramePlay(board, numPlayers, timeInterval);
+        JInternalFrame framePlay = new FramePlay(graph, numPlayers, timeInterval);
         desktop.add(framePlay);
         framePlay.setVisible(true);
     }//GEN-LAST:event_jButtonPlayActionPerformed
@@ -219,5 +241,6 @@ public class FrameSetup extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField jTextFieldTime;
+    private com.shobute.arbigo.setup.Preview preview;
     // End of variables declaration//GEN-END:variables
 }

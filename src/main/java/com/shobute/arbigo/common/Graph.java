@@ -329,6 +329,14 @@ public class Graph implements Serializable {
         }
         return new Point(x, y);
     }
+    
+    public void scale(Graphics2D g2d, double scaleFactor) {
+        int r = getShortestRadius();
+        Point origin = getOrigin();
+        g2d.scale(scaleFactor, scaleFactor);
+        g2d.translate(-1 * origin.x, -1 * origin.y);
+        g2d.translate(r, r);
+    }
 
     /**
      * Paint the graph's nodes.

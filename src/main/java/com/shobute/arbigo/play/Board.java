@@ -244,13 +244,8 @@ public class Board extends JPanel implements ActionListener {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
-
-        int r = graph.getShortestRadius();
-        Point origin = graph.getOrigin();
-        g2d.scale(scaleFactor, scaleFactor);
-        g2d.translate(-1 * origin.x, -1 * origin.y);
-        g2d.translate(r, r);
-
+        
+        graph.scale(g2d, scaleFactor);
         graph.paintNodes(g2d);
         graph.paintEdges(g2d);
         paintStones(g2d);
