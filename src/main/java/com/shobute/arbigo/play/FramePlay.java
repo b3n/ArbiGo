@@ -39,6 +39,7 @@ public class FramePlay extends JInternalFrame {
 
     private Graph graph;
     private int numPlayers;
+    private int timeInterval;
     private Board board;
     private JPanel sideBar;
     private JMenu jMenu1;
@@ -50,14 +51,20 @@ public class FramePlay extends JInternalFrame {
      *
      * @param graph
      * @param numPlayers
+     * @param timeInterval
      */
-    public FramePlay(Graph graph, int numPlayers) {
+    public FramePlay(Graph graph, int numPlayers, int timeInterval) {
         this.graph = graph == null ? new Graph(9) : graph;
         this.numPlayers = numPlayers;
+        this.timeInterval = timeInterval;
 
         initComponents();
     }
 
+    public int getTimeInterval() {
+        return timeInterval;
+    }
+    
     public JPanel getSideBar() {
         return this.sideBar;
     }

@@ -35,12 +35,14 @@ public class Player {
     private Stone stone;
     private String name;
     private int time;
+    private int step;
 
-    public Player() {
+    public Player(int step) {
         String colour = Colour.getNextColour();
         this.name = colour;
         this.stone = new Stone(colour);
-        this.time = 30;
+        this.time = step;
+        this.step = step;
     }
 
     public Stone getStone() {
@@ -70,7 +72,7 @@ public class Player {
     }
 
     public void incrementTime() {
-        time += 30;
+        time += step;
     }
 
 }

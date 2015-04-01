@@ -74,7 +74,7 @@ public class FrameSetup extends javax.swing.JInternalFrame {
         jComboBoxPlayers = new javax.swing.JComboBox();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jTextFieldTime = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jCheckBox1 = new javax.swing.JCheckBox();
         jLabel5 = new javax.swing.JLabel();
@@ -107,7 +107,7 @@ public class FrameSetup extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Time");
 
-        jTextField1.setText("30");
+        jTextFieldTime.setText("30");
 
         jLabel4.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel4.setText("seconds added each move.");
@@ -142,7 +142,7 @@ public class FrameSetup extends javax.swing.JInternalFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jComboBoxPlayers, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING))
+                                    .addComponent(jTextFieldTime, javax.swing.GroupLayout.Alignment.LEADING))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel4))
                             .addComponent(jCheckBox1))
@@ -150,7 +150,7 @@ public class FrameSetup extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButtonDraw, jButtonPlay, jComboBoxPlayers, jTextField1});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButtonDraw, jButtonPlay, jComboBoxPlayers, jTextFieldTime});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -167,7 +167,7 @@ public class FrameSetup extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -190,7 +190,8 @@ public class FrameSetup extends javax.swing.JInternalFrame {
 
     private void jButtonPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPlayActionPerformed
         int numPlayers = Integer.parseInt(jComboBoxPlayers.getSelectedItem().toString());
-        JInternalFrame framePlay = new FramePlay(board, numPlayers);
+        int timeInterval = Integer.parseInt(jTextFieldTime.getText());
+        JInternalFrame framePlay = new FramePlay(board, numPlayers, timeInterval);
         desktop.add(framePlay);
         framePlay.setVisible(true);
     }//GEN-LAST:event_jButtonPlayActionPerformed
@@ -208,6 +209,6 @@ public class FrameSetup extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextFieldTime;
     // End of variables declaration//GEN-END:variables
 }

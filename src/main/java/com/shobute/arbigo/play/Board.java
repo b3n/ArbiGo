@@ -76,7 +76,7 @@ public class Board extends JPanel implements ActionListener {
         }
         players = new ArrayList<>(numPlayers);
         for (int i = 0; i < numPlayers; i++) {
-            players.add(new Player());
+            players.add(new Player(framePlay.getTimeInterval()));
         }
 
         //graph.removeColourings();
