@@ -29,7 +29,6 @@ import java.awt.Dimension;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JPanel;
 
 /**
  *

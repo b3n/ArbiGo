@@ -27,6 +27,7 @@ import com.shobute.arbigo.common.Colour;
 import com.shobute.arbigo.common.Stone;
 import com.shobute.arbigo.common.Graph;
 import com.shobute.arbigo.common.Node;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -61,6 +62,7 @@ public class Board extends JPanel implements ActionListener {
     private double scaleFactor;
     private FramePlay framePlay;
     private MouseAdapter listener;
+    private boolean gameOver;
 
     public Board(final FramePlay framePlay) {
         this.framePlay = framePlay;
@@ -139,12 +141,16 @@ public class Board extends JPanel implements ActionListener {
     public void resign() {
         if (players.size() > 1) {
             players.remove(turn);
-            turn = turn % players.size();
+              
             if (players.size() == 1) {
                 JOptionPane.showMessageDialog(this, getPlayer().getName() + " wins!");
                 timer.stop();
                 framePlay.getSideBar().getTimer().stop();
                 removeMouseListener(listener);
+                gameOver = true;
+                repaint();
+            } else {
+                turn = turn % players.size();
             }
         }
     }
@@ -253,7 +259,20 @@ public class Board extends JPanel implements ActionListener {
         graph.paintNodes(g2d);
         graph.paintEdges(g2d);
         paintStones(g2d);
-        paintHover(g2d);
+        
+        if (gameOver) {
+            Color color = getPlayer().getStone().getColour();
+            g2d.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 200));
+            // TODO: Do it like this, http://stackoverflow.com/questions/2244157/reverse-java-graphics2d-scaled-and-rotated-coordinates ?
+            Point origin = graph.getOrigin();
+            int r = graph.getShortestRadius();
+            g2d.translate(origin.x, origin.y);
+            g2d.translate(-1 * r, -1 * r);
+            g2d.scale(1/scaleFactor, 1/scaleFactor);
+            g2d.fillRect(0, 0, getWidth(), getHeight());
+        } else {
+            paintHover(g2d);
+        }
     }
 
     @Override
