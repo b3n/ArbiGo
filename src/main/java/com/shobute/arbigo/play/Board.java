@@ -149,6 +149,7 @@ public class Board extends JPanel implements ActionListener {
                 removeMouseListener(listener);
                 gameOver = true;
                 repaint();
+                framePlay.getSideBar().disableResign();
             } else {
                 turn = turn % players.size();
             }

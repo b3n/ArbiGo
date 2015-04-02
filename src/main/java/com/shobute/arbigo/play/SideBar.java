@@ -41,14 +41,15 @@ import javax.swing.Timer;
  */
 public class SideBar extends JPanel implements ActionListener {
 
-    Board board;
-    Timer timer;
+    private Board board;
+    private Timer timer;
+    private JButton jButtonResign;
 
     public SideBar(FramePlay framePlay) {
         this.board = framePlay.getBoard();
         setLayout(new BorderLayout());
         
-        JButton jButtonResign = new JButton();
+        jButtonResign = new JButton();
         jButtonResign.setText("Resign");
         add(jButtonResign, BorderLayout.SOUTH);
         jButtonResign.addActionListener(new java.awt.event.ActionListener() {
@@ -90,6 +91,10 @@ public class SideBar extends JPanel implements ActionListener {
     
     public Timer getTimer() {
         return timer;
+    }
+    
+    public void disableResign() {
+        jButtonResign.setEnabled(false);
     }
 
 }
