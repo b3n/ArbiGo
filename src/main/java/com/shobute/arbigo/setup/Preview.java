@@ -55,6 +55,8 @@ public class Preview extends JPanel  {
                 }
             }
         });
+        
+        setGraph(new Graph(9));
     }
     
     private void setscaleFactor() {
