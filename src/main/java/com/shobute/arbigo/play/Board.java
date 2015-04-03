@@ -263,7 +263,8 @@ public class Board extends JPanel implements ActionListener {
         
         if (gameOver) {
             Color color = getPlayer().getStone().getColour();
-            g2d.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 200));
+            g2d.setColor(new Color(color.getRed(), color.getGreen(),
+                    color.getBlue(), 200));
             // TODO: Do it like this, http://stackoverflow.com/questions/2244157/reverse-java-graphics2d-scaled-and-rotated-coordinates ?
             Point origin = graph.getOrigin();
             int r = graph.getShortestRadius();

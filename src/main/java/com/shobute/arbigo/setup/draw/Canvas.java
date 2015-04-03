@@ -43,18 +43,27 @@ import com.shobute.arbigo.setup.draw.state.*;
 public class Canvas extends JPanel implements ActionListener {
 
     private Graphics2D g2d;
-    private Graph graph = new Graph();
-    private final Set<Node> selectedNodes = new HashSet<>();
-    private final Set<Point> copied = new HashSet<>();
-    private boolean grid = true;
-    private final Color defaultColor = Color.BLACK;
+    private Graph graph;
+    private final Set<Node> selectedNodes;
+    private final Set<Point> copied;
+    private boolean grid;
+    private final Color defaultColor;
     private State state;
     private final Timer timer;
-    private final ArrayList<Graph> history = new ArrayList<>();
-    private int historyIndex = 0;
-    private ArrayList<Line2D.Float> gridLines = null;
+    private final ArrayList<Graph> history;
+    private int historyIndex;
+    private ArrayList<Line2D.Float> gridLines;
 
+    /**
+     * The canvas to draw a graph on.
+     */
     public Canvas() {
+        history = new ArrayList<>();
+        defaultColor = Color.BLACK;
+        grid = true;
+        copied = new HashSet<>();
+        selectedNodes = new HashSet<>();
+        graph = new Graph();
         state = new SelectState(this);
 
         MouseAdapter listener = new MouseAdapter() {
@@ -122,6 +131,12 @@ public class Canvas extends JPanel implements ActionListener {
         g2d.setColor(defaultColor);
     }
 
+    /**
+     * Invoked by Swing to draw components. Applications should not invoke paint
+     * directly, but should instead use the repaint method to schedule the
+     * component for redrawing.
+     * @param g
+     */
     @Override
     public void paint(Graphics g) {
         super.paint(g); // clears the graphic
@@ -138,6 +153,9 @@ public class Canvas extends JPanel implements ActionListener {
         state.draw(g2d);
     }
 
+    /**
+     * Delete the selected nodes.
+     */
     public void delete() {
         for (Node selectedNode : selectedNodes) {
             graph.removeNode(selectedNode);
@@ -145,6 +163,9 @@ public class Canvas extends JPanel implements ActionListener {
         checkpoint();
     }
 
+    /**
+     * Copy the selected nodes.
+     */
     public void copy() {
         copied.clear();
         for (Node selectedNode : selectedNodes) {
@@ -152,6 +173,9 @@ public class Canvas extends JPanel implements ActionListener {
         }
     }
 
+    /**
+     * Paste the copied nodes.
+     */
     public void paste() {
         Node node;
         selectedNodes.clear();
@@ -164,10 +188,16 @@ public class Canvas extends JPanel implements ActionListener {
         checkpoint();
     }
 
+    /**
+     * Create a checkpoint in history that can be undoed to.
+     */
     public void checkpoint() {
         history.add(++historyIndex, (Graph) SerializationUtils.clone(graph));
     }
 
+    /**
+     * Revert back to the previous checkpoint in history.
+     */
     public void undo() {
         if (historyIndex > 0) {
             graph = history.get(--historyIndex);
@@ -175,6 +205,9 @@ public class Canvas extends JPanel implements ActionListener {
         selectedNodes.clear();
     }
 
+    /**
+     * Revert back to the next checkpoint in history.
+     */
     public void redo() {
         if (historyIndex < history.size() - 1) {
             graph = history.get(++historyIndex);
@@ -182,36 +215,67 @@ public class Canvas extends JPanel implements ActionListener {
         selectedNodes.clear();
     }
 
+    /**
+     * Set the current state. Used by all mouse listeners.
+     * @param state The state to set.
+     */
     public void setState(State state) {
         this.state = state;
     }
 
+    /**
+     * Get the nodes which have been selected.
+     * @return A set of nodes.
+     */
     public Set<Node> getSelectedNodes() {
         return selectedNodes;
     }
 
+    /**
+     * Get the graph which has been drawn.
+     * @return A graph.
+     */
     public Graph getGraph() {
         return this.graph;
     }
 
-    public void setGraph(Graph board) {
-        this.graph = board;
+    /**
+     * Set the graph.
+     * @param graph The graph to set.
+     */
+    public void setGraph(Graph graph) {
+        this.graph = graph;
         checkpoint();
     }
 
+    /**
+     * Set the grid and "snap to grid" functionality.
+     * @param enable True to enable, false to disable.
+     */
     public void setGrid(boolean enable) {
         this.grid = enable;
     }
 
+    /**
+     * Get the grid and "snap to grid" functionality.
+     * @return True if enabled, false if disabled.
+     */
     public boolean getGrid() {
         return grid;
     }
     
+    /**
+     * Unselect any selected nodes.
+     */
     public void unSelectNodes() {
         for (Node node : getSelectedNodes()) node.setColour(Color.BLACK);
         getSelectedNodes().clear();
     }
 
+    /**
+     * Action method for Timer to repaint the image, do not call this directly.
+     * @param ae
+     */
     @Override
     public void actionPerformed(ActionEvent ae) {
         repaint();
