@@ -25,6 +25,7 @@ package com.shobute.arbigo.play;
 
 import com.shobute.arbigo.common.Graph;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
@@ -100,10 +101,10 @@ public class FramePlay extends JInternalFrame {
         jMenuBar1.add(jMenu2);
 
         //setJMenuBar(jMenuBar1);
-        board.setBackground(new java.awt.Color(255, 255, 255));
+        board.setBackground(new Color(255, 255, 255));
         board.setPreferredSize(new Dimension(400, 400));
 
-        sideBar.setBackground(new java.awt.Color(200, 200, 200));
+        sideBar.setBackground(new Color(200, 200, 200));
         sideBar.setPreferredSize(new Dimension(150, 400));
 
         add(board, BorderLayout.CENTER);

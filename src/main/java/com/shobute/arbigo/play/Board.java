@@ -137,21 +137,18 @@ public class Board extends JPanel implements ActionListener {
     }
 
     public void resign() {
-        if (players.size() > 1) {
-            players.remove(turn);
+        players.remove(turn);
+        turn = turn % players.size();
 
-            if (players.size() == 1) {
-                JOptionPane.showMessageDialog(this,
-                        getPlayer().getName() + " wins!");
-                timer.stop();
-                framePlay.getSideBar().getTimer().stop();
-                removeMouseListener(listener);
-                gameOver = true;
-                repaint();
-                framePlay.getSideBar().disableResign();
-            } else {
-                turn = turn % players.size();
-            }
+        if (players.size() == 1) {
+            JOptionPane.showMessageDialog(this,
+                    getPlayer().getName() + " wins!");
+            timer.stop();
+            framePlay.getSideBar().getTimer().stop();
+            removeMouseListener(listener);
+            gameOver = true;
+            repaint();
+            framePlay.getSideBar().disableResign();
         }
     }
 
@@ -264,7 +261,7 @@ public class Board extends JPanel implements ActionListener {
             Color color = getPlayer().getStone().getColour();
             g2d.setColor(new Color(color.getRed(), color.getGreen(),
                     color.getBlue(), 200));
-            // TODO: Do it like this, http://stackoverflow.com/questions/2244157/reverse-java-graphics2d-scaled-and-rotated-coordinates ?
+            // TODO: Do it like this, http://stackoverflow.com/a/2244285/3780738?
             Point origin = graph.getOrigin();
             int r = graph.getShortestRadius();
             g2d.translate(origin.x, origin.y);
