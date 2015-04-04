@@ -83,8 +83,6 @@ public class Board extends JPanel implements ActionListener {
             players.add(new Player(framePlay.getTimeInterval()));
         }
 
-        //graph.setColour(new Color(150, 150, 150));
-
         // Start with blank state in history (important that history.size() > 0).
         state = new HashMap<>();
         history = new ArrayList<>(100); // 100 moves will be common
@@ -137,13 +135,14 @@ public class Board extends JPanel implements ActionListener {
     public Player getPlayer() {
         return players.get(turn);
     }
-    
+
     public void resign() {
         if (players.size() > 1) {
             players.remove(turn);
-              
+
             if (players.size() == 1) {
-                JOptionPane.showMessageDialog(this, getPlayer().getName() + " wins!");
+                JOptionPane.showMessageDialog(this,
+                        getPlayer().getName() + " wins!");
                 timer.stop();
                 framePlay.getSideBar().getTimer().stop();
                 removeMouseListener(listener);
@@ -255,12 +254,12 @@ public class Board extends JPanel implements ActionListener {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
-        
+
         graph.scale(g2d, scaleFactor);
         graph.paintNodes(g2d);
         graph.paintEdges(g2d);
         paintStones(g2d);
-        
+
         if (gameOver) {
             Color color = getPlayer().getStone().getColour();
             g2d.setColor(new Color(color.getRed(), color.getGreen(),
@@ -270,7 +269,7 @@ public class Board extends JPanel implements ActionListener {
             int r = graph.getShortestRadius();
             g2d.translate(origin.x, origin.y);
             g2d.translate(-1 * r, -1 * r);
-            g2d.scale(1/scaleFactor, 1/scaleFactor);
+            g2d.scale(1 / scaleFactor, 1 / scaleFactor);
             g2d.fillRect(0, 0, getWidth(), getHeight());
         } else {
             paintHover(g2d);

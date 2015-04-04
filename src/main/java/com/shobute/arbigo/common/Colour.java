@@ -51,7 +51,7 @@ public class Colour {
         if (id == colours.length) {
             id = 0;
         }
-        
+
         return colours[id++];
     }
 

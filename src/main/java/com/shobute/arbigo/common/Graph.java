@@ -329,7 +329,7 @@ public class Graph implements Serializable {
         }
         return new Point(x, y);
     }
-    
+
     public void scale(Graphics2D g2d, double scaleFactor) {
         int r = getShortestRadius();
         Point origin = getOrigin();

@@ -60,8 +60,6 @@ public class Node extends Point implements Serializable {
         this.colour = colour;
     }
 
-    
-    
     /**
      * Get all Nodes adjacent to this.
      *

@@ -48,7 +48,7 @@ public class SideBar extends JPanel implements ActionListener {
     public SideBar(FramePlay framePlay) {
         this.board = framePlay.getBoard();
         setLayout(new BorderLayout());
-        
+
         jButtonResign = new JButton();
         jButtonResign.setText("Resign");
         add(jButtonResign, BorderLayout.SOUTH);
@@ -56,13 +56,12 @@ public class SideBar extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 int option = JOptionPane.showConfirmDialog(board, "Are you sure?",
-                    "Confirm", JOptionPane.YES_NO_OPTION);
+                        "Confirm", JOptionPane.YES_NO_OPTION);
                 if (option == YES_OPTION) {
                     board.resign();
                 }
             }
         });
-
 
         timer = new Timer(1000, this);
         timer.start();
@@ -85,14 +84,16 @@ public class SideBar extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         board.getPlayer().decrementTime();
-        if (board.getPlayer().getTime() == 0) board.resign();
+        if (board.getPlayer().getTime() == 0) {
+            board.resign();
+        }
         repaint();
     }
-    
+
     public Timer getTimer() {
         return timer;
     }
-    
+
     public void disableResign() {
         jButtonResign.setEnabled(false);
     }

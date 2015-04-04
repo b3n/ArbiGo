@@ -78,7 +78,7 @@ public class SelectState extends MouseAdapter implements State {
             }
         }
     }
-    
+
     @Override
     public void mousePressed(MouseEvent me) {
         point = me.getPoint();

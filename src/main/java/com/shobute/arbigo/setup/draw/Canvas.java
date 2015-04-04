@@ -25,16 +25,26 @@ package com.shobute.arbigo.setup.draw;
 
 import com.shobute.arbigo.common.Node;
 import com.shobute.arbigo.common.Graph;
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.geom.*;
+import com.shobute.arbigo.setup.draw.state.SelectState;
+import com.shobute.arbigo.setup.draw.state.State;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import org.apache.commons.lang.SerializationUtils;
-import com.shobute.arbigo.setup.draw.state.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Line2D;
 
 /**
  *
@@ -100,7 +110,7 @@ public class Canvas extends JPanel implements ActionListener {
         timer.start();
 
         history.add(new Graph());
-        
+
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -108,7 +118,7 @@ public class Canvas extends JPanel implements ActionListener {
             }
         });
     }
-    
+
     private void constructGrid() {
         int distance = graph.getDiameter() * 2;
         gridLines = new ArrayList<>();
@@ -135,6 +145,7 @@ public class Canvas extends JPanel implements ActionListener {
      * Invoked by Swing to draw components. Applications should not invoke paint
      * directly, but should instead use the repaint method to schedule the
      * component for redrawing.
+     *
      * @param g
      */
     @Override
@@ -145,7 +156,7 @@ public class Canvas extends JPanel implements ActionListener {
         if (grid) {
             paintGrid();
         }
-        
+
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         graph.paintNodes(g2d);
@@ -217,6 +228,7 @@ public class Canvas extends JPanel implements ActionListener {
 
     /**
      * Set the current state. Used by all mouse listeners.
+     *
      * @param state The state to set.
      */
     public void setState(State state) {
@@ -225,6 +237,7 @@ public class Canvas extends JPanel implements ActionListener {
 
     /**
      * Get the nodes which have been selected.
+     *
      * @return A set of nodes.
      */
     public Set<Node> getSelectedNodes() {
@@ -233,6 +246,7 @@ public class Canvas extends JPanel implements ActionListener {
 
     /**
      * Get the graph which has been drawn.
+     *
      * @return A graph.
      */
     public Graph getGraph() {
@@ -241,6 +255,7 @@ public class Canvas extends JPanel implements ActionListener {
 
     /**
      * Set the graph.
+     *
      * @param graph The graph to set.
      */
     public void setGraph(Graph graph) {
@@ -250,6 +265,7 @@ public class Canvas extends JPanel implements ActionListener {
 
     /**
      * Set the grid and "snap to grid" functionality.
+     *
      * @param enable True to enable, false to disable.
      */
     public void setGrid(boolean enable) {
@@ -258,22 +274,26 @@ public class Canvas extends JPanel implements ActionListener {
 
     /**
      * Get the grid and "snap to grid" functionality.
+     *
      * @return True if enabled, false if disabled.
      */
     public boolean getGrid() {
         return grid;
     }
-    
+
     /**
      * Unselect any selected nodes.
      */
     public void unSelectNodes() {
-        for (Node node : getSelectedNodes()) node.setColour(Color.BLACK);
+        for (Node node : getSelectedNodes()) {
+            node.setColour(Color.BLACK);
+        }
         getSelectedNodes().clear();
     }
 
     /**
      * Action method for Timer to repaint the image, do not call this directly.
+     *
      * @param ae
      */
     @Override

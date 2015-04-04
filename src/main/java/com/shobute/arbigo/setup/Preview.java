@@ -37,13 +37,13 @@ import javax.swing.JPanel;
  *
  * @author Ben Lloyd
  */
-public class Preview extends JPanel  {
-    
+public class Preview extends JPanel {
+
     private Graph graph;
     private double scaleFactor;
     private int r;
     private Dimension graphSize;
-    
+
     public Preview() {
         scaleFactor = 1;
         addComponentListener(new ComponentAdapter() {
@@ -55,10 +55,10 @@ public class Preview extends JPanel  {
                 }
             }
         });
-        
+
         setGraph(new Graph(9));
     }
-    
+
     private void setscaleFactor() {
         double cWidth = getSize().getWidth();
         double cHeight = getSize().getHeight();
@@ -75,18 +75,18 @@ public class Preview extends JPanel  {
         setscaleFactor();
         repaint();
     }
-    
+
     @Override
     public void paint(Graphics g) {
         super.paint(g); // clears the graphic
-        Graphics2D g2d = (Graphics2D) g;      
+        Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
-        
+
         if (graph != null) {
             g2d.setColor(Color.GRAY);
             g2d.drawString("Board preview:", 10, 20);
-            
+
             graph.scale(g2d, scaleFactor);
             graph.paintEdges(g2d);
             graph.paintNodes(g2d);
@@ -95,5 +95,5 @@ public class Preview extends JPanel  {
             g2d.drawString("No board loaded:", 10, 20);
         }
     }
-    
+
 }

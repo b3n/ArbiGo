@@ -63,7 +63,7 @@ public class FramePlay extends JInternalFrame {
     public int getTimeInterval() {
         return timeInterval;
     }
-    
+
     public SideBar getSideBar() {
         return this.sideBar;
     }
@@ -100,7 +100,6 @@ public class FramePlay extends JInternalFrame {
         jMenuBar1.add(jMenu2);
 
         //setJMenuBar(jMenuBar1);
-
         board.setBackground(new java.awt.Color(255, 255, 255));
         board.setPreferredSize(new Dimension(400, 400));
 
