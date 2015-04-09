@@ -56,7 +56,7 @@ public class Board extends JPanel implements ActionListener {
     private final Timer timer;
     private ArrayList<Player> players;
     private int turn;
-    private Node hoverNode;
+    private Node hoverNode, validHover;
     private final ArrayList<HashMap<Node, Stone>> history;
     private HashMap<Node, Stone> state;
     private double scaleFactor;
@@ -99,6 +99,7 @@ public class Board extends JPanel implements ActionListener {
                     getPlayer().incrementTime();
                     turn = (turn + 1) % players.size();
                     framePlay.getSideBar().repaint();
+                    validHover = null;
                 }
             }
 
@@ -227,8 +228,10 @@ public class Board extends JPanel implements ActionListener {
     }
 
     private void paintHover(Graphics2D g2d) {
-        // TODO: No need to recompute unless hoverNode is different from last time.
-        if (playMove(hoverNode)) {
+        if (hoverNode != null && hoverNode == validHover || playMove(hoverNode)) {
+            // Set this so playMove() does not recompute unnecessarily.
+            validHover = hoverNode;
+            
             int r = graph.getShortestRadius();
             getPlayer().getStone().paint(g2d, hoverNode.x, hoverNode.y, r, 50);
         }

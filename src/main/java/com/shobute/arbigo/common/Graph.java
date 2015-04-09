@@ -43,7 +43,7 @@ import java.util.Set;
 public class Graph implements Serializable {
 
     private final Set<Node> nodes;
-    private final int diameter;
+    private final int nodeSize;
     private Color colour;
 
     /**
@@ -51,7 +51,7 @@ public class Graph implements Serializable {
      */
     public Graph() {
         nodes = new HashSet<>();
-        diameter = 10;
+        nodeSize = 10;
         colour = Color.BLACK;
     }
 
@@ -260,7 +260,7 @@ public class Graph implements Serializable {
      * @return True if the node was added, false otherwise.
      */
     public Boolean addNode(Point point) {
-        if (this.nodeAt(point, diameter) == null) {
+        if (this.nodeAt(point, nodeSize) == null) {
             return addNode(new Node(point));
         }
         return false;
@@ -283,7 +283,6 @@ public class Graph implements Serializable {
      * @return True if the node was removed, false otherwise.
      */
     public Boolean removeNode(Node nodeToRemove) {
-        // TODO: Is there a better data structure to make this faster?
         for (Node node : nodes) {
             node.removeAdjacentNode(nodeToRemove);
         }
@@ -300,12 +299,12 @@ public class Graph implements Serializable {
     }
 
     /**
-     * Get the graph's diameter.
+     * Get the graph's node size.
      *
      * @return The graph's diameter.
      */
-    public int getDiameter() {  // TODO: Rename?
-        return diameter;
+    public int getNodeSize() {
+        return nodeSize;
     }
 
     /**
@@ -317,15 +316,15 @@ public class Graph implements Serializable {
     public Point closestOnGrid(Point point) {
         int x = point.x;
         int y = point.y;
-        int xmod = x % (getDiameter() * 2);
-        int ymod = y % (getDiameter() * 2);
+        int xmod = x % (getNodeSize() * 2);
+        int ymod = y % (getNodeSize() * 2);
         x -= xmod;
         y -= ymod;
-        if (xmod > getDiameter()) {
-            x += getDiameter() * 2;
+        if (xmod > getNodeSize()) {
+            x += getNodeSize() * 2;
         }
-        if (ymod > getDiameter()) {
-            y += getDiameter() * 2;
+        if (ymod > getNodeSize()) {
+            y += getNodeSize() * 2;
         }
         return new Point(x, y);
     }
@@ -344,7 +343,7 @@ public class Graph implements Serializable {
      * @param g2d Graphics2D context.
      */
     public void paintNodes(Graphics2D g2d) {
-        int z = getDiameter();
+        int z = getNodeSize();
         for (Node node : getNodes()) {
             g2d.setColor(node.getColour());
             g2d.fill(new Ellipse2D.Float(node.x - z / 2, node.y - z / 2, z, z));

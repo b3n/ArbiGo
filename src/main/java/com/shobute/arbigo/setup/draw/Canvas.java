@@ -120,7 +120,7 @@ public class Canvas extends JPanel implements ActionListener {
     }
 
     private void constructGrid() {
-        int distance = graph.getDiameter() * 2;
+        int distance = graph.getNodeSize() * 2;
         gridLines = new ArrayList<>();
         for (int x = 0; x < this.getWidth(); x += distance) {
             gridLines.add(new Line2D.Float(x, 0, x, this.getHeight()));
@@ -191,7 +191,7 @@ public class Canvas extends JPanel implements ActionListener {
         Node node;
         selectedNodes.clear();
         for (Point copiedPoint : copied) {
-            copiedPoint.translate(graph.getDiameter(), graph.getDiameter());
+            copiedPoint.translate(graph.getNodeSize(), graph.getNodeSize());
             node = new Node(copiedPoint);
             selectedNodes.add(node);
             graph.addNode(node);

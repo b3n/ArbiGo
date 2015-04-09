@@ -50,7 +50,7 @@ public class GraphTest {
     public void setUp() {
         // Constructs a 3x3 grid
         graph = new Graph(3);
-        diameter = graph.getDiameter();
+        diameter = graph.getNodeSize();
     }
 
     @Test
@@ -82,7 +82,7 @@ public class GraphTest {
 
     @Test
     public void testClosestOnGrid() {
-        int d = graph.getDiameter();
+        int d = graph.getNodeSize();
         int g = d * 2;    // Grid width is twice the diameter.
         Point point = new Point(g, g);
 

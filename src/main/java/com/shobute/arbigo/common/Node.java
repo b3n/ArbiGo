@@ -117,8 +117,12 @@ public class Node extends Point implements Serializable {
         };
     }
 
+    /**
+     * Get this Node's hash code. All Nodes have a unique hash code.
+     * @return This Node's hash code.
+     */
     @Override
-    public int hashCode() { // TODO: fix this terrible hashcode
+    public int hashCode() {
         return hashCode;
     }
 
