@@ -54,10 +54,13 @@ public class GUI extends JFrame {
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane, GroupLayout.DEFAULT_SIZE, 644, Short.MAX_VALUE)
+        layout.setHorizontalGroup(layout.createParallelGroup(
+                GroupLayout.Alignment.LEADING)
+            .addComponent(jDesktopPane, GroupLayout.DEFAULT_SIZE, 644,
+                    Short.MAX_VALUE)
         );
-        layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        layout.setVerticalGroup(layout.createParallelGroup(
+                GroupLayout.Alignment.LEADING)
             .addComponent(jDesktopPane, GroupLayout.Alignment.TRAILING,
                     GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
         );

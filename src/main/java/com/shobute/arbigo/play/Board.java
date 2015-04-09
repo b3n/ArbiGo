@@ -230,7 +230,7 @@ public class Board extends JPanel implements ActionListener {
         // TODO: No need to recompute unless hoverNode is different from last time.
         if (playMove(hoverNode)) {
             int r = graph.getShortestRadius();
-            getPlayer().getStone().paint(g2d, hoverNode.x, hoverNode.y, r, 99);
+            getPlayer().getStone().paint(g2d, hoverNode.x, hoverNode.y, r, 50);
         }
     }
 
@@ -240,7 +240,7 @@ public class Board extends JPanel implements ActionListener {
             stone = history.get(history.size() - 1).get(node);
             if (stone != null) {
                 int r = graph.getShortestRadius();
-                stone.paint(g2d, node.x, node.y, r);
+                stone.paint(g2d, node.x, node.y, r, 200);
             }
         }
     }

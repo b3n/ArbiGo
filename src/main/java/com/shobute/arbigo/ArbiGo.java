@@ -31,7 +31,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
- * @author Ben Lloyd (12238199)
+ * @author Ben Lloyd
  */
 public class ArbiGo {
 
