@@ -41,11 +41,6 @@ public class FrameSetup extends javax.swing.JInternalFrame {
     private JDesktopPane desktop;
     private Graph graph;
 
-    @Deprecated
-    public FrameSetup() {
-        initComponents();
-    }
-
     /**
      * Creates new form FrameSetup
      *
@@ -74,11 +69,11 @@ public class FrameSetup extends javax.swing.JInternalFrame {
         jButtonDraw = new javax.swing.JButton();
         jButtonPlay = new javax.swing.JButton();
         jButtonLoad = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jLabelBoard = new javax.swing.JLabel();
+        jLabelPlayers = new javax.swing.JLabel();
         jComboBoxPlayers = new javax.swing.JComboBox();
         jSeparator1 = new javax.swing.JSeparator();
-        jLabel3 = new javax.swing.JLabel();
+        jLabelTime = new javax.swing.JLabel();
         jTextFieldTime = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         preview = new com.shobute.arbigo.setup.Preview();
@@ -111,15 +106,20 @@ public class FrameSetup extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel1.setText("Board");
+        jLabelBoard.setText("Board");
 
-        jLabel2.setText("Players");
+        jLabelPlayers.setText("Players");
 
         jComboBoxPlayers.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2", "3", "4", "5", "6", "7", "8", "9" }));
 
-        jLabel3.setText("Time");
+        jLabelTime.setText("Time");
 
         jTextFieldTime.setText("30");
+        jTextFieldTime.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldTimeActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel4.setText("seconds added each move.");
@@ -144,7 +144,7 @@ public class FrameSetup extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(preview, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
+                    .addComponent(preview, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jSeparator1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -152,15 +152,15 @@ public class FrameSetup extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
+                                .addComponent(jLabelBoard)
                                 .addGap(23, 23, 23)
                                 .addComponent(jButtonDraw, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButtonLoad, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3))
+                                    .addComponent(jLabelPlayers)
+                                    .addComponent(jLabelTime))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jComboBoxPlayers, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -180,16 +180,16 @@ public class FrameSetup extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonDraw)
                     .addComponent(jButtonLoad)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabelBoard))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(preview, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
+                .addComponent(preview, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
+                    .addComponent(jLabelPlayers)
                     .addComponent(jComboBoxPlayers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
+                    .addComponent(jLabelTime)
                     .addComponent(jTextFieldTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addGap(18, 18, 18)
@@ -210,9 +210,7 @@ public class FrameSetup extends javax.swing.JInternalFrame {
     private void jButtonPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPlayActionPerformed
         int numPlayers = Integer.parseInt(jComboBoxPlayers.getSelectedItem().toString());
         int timeInterval = Integer.parseInt(jTextFieldTime.getText());
-        JInternalFrame framePlay = new FramePlay(graph, numPlayers, timeInterval);
-        desktop.add(framePlay);
-        framePlay.setVisible(true);
+        desktop.add(new FramePlay(graph, numPlayers, timeInterval));
     }//GEN-LAST:event_jButtonPlayActionPerformed
 
     private void jButtonLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoadActionPerformed
@@ -221,13 +219,17 @@ public class FrameSetup extends javax.swing.JInternalFrame {
             String file = jFileChooser.getSelectedFile().getAbsoluteFile().toString();
             try {
                 ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
-                Graph graph = (Graph) in.readObject();
-                setBoard(graph);
+                Graph newGraph = (Graph) in.readObject();
+                setBoard(newGraph);
             } catch (IOException | ClassNotFoundException ex) {
                 ex.printStackTrace();
             }
         }
     }//GEN-LAST:event_jButtonLoadActionPerformed
+
+    private void jTextFieldTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTimeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldTimeActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.shobute.arbigo.setup.draw.FrameDraw frameDraw;
@@ -235,10 +237,10 @@ public class FrameSetup extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButtonLoad;
     private javax.swing.JButton jButtonPlay;
     private javax.swing.JComboBox jComboBoxPlayers;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabelBoard;
+    private javax.swing.JLabel jLabelPlayers;
+    private javax.swing.JLabel jLabelTime;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField jTextFieldTime;
     private com.shobute.arbigo.setup.Preview preview;

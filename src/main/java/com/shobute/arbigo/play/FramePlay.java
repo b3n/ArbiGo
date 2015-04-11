@@ -23,13 +23,15 @@
  */
 package com.shobute.arbigo.play;
 
+import com.shobute.arbigo.common.Colour;
 import com.shobute.arbigo.common.Graph;
+import com.shobute.arbigo.common.Stone;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import javax.swing.JInternalFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -38,13 +40,11 @@ import javax.swing.JMenuBar;
 public class FramePlay extends JInternalFrame {
 
     private Graph graph;
-    private int numPlayers;
     private int timeInterval;
     private Board board;
     private SideBar sideBar;
-    private JMenu jMenu1;
-    private JMenu jMenu2;
-    private JMenuBar jMenuBar1;
+    private ArrayList<Player> players;
+    private int turn;
 
     /**
      * Creates new form FamePlay
@@ -55,52 +55,26 @@ public class FramePlay extends JInternalFrame {
      */
     public FramePlay(Graph graph, int numPlayers, int timeInterval) {
         this.graph = graph == null ? new Graph(9) : graph;
-        this.numPlayers = numPlayers;
         this.timeInterval = timeInterval;
+        this.board = new Board(this);
+        this.sideBar = new SideBar(this);
+        
+        // Initate players
+        if (numPlayers < 2 || numPlayers > Colour.colours.length) {
+            numPlayers = 2;
+        }
+        players = new ArrayList<>(numPlayers);
+        for (int i = 0; i < numPlayers; i++) {
+            players.add(new Player(timeInterval));
+        }
 
-        initComponents();
-    }
-
-    public int getTimeInterval() {
-        return timeInterval;
-    }
-
-    public SideBar getSideBar() {
-        return this.sideBar;
-    }
-
-    public Board getBoard() {
-        return this.board;
-    }
-
-    public Graph getGraph() {
-        return this.graph;
-    }
-
-    public int getNumPlayers() {
-        return this.numPlayers;
-    }
-
-    private void initComponents() {
-        board = new Board(this);
-        sideBar = new SideBar(this);
-
-        jMenuBar1 = new JMenuBar();
-        jMenu1 = new JMenu();
-        jMenu2 = new JMenu();
-
+        setVisible(true);
         setSize(100, 100);
         setResizable(true);
         setMaximizable(true);
         setClosable(true);
+        setTitle("Play Game");
 
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
-
-        //setJMenuBar(jMenuBar1);
         board.setBackground(new Color(255, 255, 255));
         board.setPreferredSize(new Dimension(400, 400));
 
@@ -111,6 +85,40 @@ public class FramePlay extends JInternalFrame {
         add(sideBar, BorderLayout.EAST);
 
         pack();
+    }
+
+    public int getTimeInterval() {
+        return timeInterval;
+    }
+
+    public Graph getGraph() {
+        return this.graph;
+    }
+
+    public Player getPlayer() {
+        return players.get(turn);
+    }
+    
+    public void resign() {
+        players.remove(turn);
+        turn = turn % players.size();
+
+        if (players.size() == 1) {
+            JOptionPane.showMessageDialog(this,
+                    getPlayer().getName() + " wins!");
+            board.gameOver();
+            sideBar.gameOver();
+        }
+    }
+    
+    public Stone getStone() {
+        return getPlayer().getStone();
+    }
+    
+    public void nextTurn() {
+        getPlayer().incrementTime();
+        turn = (turn + 1) % players.size();
+        sideBar.repaint();
     }
 
 }

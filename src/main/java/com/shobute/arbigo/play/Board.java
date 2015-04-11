@@ -42,7 +42,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -54,8 +53,6 @@ public class Board extends JPanel implements ActionListener {
 
     private Graph graph;
     private final Timer timer;
-    private ArrayList<Player> players;
-    private int turn;
     private Node hoverNode, validHover;
     private final ArrayList<HashMap<Node, Stone>> history;
     private HashMap<Node, Stone> state;
@@ -72,17 +69,6 @@ public class Board extends JPanel implements ActionListener {
             graph = new Graph(9);
         }
 
-        int numPlayers = framePlay.getNumPlayers();
-
-        // Initate players
-        if (numPlayers < 2 || numPlayers > Colour.colours.length) {
-            numPlayers = 2;
-        }
-        players = new ArrayList<>(numPlayers);
-        for (int i = 0; i < numPlayers; i++) {
-            players.add(new Player(framePlay.getTimeInterval()));
-        }
-
         // Start with blank state in history (important that history.size() > 0).
         state = new HashMap<>();
         history = new ArrayList<>(100); // 100 moves will be common
@@ -96,9 +82,7 @@ public class Board extends JPanel implements ActionListener {
                 Node node = graph.nodeAt(scalePoint(me.getPoint()), radius);
                 if (playMove(node)) {
                     history.add(state);
-                    getPlayer().incrementTime();
-                    turn = (turn + 1) % players.size();
-                    framePlay.getSideBar().repaint();
+                    framePlay.nextTurn();
                     validHover = null;
                 }
             }
@@ -133,26 +117,6 @@ public class Board extends JPanel implements ActionListener {
 
     }
 
-    public Player getPlayer() {
-        return players.get(turn);
-    }
-
-    public void resign() {
-        players.remove(turn);
-        turn = turn % players.size();
-
-        if (players.size() == 1) {
-            JOptionPane.showMessageDialog(this,
-                    getPlayer().getName() + " wins!");
-            timer.stop();
-            framePlay.getSideBar().getTimer().stop();
-            removeMouseListener(listener);
-            gameOver = true;
-            repaint();
-            framePlay.getSideBar().disableResign();
-        }
-    }
-
     private Point scalePoint(Point point) {
         int r = graph.getShortestRadius();
         Point origin = graph.getOrigin();
@@ -168,7 +132,7 @@ public class Board extends JPanel implements ActionListener {
             return false;
         }
 
-        state.put(node, getPlayer().getStone());
+        state.put(node, framePlay.getStone());
         removeCaptured(node);
 
         for (HashMap<Node, Stone> prevState : history) {
@@ -233,7 +197,7 @@ public class Board extends JPanel implements ActionListener {
             validHover = hoverNode;
             
             int r = graph.getShortestRadius();
-            getPlayer().getStone().paint(g2d, hoverNode.x, hoverNode.y, r, 50);
+            framePlay.getStone().paint(g2d, hoverNode.x, hoverNode.y, r, 50);
         }
     }
 
@@ -243,9 +207,16 @@ public class Board extends JPanel implements ActionListener {
             stone = history.get(history.size() - 1).get(node);
             if (stone != null) {
                 int r = graph.getShortestRadius();
-                stone.paint(g2d, node.x, node.y, r, 200);
+                stone.paint(g2d, node.x, node.y, r, 210);
             }
         }
+    }
+    
+    public void gameOver() {
+        timer.stop();
+        removeMouseListener(listener);
+        gameOver = true;
+        repaint();
     }
 
     @Override
@@ -261,7 +232,7 @@ public class Board extends JPanel implements ActionListener {
         paintStones(g2d);
 
         if (gameOver) {
-            Color color = getPlayer().getStone().getColour();
+            Color color = framePlay.getStone().getColour();
             g2d.setColor(new Color(color.getRed(), color.getGreen(),
                     color.getBlue(), 200));
             // TODO: Do it like this, http://stackoverflow.com/a/2244285/3780738?

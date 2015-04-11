@@ -41,12 +41,13 @@ import javax.swing.Timer;
  */
 public class SideBar extends JPanel implements ActionListener {
 
-    private Board board;
     private Timer timer;
     private JButton jButtonResign;
+    private FramePlay framePlay;
 
-    public SideBar(FramePlay framePlay) {
-        this.board = framePlay.getBoard();
+    public SideBar(final FramePlay framePlay) {
+        this.framePlay = framePlay;
+        
         setLayout(new BorderLayout());
 
         jButtonResign = new JButton();
@@ -55,10 +56,10 @@ public class SideBar extends JPanel implements ActionListener {
         jButtonResign.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                int option = JOptionPane.showConfirmDialog(board, "Are you sure?",
+                int option = JOptionPane.showConfirmDialog(framePlay, "Are you sure?",
                         "Confirm", JOptionPane.YES_NO_OPTION);
                 if (option == YES_OPTION) {
-                    board.resign();
+                    framePlay.resign();
                 }
             }
         });
@@ -74,27 +75,24 @@ public class SideBar extends JPanel implements ActionListener {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
-        String turn = board.getPlayer().getName() + "'s turn";
+        String turn = framePlay.getPlayer().getName() + "'s turn";
         g2d.drawString(turn, 5, 15);
 
-        String time = board.getPlayer().getTime() + "s remaining";
+        String time = framePlay.getPlayer().getTime() + "s remaining";
         g2d.drawString(time, 5, 35);
     }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        board.getPlayer().decrementTime();
-        if (board.getPlayer().getTime() == 0) {
-            board.resign();
+        framePlay.getPlayer().decrementTime();
+        if (framePlay.getPlayer().getTime() == 0) {
+            framePlay.resign();
         }
         repaint();
     }
 
-    public Timer getTimer() {
-        return timer;
-    }
-
-    public void disableResign() {
+    public void gameOver() {
+        timer.stop();
         jButtonResign.setEnabled(false);
     }
 
