@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
-import javax.swing.JInternalFrame;
 
 /**
  *
@@ -204,6 +203,7 @@ public class FrameSetup extends javax.swing.JInternalFrame {
 
     private void jButtonDrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDrawActionPerformed
         desktop.add(frameDraw);
+        if (graph != null) frameDraw.loadGraph(graph);
         frameDraw.setVisible(true);
     }//GEN-LAST:event_jButtonDrawActionPerformed
 

@@ -61,6 +61,10 @@ public class FrameDraw extends JInternalFrame {
         initComponents();
     }
 
+    public void loadGraph(Graph graph) {
+        jPanelCanvas.setGraph(graph);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -312,8 +316,7 @@ public class FrameDraw extends JInternalFrame {
             file = jFileChooser.getSelectedFile().getAbsoluteFile().toString();
             try {
                 ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
-                Graph goban = (Graph) in.readObject();
-                jPanelCanvas.setGraph(goban);
+                loadGraph((Graph) in.readObject());
             } catch (IOException | ClassNotFoundException ex) {
                 Logger.getLogger(FrameDraw.class.getName()).log(Level.SEVERE, null, ex);
             }
