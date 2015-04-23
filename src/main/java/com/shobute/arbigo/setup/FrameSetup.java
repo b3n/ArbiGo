@@ -210,7 +210,7 @@ public class FrameSetup extends javax.swing.JInternalFrame {
     private void jButtonPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPlayActionPerformed
         int numPlayers = Integer.parseInt(jComboBoxPlayers.getSelectedItem().toString());
         int timeInterval = Integer.parseInt(jTextFieldTime.getText());
-        desktop.add(new FramePlay(graph, numPlayers, timeInterval));
+        desktop.add(new FramePlay(graph, numPlayers, timeInterval), 0);
     }//GEN-LAST:event_jButtonPlayActionPerformed
 
     private void jButtonLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoadActionPerformed
