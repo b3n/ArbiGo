@@ -32,12 +32,14 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 
 /**
  *
  * @author Ben Lloyd
  */
-public class FramePlay extends JInternalFrame {
+public class FramePlay extends JInternalFrame implements InternalFrameListener {
 
     private Graph graph;
     private int timeInterval;
@@ -74,6 +76,8 @@ public class FramePlay extends JInternalFrame {
         setMaximizable(true);
         setClosable(true);
         setTitle("Play Game");
+        setDefaultCloseOperation(JInternalFrame.DO_NOTHING_ON_CLOSE);
+        addInternalFrameListener(this);
 
         board.setBackground(new Color(255, 255, 255));
         board.setPreferredSize(new Dimension(400, 400));
@@ -119,6 +123,45 @@ public class FramePlay extends JInternalFrame {
         getPlayer().incrementTime();
         turn = (turn + 1) % players.size();
         sideBar.repaint();
+    }
+
+    @Override
+    public void internalFrameClosing(InternalFrameEvent ife) {
+        if (board.isGameOver()) {
+            dispose();
+        } else {
+            int close = JOptionPane.showConfirmDialog(null,
+                    "Really Close? Game is still in progress", "Exit",
+                    JOptionPane.YES_NO_OPTION);  
+            if (close == JOptionPane.YES_OPTION) {
+                dispose();  
+            }
+        }
+    }
+
+    @Override
+    public void internalFrameClosed(InternalFrameEvent ife) {
+        sideBar.gameOver();
+    }
+        
+    @Override
+    public void internalFrameOpened(InternalFrameEvent ife) {
+    }
+
+    @Override
+    public void internalFrameIconified(InternalFrameEvent ife) {
+    }
+
+    @Override
+    public void internalFrameDeiconified(InternalFrameEvent ife) {
+    }
+
+    @Override
+    public void internalFrameActivated(InternalFrameEvent ife) {
+    }
+
+    @Override
+    public void internalFrameDeactivated(InternalFrameEvent ife) {
     }
 
 }

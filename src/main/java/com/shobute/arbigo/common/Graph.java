@@ -178,7 +178,8 @@ public class Graph implements Serializable {
         int mid = nodesByX.length / 2;
 
         Node[] leftX = Arrays.copyOfRange(nodesByX, 0, mid);
-        Node[] rightX = Arrays.copyOfRange(nodesByX, mid + 1, nodesByX.length - 1);
+        Node[] rightX = Arrays.copyOfRange(nodesByX, mid + 1,
+                nodesByX.length - 1);
 
         int midX = leftX[leftX.length - 1].x;
 

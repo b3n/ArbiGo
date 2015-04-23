@@ -34,8 +34,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 
@@ -315,10 +313,11 @@ public class FrameDraw extends JInternalFrame {
         if (jFileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             file = jFileChooser.getSelectedFile().getAbsoluteFile().toString();
             try {
-                ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
+                ObjectInputStream in = new ObjectInputStream(
+                        new FileInputStream(file));
                 loadGraph((Graph) in.readObject());
             } catch (IOException | ClassNotFoundException ex) {
-                Logger.getLogger(FrameDraw.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
             }
         }
     }//GEN-LAST:event_jMenuItemOpenActionPerformed
@@ -328,12 +327,13 @@ public class FrameDraw extends JInternalFrame {
             jMenuItemSaveAsActionPerformed(evt);
         } else {
             try {
-                ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
+                ObjectOutputStream out = new ObjectOutputStream(
+                        new FileOutputStream(file));
                 out.writeObject(jPanelCanvas.getGraph());
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(FrameDraw.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
             } catch (IOException ex) {
-                Logger.getLogger(FrameDraw.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
             }
         }
     }//GEN-LAST:event_jMenuItemSaveActionPerformed

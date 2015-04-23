@@ -30,12 +30,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
+import javax.swing.JInternalFrame;
 
 /**
  *
  * @author Ben Lloyd
  */
-public class FrameSetup extends javax.swing.JInternalFrame {
+public class FrameSetup extends JInternalFrame {
 
     private JDesktopPane desktop;
     private Graph graph;
@@ -114,11 +115,6 @@ public class FrameSetup extends javax.swing.JInternalFrame {
         jLabelTime.setText("Time");
 
         jTextFieldTime.setText("30");
-        jTextFieldTime.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldTimeActionPerformed(evt);
-            }
-        });
 
         jLabel4.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel4.setText("seconds added each move.");
@@ -208,7 +204,8 @@ public class FrameSetup extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButtonDrawActionPerformed
 
     private void jButtonPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPlayActionPerformed
-        int numPlayers = Integer.parseInt(jComboBoxPlayers.getSelectedItem().toString());
+        int numPlayers = Integer.parseInt(
+                jComboBoxPlayers.getSelectedItem().toString());
         int timeInterval = Integer.parseInt(jTextFieldTime.getText());
         desktop.add(new FramePlay(graph, numPlayers, timeInterval), 0);
     }//GEN-LAST:event_jButtonPlayActionPerformed
@@ -216,9 +213,11 @@ public class FrameSetup extends javax.swing.JInternalFrame {
     private void jButtonLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoadActionPerformed
         JFileChooser jFileChooser = new JFileChooser();
         if (jFileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            String file = jFileChooser.getSelectedFile().getAbsoluteFile().toString();
+            String file = jFileChooser.getSelectedFile().getAbsoluteFile()
+                    .toString();
             try {
-                ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
+                ObjectInputStream in = new ObjectInputStream(
+                        new FileInputStream(file));
                 Graph newGraph = (Graph) in.readObject();
                 setBoard(newGraph);
             } catch (IOException | ClassNotFoundException ex) {
@@ -226,10 +225,6 @@ public class FrameSetup extends javax.swing.JInternalFrame {
             }
         }
     }//GEN-LAST:event_jButtonLoadActionPerformed
-
-    private void jTextFieldTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTimeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldTimeActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.shobute.arbigo.setup.draw.FrameDraw frameDraw;

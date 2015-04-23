@@ -23,7 +23,6 @@
  */
 package com.shobute.arbigo.play;
 
-import com.shobute.arbigo.common.Colour;
 import com.shobute.arbigo.common.Stone;
 import com.shobute.arbigo.common.Graph;
 import com.shobute.arbigo.common.Node;
@@ -245,6 +244,10 @@ public class Board extends JPanel implements ActionListener {
         } else {
             paintHover(g2d);
         }
+    }
+    
+    public boolean isGameOver() {
+        return gameOver;
     }
 
     @Override
