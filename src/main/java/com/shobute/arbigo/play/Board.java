@@ -206,7 +206,7 @@ public class Board extends JPanel implements ActionListener {
             stone = history.get(history.size() - 1).get(node);
             if (stone != null) {
                 int r = graph.getShortestRadius();
-                stone.paint(g2d, node.x, node.y, r, 210);
+                stone.paint(g2d, node.x, node.y, r, 220);
             }
         }
     }
