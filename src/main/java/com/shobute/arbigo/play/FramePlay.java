@@ -108,10 +108,10 @@ public class FramePlay extends JInternalFrame implements InternalFrameListener {
         turn = turn % players.size();
 
         if (players.size() == 1) {
-            JOptionPane.showMessageDialog(this,
-                    getPlayer().getName() + " wins!");
             board.gameOver();
             sideBar.gameOver();
+            JOptionPane.showMessageDialog(this,
+                    getPlayer().getName() + " wins!");
         }
     }
     
