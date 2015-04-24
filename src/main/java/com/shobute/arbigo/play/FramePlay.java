@@ -29,6 +29,7 @@ import com.shobute.arbigo.common.Stone;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
@@ -47,6 +48,7 @@ public class FramePlay extends JInternalFrame implements InternalFrameListener {
     private SideBar sideBar;
     private ArrayList<Player> players;
     private int turn;
+    private boolean gameOver;
 
     /**
      * Creates new form FamePlay
@@ -90,6 +92,10 @@ public class FramePlay extends JInternalFrame implements InternalFrameListener {
 
         pack();
     }
+    
+    public boolean isGameOver() {
+        return this.gameOver;
+    }
 
     public int getTimeInterval() {
         return timeInterval;
@@ -108,10 +114,8 @@ public class FramePlay extends JInternalFrame implements InternalFrameListener {
         turn = turn % players.size();
 
         if (players.size() == 1) {
-            board.gameOver();
-            sideBar.gameOver();
-            JOptionPane.showMessageDialog(this,
-                    getPlayer().getName() + " wins!");
+            gameOver = true;
+            sideBar.actionPerformed(new ActionEvent(this, 0, "game over"));
         }
     }
     
@@ -124,10 +128,15 @@ public class FramePlay extends JInternalFrame implements InternalFrameListener {
         turn = (turn + 1) % players.size();
         sideBar.repaint();
     }
+    
+    public Color getColour() {
+        Color color = getStone().getColour();
+        return new Color(color.getRed(), color.getGreen(), color.getBlue(), 100);
+    }
 
     @Override
     public void internalFrameClosing(InternalFrameEvent ife) {
-        if (board.isGameOver()) {
+        if (isGameOver()) {
             dispose();
         } else {
             int close = JOptionPane.showConfirmDialog(null,
@@ -141,7 +150,7 @@ public class FramePlay extends JInternalFrame implements InternalFrameListener {
 
     @Override
     public void internalFrameClosed(InternalFrameEvent ife) {
-        sideBar.gameOver();
+        gameOver = true;
     }
         
     @Override

@@ -50,6 +50,7 @@ public class SideBar extends JPanel implements ActionListener {
         this.framePlay = framePlay;
         
         setLayout(new BorderLayout());
+        setOpaque(true);
 
         jButtonResign = new JButton();
         jButtonResign.setText("Resign");
@@ -76,11 +77,19 @@ public class SideBar extends JPanel implements ActionListener {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
-        String turn = framePlay.getPlayer().getName() + "'s turn";
-        g2d.drawString(turn, 5, 15);
+        if (framePlay.isGameOver()) {
+            g2d.setColor(framePlay.getColour());
+            g2d.fillRect(0, 0, getWidth(), getHeight());
+            
+            String winner = framePlay.getPlayer().getName() + " wins!";
+            g2d.drawString(winner, 5, 15);
+        } else {
+            String turn = framePlay.getPlayer().getName() + "'s turn";
+            g2d.drawString(turn, 5, 15);
 
-        String time = framePlay.getPlayer().getTime() + "s remaining";
-        g2d.drawString(time, 5, 35);
+            String time = framePlay.getPlayer().getTime() + "s remaining";
+            g2d.drawString(time, 5, 35);
+        }
     }
 
     @Override
@@ -89,16 +98,14 @@ public class SideBar extends JPanel implements ActionListener {
         if (framePlay.getPlayer().getTime() == 0) {
             framePlay.resign();
         }
-        repaint();
-    }
-
-    public void gameOver() {
-        timer.stop();
-        jButtonResign.setEnabled(false);
         
-        Color color = framePlay.getStone().getColour();
-        setBackground(new Color(color.getRed(), color.getGreen(),
-                    color.getBlue(), 200));
+        if (framePlay.isGameOver()) {
+            timer.stop();
+            jButtonResign.setEnabled(false);
+            //setBackground(framePlay.getColour());
+        }
+        
+        repaint();
     }
 
 }

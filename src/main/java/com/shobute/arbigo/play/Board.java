@@ -26,7 +26,6 @@ package com.shobute.arbigo.play;
 import com.shobute.arbigo.common.Stone;
 import com.shobute.arbigo.common.Graph;
 import com.shobute.arbigo.common.Node;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -58,7 +57,6 @@ public class Board extends JPanel implements ActionListener {
     private double scaleFactor;
     private FramePlay framePlay;
     private MouseAdapter listener;
-    private boolean gameOver;
 
     public Board(final FramePlay framePlay) {
         this.framePlay = framePlay;
@@ -210,13 +208,6 @@ public class Board extends JPanel implements ActionListener {
             }
         }
     }
-    
-    public void gameOver() {
-        timer.stop();
-        removeMouseListener(listener);
-        gameOver = true;
-        repaint();
-    }
 
     @Override
     public void paint(Graphics g) {
@@ -230,10 +221,8 @@ public class Board extends JPanel implements ActionListener {
         graph.paintEdges(g2d);
         paintStones(g2d);
 
-        if (gameOver) {
-            Color color = framePlay.getStone().getColour();
-            g2d.setColor(new Color(color.getRed(), color.getGreen(),
-                    color.getBlue(), 200));
+        if (framePlay.isGameOver()) {
+            g2d.setColor(framePlay.getColour());
             // TODO: Do it like this, http://stackoverflow.com/a/2244285/3780738?
             Point origin = graph.getOrigin();
             int r = graph.getShortestRadius();
@@ -245,13 +234,13 @@ public class Board extends JPanel implements ActionListener {
             paintHover(g2d);
         }
     }
-    
-    public boolean isGameOver() {
-        return gameOver;
-    }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
+        if (framePlay.isGameOver()) {
+            timer.stop();
+            removeMouseListener(listener);
+        }
         repaint();
     }
 
