@@ -24,6 +24,7 @@
 package com.shobute.arbigo.play;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -94,6 +95,10 @@ public class SideBar extends JPanel implements ActionListener {
     public void gameOver() {
         timer.stop();
         jButtonResign.setEnabled(false);
+        
+        Color color = framePlay.getStone().getColour();
+        setBackground(new Color(color.getRed(), color.getGreen(),
+                    color.getBlue(), 200));
     }
 
 }
