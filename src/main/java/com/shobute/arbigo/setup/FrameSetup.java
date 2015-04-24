@@ -198,7 +198,7 @@ public class FrameSetup extends JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonDrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDrawActionPerformed
-        desktop.add(frameDraw);
+        desktop.add(frameDraw, 0);
         if (graph != null) frameDraw.loadGraph(graph);
         frameDraw.setVisible(true);
     }//GEN-LAST:event_jButtonDrawActionPerformed
