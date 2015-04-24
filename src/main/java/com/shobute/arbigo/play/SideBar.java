@@ -51,7 +51,6 @@ public class SideBar extends JPanel implements ActionListener {
         this.framePlay = framePlay;
         
         setLayout(new BorderLayout());
-        setOpaque(true);
 
         jButtonResign = new JButton();
         jButtonResign.setText("Resign");

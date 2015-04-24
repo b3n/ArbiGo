@@ -53,7 +53,7 @@ public class GUI extends JFrame {
     public GUI() {
         jDesktopPane = new JDesktopPane() {
             // Set the background.
-            @Override
+            /*@Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 try {
@@ -62,7 +62,7 @@ public class GUI extends JFrame {
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
-            }
+            }*/
         };
         frameSetup = new FrameSetup(jDesktopPane);
 
