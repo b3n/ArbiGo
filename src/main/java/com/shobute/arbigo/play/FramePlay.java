@@ -131,7 +131,7 @@ public class FramePlay extends JInternalFrame implements InternalFrameListener {
     
     public Color getColour() {
         Color color = getStone().getColour();
-        return new Color(color.getRed(), color.getGreen(), color.getBlue(), 100);
+        return new Color(color.getRed(), color.getGreen(), color.getBlue(), 140);
     }
 
     @Override

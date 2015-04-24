@@ -74,15 +74,15 @@ public class Colour {
     
     /**
      * Gets a high contrast colour. Code taken from
-     * http://stackoverflow.com/a/13030061/3780738.
+     * http://stackoverflow.com/a/13030061/3780738 with slight modifications.
      * 
-     * @param color The colour to contrast.
+     * @param colour The colour to contrast.
      * @return Either black or white, depending which has more contrast.
      */
-    public static Color getContranstColour(Color color) {
-        double y = (299 * color.getRed() + 587 * color.getGreen() +
-                114 * color.getBlue()) / 1000;
-        return y >= 128 ? Color.black : Color.white;
+    public static Color getContranstColour(Color colour) {
+        double luma = .299 * colour.getRed() + .587 * colour.getGreen() +
+                .114 * colour.getBlue();
+        return luma >= 128 ? Color.BLACK : Color.WHITE;
     }
 
 }

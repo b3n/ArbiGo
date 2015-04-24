@@ -105,7 +105,6 @@ public class SideBar extends JPanel implements ActionListener {
         if (framePlay.isGameOver()) {
             timer.stop();
             jButtonResign.setEnabled(false);
-            //setBackground(framePlay.getColour());
         }
         
         repaint();
