@@ -23,6 +23,7 @@
  */
 package com.shobute.arbigo.play;
 
+import com.shobute.arbigo.common.Colour;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -78,9 +79,11 @@ public class SideBar extends JPanel implements ActionListener {
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
         if (framePlay.isGameOver()) {
-            g2d.setColor(framePlay.getColour());
+            Color colour = framePlay.getColour();
+            g2d.setColor(colour);
             g2d.fillRect(0, 0, getWidth(), getHeight());
             
+            g2d.setColor(Colour.getContranstColour(colour));
             String winner = framePlay.getPlayer().getName() + " wins!";
             g2d.drawString(winner, 5, 15);
         } else {

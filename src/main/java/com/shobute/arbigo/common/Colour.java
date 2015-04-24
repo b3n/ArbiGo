@@ -71,5 +71,18 @@ public class Colour {
         }
         return color;
     }
+    
+    /**
+     * Gets a high contrast colour. Code taken from
+     * http://stackoverflow.com/a/13030061/3780738.
+     * 
+     * @param color The colour to contrast.
+     * @return Either black or white, depending which has more contrast.
+     */
+    public static Color getContranstColour(Color color) {
+        double y = (299 * color.getRed() + 587 * color.getGreen() +
+                114 * color.getBlue()) / 1000;
+        return y >= 128 ? Color.black : Color.white;
+    }
 
 }
