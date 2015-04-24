@@ -59,8 +59,8 @@ public class SideBar extends JPanel implements ActionListener {
         jButtonResign.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                int option = JOptionPane.showConfirmDialog(framePlay, "Are you sure?",
-                        "Confirm", JOptionPane.YES_NO_OPTION);
+                int option = JOptionPane.showConfirmDialog(framePlay,
+                        "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
                 if (option == YES_OPTION) {
                     framePlay.resign();
                 }

@@ -26,6 +26,13 @@ package com.shobute.arbigo.main;
 import com.shobute.arbigo.setup.FrameSetup;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.GroupLayout;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -49,8 +56,12 @@ public class GUI extends JFrame {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                //g.setColor(Color.WHITE);
-                //g.fillRect(0, 0, getWidth(), getHeight());
+                try {
+                    Image goban = ImageIO.read(getClass().getResource("/wood.jpg"));
+                    g.drawImage(goban, 0, 0, getWidth(), getHeight(), this);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
         };
         frameSetup = new FrameSetup(jDesktopPane);
