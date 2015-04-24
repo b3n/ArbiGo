@@ -24,6 +24,8 @@
 package com.shobute.arbigo.main;
 
 import com.shobute.arbigo.setup.FrameSetup;
+import java.awt.Color;
+import java.awt.Graphics;
 import javax.swing.GroupLayout;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -42,7 +44,15 @@ public class GUI extends JFrame {
      * Creates new form GUI
      */
     public GUI() {
-        jDesktopPane = new JDesktopPane();
+        jDesktopPane = new JDesktopPane() {
+            // Set the background.
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                //g.setColor(Color.WHITE);
+                //g.fillRect(0, 0, getWidth(), getHeight());
+            }
+        };
         frameSetup = new FrameSetup(jDesktopPane);
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
