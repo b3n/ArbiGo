@@ -68,7 +68,7 @@ public class Preview extends JPanel {
                 cHeight / (gHeight + 2 * r));
     }
 
-    public void setGraph(Graph graph) {
+    public final void setGraph(Graph graph) {
         this.graph = graph;
         this.r = graph.getShortestRadius();
         this.graphSize = graph.getSize();

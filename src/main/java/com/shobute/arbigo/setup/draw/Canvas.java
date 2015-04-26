@@ -259,7 +259,7 @@ public class Canvas extends JPanel implements ActionListener {
      * @param graph The graph to set.
      */
     public void setGraph(Graph graph) {
-        this.graph = graph;
+        this.graph = (Graph) SerializationUtils.clone(graph);
         checkpoint();
     }
 
