@@ -36,6 +36,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -394,9 +395,14 @@ public class FrameDraw extends JInternalFrame {
     }//GEN-LAST:event_jButtonCancelActionPerformed
 
     private void jButtonDoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDoneActionPerformed
-        jPanelCanvas.unSelectNodes();
-        setup.setBoard(jPanelCanvas.getGraph());
-        dispose();
+        Graph graph = jPanelCanvas.getGraph();
+        if (graph.hasAnEdge()) {
+            jPanelCanvas.unSelectNodes();
+            setup.setBoard(jPanelCanvas.getGraph());
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Error: You must add at least one edge.");
+        }
     }//GEN-LAST:event_jButtonDoneActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

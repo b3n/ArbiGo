@@ -139,7 +139,7 @@ public class FramePlay extends JInternalFrame implements InternalFrameListener {
         if (isGameOver()) {
             dispose();
         } else {
-            int close = JOptionPane.showConfirmDialog(null,
+            int close = JOptionPane.showConfirmDialog(this,
                     "Really Close? Game is still in progress", "Exit",
                     JOptionPane.YES_NO_OPTION);  
             if (close == JOptionPane.YES_OPTION) {

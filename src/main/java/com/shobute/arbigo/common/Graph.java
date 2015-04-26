@@ -298,6 +298,13 @@ public class Graph implements Serializable {
     public Set<Node> getNodes() {
         return nodes;
     }
+    
+    public boolean hasAnEdge() {
+        for (Node node : nodes) {
+            if (node.getAdjacentNodes().size() > 0) return true;
+        }
+        return false;
+    }
 
     /**
      * Get the graph's node size.
